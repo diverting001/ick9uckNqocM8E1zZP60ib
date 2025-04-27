@@ -1,0 +1,16 @@
+<div class="span-auto row-h">
+点x坐标<input type="text" name="goods[dianx][<{$item.goods_id}>]" value="<{$dianx[$item.goods_id]}>" size='2'>
+点y坐标<input type="text" name="goods[diany][<{$item.goods_id}>]" value="<{$diany[$item.goods_id]}>" size="2">
+箭头x坐标<input type="text" name="goods[arrowx][<{$item.goods_id}>]" value="<{$arrowx[$item.goods_id]}>" size="2">
+箭头y坐标<input type="text" name="goods[arrowy][<{$item.goods_id}>]" value="<{$arrowy[$item.goods_id]}>" size="2">
+商x品坐标<input type="text" name="goods[goodsx][<{$item.goods_id}>]" value="<{$goodsx[$item.goods_id]}>" size="2">
+商y品坐标<input type="text" name="goods[goodsy][<{$item.goods_id}>]" value="<{$goodsy[$item.goods_id]}>" size="2">
+商品位置<select type="select" name="goods[goodstop][<{$item.goods_id}>]" required="1" id="dom_el_3ec9aa7" class=" x-select">
+<option <{if $goodstop[$item.goods_id] == 'left'}>selected="selected" <{/if}> value="left">左</option>
+<option <{if $goodstop[$item.goods_id] == 'right'}>selected="selected" <{/if}> value="right">右</option>
+</select>
+图片id<input type="text" name="goods[imageid][<{$item.goods_id}>]" value="<{$imageid[$item.goods_id]}>" size="4">
+排序<input type="text" name="goods[ordernum][<{$item.goods_id}>]" value="<{$ordernum[$item.goods_id]}>" size="2">
+
+</div>
+

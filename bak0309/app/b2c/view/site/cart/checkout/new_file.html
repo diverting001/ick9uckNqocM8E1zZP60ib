@@ -1,0 +1,1668 @@
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/lang.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/mootools.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/moomore.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/jstools.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/formplus.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/popup.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/lab.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/browserstore.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/shoptools.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/goodscupcake.js"></script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/patch.js"></script>
+<script src="<{$env.cdn_base_url}>/data/misc/region_data_v2.js"></script>
+<script src="<{$env.cdn_base_url}>/app/ectools/neigou_statics/js/region.js"></script>
+
+<div class="layer" id="for_yb93" style="display:none;">
+    <div class="layer-backdrop"></div>
+    <div class="layer-dialog for-yb93">
+        <p class="yb-p">尊敬的会员您好：<br>
+        受杭州G20峰会影响，因大部分快递公司将于8月10日至9月7日停止或延迟浙江区域的快递发送业务，给您带来不便敬请谅解！</p>
+        <button class="yb-btn yb-close">知道啦</button>
+        <div class="close yb-close"><i></i></div>
+    </div>
+</div>
+<script>
+<{if $cart_type neq 2}>
+   //$('#for_yb93').show();
+    <{/if}> 
+   $('.yb-close').on('click',function(){
+        $('#for_yb93').hide();
+   });
+
+        function AjaxUtil() {
+        };
+        AjaxUtil.prototype = {
+            data: null,
+            pulicFn: function (diff_data) {
+                var global_val = $('#global').val();
+                var new_add_data = {address: $('.address-list-li.address-selected').find('input[name=address]').val()};
+                var use_point = $('#use_score_count').val();
+                var check_point = $('#sel_to_use_score').is(':checked') ? true : false;
+                var base_data = {
+                    check_point: check_point,
+                    voucher_list: voucherListArray,
+                    del_current_val: diff_data.del_current_val || '',
+                    current_val: diff_data.current_val || '',
+                    address:diff_data.address || '',
+                    global: global_val,
+                    shipping: $('input[name=shipping]').val(),
+                    cart_type:$('#global_cart_type').val(),
+                    temp_order_id:$('#global_temp_order_id').val()
+                };
+                if (check_point) {
+                    base_data.use_point = use_point;
+                }
+                if ($('#makechoice_free_addr').length > 0) {
+                    if (document.getElementById('makechoice_free_addr').checked == true) {
+                        var mem_cpaddr_id = $('#save_free_addr').data('memcpaddr');
+                        var free_address_data = {mem_cpaddr_id: mem_cpaddr_id};
+                    }
+                }
+                this.data = $.extend(base_data, voucher_order_info_list, free_address_data, new_add_data);
+            },
+            ajax: function (params) {
+            		
+            		if($('#sel_to_use_score').hasClass('check')){
+            			this.data.use_point_price=1;
+            		}else{
+            			this.data.use_point_price=0;
+            		}
+                var $params = {
+                    url: 'cart-total.html',
+                    type: 'post',
+                    dataType: 'json',
+                    data: this.data,
+                    success: function (data) {
+                    		getCheckoutGoods();
+                        if (data.voucher_list instanceof Array) {
+                            $('.voucher_all_card').text(data.voucher_list.length);
+                        }
+                        $('#order_price').html(data.html_content);
+                        $('.voucher_all_money').text(data.voucher_total_money);
+                        if ('member_point' in data && !isNaN(data.member_point)) {
+                            $('#enable_score_number').text(data.member_point);
+                        }
+                        if ('use_point' in data && !isNaN(data.use_point)) {
+                            $('.max_can_use_score').text(data.use_point);
+                        }
+
+                        if ('payment_point' in data && !isNaN(data.payment_point)) {
+                            $('#deductions_money').text(data.payment_point);
+                        }
+                        params.requSuccess(data);
+                        setSayut(data)
+                    }
+                };
+                $.ajax($params);
+            }
+        };
+    function setSayut(data){
+        $('div.p-pic i.tips').remove();
+        //alert(data.yhd_region_data.length);
+        if(data.yhd_region_data.length>0){
+            var obj=data.yhd_region_data;
+
+            $.each(obj,function(index,o){
+                var setObj= $('#'+o.bn+' a')
+                var quantity=setObj.parents('li.cart-product').find('div.p-num span').text();
+                if((quantity-o.total)>0){
+                    var  html='<i class="tips">库存不足</i>'
+                    setObj.append(html);
+                }
+            })
+        }
+    }
+    function getCheckoutGoods(){
+    		var use_point_price=0
+    		if($('#sel_to_use_score').hasClass('check')){
+    			use_point_price=1;
+    		}else{
+    			use_point_price=0;
+    		}
+    		var listLoading=$('<li class="loadgoods">更新商品列表ing...</li>');
+    		$('.order-cart-item').append(listLoading);
+    		listLoading.css('line-height',$('.order-cart-item').height()+'px')
+    		$.ajax({
+    			url:'/cart-goods.html',
+    			data:{cart_type:$('input[name="cart_type"]').val(),use_point_price:use_point_price,global:$('input#global').val()},
+    			type: 'post',
+    			success:function(rs){
+    				$('.goods_list_box').remove();
+    				$('#cart_main').append(rs);
+    				
+    			}
+    		})
+    }
+    
+</script>
+
+<div id="main">
+  <!-- checkout开始 -->
+  <!-- checkout步骤图 -->
+  <div id="cart_steps" class="steps dis clearfix">
+    <div class="title dis">STEP1:</div>
+    <div class="flow-step step-no1">
+    </div>
+  </div>
+  <!-- checkout主体 -->
+  <div id="order_container" class="order-container">
+    <!-- checkout内容 -->
+    <form action="<{link app=b2c ctl='site_order' act='create'}>" method="post">
+      <{if $is_fastbuy}>
+        <input type="hidden" name="isfastbuy" value="true" />
+      <{/if}>
+      <input type="hidden" name="cart_type" value="<{$cart_type}>" id="global_cart_type"/>
+      <input type="hidden" name="temp_order_id" value="<{$temp_order_id}>" id="global_temp_order_id"/>
+      <input type="hidden" name="global" id="global" value="<{$global}>" />
+      <input type="hidden" name="purchase[addr_id]" value="<{$def_addr.addr_id}>" />
+      <input type="hidden" name="purchase[def_area]" value="<{$def_area}>" />
+      <input type="hidden" name="md5_cart_info" value="<{$md5_cart_info}>" />
+      <input type="hidden" name="extends_args" id="op_extends_args" value="<{$json_args}>" />
+      <input type="hidden" name="voucher_list" id="for_voucher_list" value="">
+      <input type="hidden" name="mem_cpaddr_id" id="for_free_com_address" value="">
+      <!-- 订单信息填写 -->
+      <div id="order_main" class="order-main">
+        <{if $minfo}>
+        <{include file='site/cart/checkout/goods.html' app='b2c'}>
+        <{/if}>
+        <{include file='site/cart/checkout/shipping.html' app='b2c'}>
+
+        <{include file='site/cart/checkout/delivery.html' app='b2c'}>
+
+        <{include file='site/cart/checkout/payment.html' app='b2c'}>
+
+        <{include file='site/cart/checkout/cart_main.html' app='b2c'}>
+
+        
+      </div>
+
+      <!-- 结算信息 -->
+      <div id="order_clearing" class="order-clearing">
+          <div class="checkout-score-cont m-b30">
+              <label class="c-score-control f-l" for="sel_to_use_score">
+                 <input type="checkbox" id="sel_to_use_score"  name="check_point" value="1"/>
+                 <span class="c-score-controls">
+                  <i></i>
+                  </span>
+              </label>
+              <span id="sel_to_use_span">使用内购积分</span>
+              <div class="c-score-input  m-l-20 f-l hides" id="c_score_input_area">
+              		<span class="hides red-color-txt sales_money max_can_use_score"><{$use_point}></span>
+                  <input data-ex="<{$rate}>" class="normal" type="text" id="use_score_count" name="use_point" value="<{use_point}>" autocomplete="off"/>
+                  <label for="use_score_count">内购积分</label>
+              </div>
+              <p id="paragraph2" >内购积分剩余：<{$member_point}></p>
+              <p class="pointPay">[积分支付不参与任何优惠活动]</p>
+              <!--<button type="button" id="score_recharge_btn" class="c-score-recharge">充值</button>-->
+              <div class="clearfix"></div>
+          </div>
+        <div class="voucher-div m-b20">
+            <div class="voucher-int">
+                <div id="voucher_add_cont">
+                    <button type="button" class="voucher-add to_add_voucher"><span class="glyphicon glyphicon-plus-sign"></span>使用内购券</button>
+                    <span class="got_vouchers" style="display: none;">您有<em class="got_voucher_number"></em>张未使用的内购券</span>
+                </div>
+                <div class="voucher-cont dis">
+                  <div class="voucher-mon dis" id="to_vocher_copy">
+                      <p class="cen-wz"><i class="font20 true_money"></i>元内购券</p> 
+                      <h1 class="lt-wz true_money"></h1>
+                      <p class="rg-x vo_to_del"></p>
+                      <i class="rg-bug for_popup_bug"></i>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="voucher-int-div dis" id="voucher_show_cont">
+                    <div class="arrow-up"></div>
+                    <div class="arrow-up-two"></div>
+                    <ul class="tab-switch voucher_tab">
+                        <li class="active tab_item">选择内购券</li>
+                        <li class="tab_item">添加内购券</li>
+                    </ul>
+                    <p class="voucher-tip"><span class="glyphicon glyphicon-info-sign"></span>提示：每张内购券只能使用一次，不找零，不兑换</p>
+                    <p class="voucher-tip voucher-tip-sec">每单只能使用一张内购券</p>
+                    <div class="base-her-line"></div>
+                    <div class="voucher-add-item voucher_item_cont">
+                        <div class="voucher-items">
+                            <table class="voucher-table">
+                                <tbody class="voucher_item_list">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="use_voucher_error hide"></div>
+                        <div class="voucher-btn-div m-t-20">
+                            <button type="button" class="voucher-cancel-btn">取消</button>
+                            <button type="button" class="voucher-add-btn to_use_mon">使用内购券</button>
+                        </div>
+                    </div>
+                    <div class="voucher-list-item voucher_item_cont hide">
+                        <div class="input-placeholder">
+                            <div class="cover-input go_input"><span>请输入内购券号码</span></div>
+                            <input type="text"  id="voucher_input_key" class="voucher-input" maxlength="19">
+                        </div>
+
+                        <div class="vo-error"></div>
+                        <div class="voucher-btn-div">
+                            <button type="button" class="voucher-cancel-btn">取消</button>
+                            <button type="button" class="voucher-add-btn to_add_mon">添加内购券</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <p class="voucher-show dis voucher_show_wz">已使用 <i class="voucher_all_card">0</i> 张内购券,可减免<i class="voucher-all-money">-￥<i class="voucher_all_money"></i></i></p>
+        </div>
+        <div id="order_price" class="clearfix checkout-orde-price">
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div id="score_recharge_modal" class="o-modal">
+    <div class="o-modal-backdrop"></div>
+    <div class="o-modal-dialog">
+        <h2 class="score-recharge-title">内购积分充值</h2>
+        <p class="company_theme_color_rgb_text">积分充值后仅限本账号使用</p>
+        <div class="score-recharge-input">
+            <input type="text" placeholder="请输入积分卡密码" maxlength="19" id="score_recharge_input">
+            <p class="re-error dis re_error"><i class="sticon icon-sign-info"></i><span></span></p>
+            <p class="re-right dis re_right"><i class="sticon icon-solid-right"></i><span></span></p>
+        </div>
+        <div class="score-recharge-btn">
+            <button type="button" class="re-cancel o_modal_cancel company_theme_color_rgb_text company_theme_color_rgb_border">取消</button><button type="button" id="score_recharge_confirm" class="re-confirm company_theme_color_rgb_bg company_theme_color_rgb_border">确认充值</button>
+        </div>
+    </div>
+</div>
+<link href="<{$env.cdn_base_url}>/app/b2c/neigou_statics/css/jquery.popup.css" rel="stylesheet"/>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/jquery.popup.js" type="text/javascript"></script>
+<script>
+    ;(function($){
+        $.fn.extend({
+        donetyping: function(callback,timeout){
+            timeout = timeout || 1e3; // 1 second default timeout
+            var timeoutReference,
+                    doneTyping = function(el){
+                        if (!timeoutReference) return;
+                        timeoutReference = null;
+                        callback.call(el);
+                    };
+            return this.each(function(i,el){
+                var $el = $(el);
+                // Chrome Fix (Use keyup over keypress to detect backspace)
+                // thank you @palerdot
+                $el.is(':input') && $el.on('keyup keypress',function(e){
+                    // This catches the backspace button in chrome, but also prevents
+                    // the event from triggering too premptively. Without this line,
+                    // using tab/shift+tab will make the focused element fire the callback.
+                    if (e.type=='keyup' && e.keyCode!=8) return;
+
+                    // Check if timeout has been set. If it has, "reset" the clock and
+                    // start over again.
+                    if (timeoutReference) clearTimeout(timeoutReference);
+                    timeoutReference = setTimeout(function(){
+                        // if we made it here, our timeout has elapsed. Fire the
+                        // callback
+                        doneTyping(el);
+                    }, timeout);
+                }).on('blur',function(){
+                    // If we can, fire the event since we're leaving the field
+                    doneTyping(el);
+                });
+            });
+        }
+    });
+    })(jQuery);
+    var maxUse_count = $('#use_score_count').val();
+    $(function () {
+        //加载用户内购券张数
+        var global = $('#global').val();
+        var cart_type = $('#global_cart_type').val();
+        var new_add_data = {
+            global: global,
+            cart_type:cart_type,
+            address: $('.address-list-li.address-selected').find('input[name=address]').val()
+        };
+        if ($('#makechoice_free_addr').length > 0) {
+            if (document.getElementById('makechoice_free_addr').checked == true) {
+                var mem_cpaddr_id = $('#save_free_addr').data('memcpaddr');
+                var free_address_data = {mem_cpaddr_id: mem_cpaddr_id};
+            }
+        }
+        var target_data = $.extend(free_address_data, new_add_data);
+        $.ajax({
+            url: 'cart-member_valid_voucher.html',
+            type: 'get',
+            dataType: 'json',
+            data: target_data,
+            success: function (dat) {
+                if ('success' in dat && !!dat.data) {
+                    $('.got_vouchers .got_voucher_number').text(dat.data.length);
+                    $('.got_vouchers').show();
+                }
+            }
+        });
+        //内购券使用和添加切换
+        $('#voucher_show_cont .tab-switch .tab_item').on('click', function () {
+            if ($(this).hasClass('active')) return false;
+            $(this).addClass('active');
+            $(this).siblings('.tab_item').removeClass('active');
+            var ix = $(this).index();
+            if (ix == 0) {
+                $('#voucher_show_cont .voucher_item_cont').addClass('hide');
+                $('#voucher_show_cont .voucher-add-item').removeClass('hide');
+            } else if (ix == 1) {
+                $('#voucher_show_cont .voucher_item_cont').addClass('hide');
+                $('#voucher_show_cont .voucher-list-item').removeClass('hide');
+            }
+        });
+        //加载个人内购券
+        $('.to_add_voucher').on('click', function () {
+            if ($('#_Popup_prompt').length > 0) {
+                $('#_Popup_prompt').remove();
+            }
+            //return false;
+            $.ajax({
+                url: 'cart-member_valid_voucher.html?cart_type=' + cart_type+'&global='+$('#global').val(),
+                type: 'get',
+                dataType: 'json',
+                success: function (dat) {
+                    var hasData = $('.voucher_item_cont .voucher_item_list').find('tr').length;
+                    if ('success' in dat && !hasData) {
+                        $('.voucher_item_cont .voucher_item_list').empty();
+                        if (dat.data instanceof Array && dat.data.length > 0) {
+                            for (var i = 0, len = dat.data.length; i < len; i++) {
+                                var cur_data = dat.data[i];
+                                var template = '<tr>' +
+                                        '<td width="10%" align="left"><input type="checkbox" class="voucher_code_val" value="' + cur_data.voucher_number + '"/></td>' +
+                                        '<td width="10%" align="left">' + parseInt(cur_data.money) + '元</td>' +
+                                        '<td width="40%" align="center" class="limit-wd">' + cur_data.rule_name + '</td>' +
+                                        '<td width="40%" align="center">过期时间:' + cur_data.valid_time + '</td>' +
+                                        '</tr>';
+                                $('.voucher_item_cont .voucher_item_list').append(template);
+                            }
+                        } else {
+                            $('.voucher_item_cont .voucher_item_list').append('<tr class="no-voucher-tip"><td>您暂时没有可用的内购券</td></tr>');
+                            $('.voucher-add-item .voucher-btn-div').hide();
+                            $('.got_vouchers').hide();
+                        }
+                    }
+                }
+            });
+        });
+        document.getElementById("voucher_input_key").onkeyup = function () {
+            this.value = this.value.replace(/\s/g, '').replace(/(\w{4})(?=\w)/g, "$1 ").toUpperCase();
+        };
+        $(document).click(function () {
+            if (!$('.voucher-int-div').hasClass('dis')) {
+                restoreInput();
+            }
+        });
+        $('.voucher-int-div').on('click', function (e) {
+            e.stopPropagation();
+        });
+        $('.to_add_voucher').on('click', function (e) {
+            e.stopPropagation();
+            if ($('.voucher-int-div').hasClass('dis')) {
+                $('.use_voucher_error').addClass('hide');
+            }
+            $('.voucher-int-div').removeClass('dis');
+            $(this).addClass('hover');
+        })
+        $('.voucher-cancel-btn').on('click', function () {
+            restoreInput();
+        });
+        $('.go_input').on('click', function () {
+            $(this).addClass('dis');
+            $('#voucher_input_key').focus();
+        });
+        $('#voucher_input_key').on('focus', function () {
+            $('.vo-error').text('');
+        });
+        $('.to_add_mon').on('click', function () {
+            var $that = $(this);
+            var cur_val = delHtmlTag($('.voucher-input').val());
+            if (cur_val == '') {
+                showError('请输入正确的内购券号码');
+                return false;
+            }
+            $that.text('正在验证内购券...');
+            if (checkvoucherListArray(voucherListArray, cur_val)) {
+                showError('每单只能使用一张内购券');
+                return false;
+            }
+            var newAjax = new AjaxUtil();
+            var odata = {current_val: cur_val};
+            newAjax.pulicFn(odata);
+            newAjax.requSuccess = function (data) {
+                if ('use_point' in data && !isNaN(data.use_point)) {
+                    if(maxUse_count>data.use_point){
+                        $('#use_score_count').val(data.use_point).trigger('keyup');
+                    }                
+                } 
+                if(!data.current_voucher_data){
+                    showError(data.voucher_msg);
+                    return false;
+                }
+                addVoucher(eachVoucherList(data.voucher_list), cur_val);
+                restoreInput();
+                voucherListArray.push(cur_val);
+                var input_list = voucherListArray.join(',');
+                $('#for_voucher_list').val(input_list);
+            };
+            newAjax.ajax(newAjax);
+        });
+        //使用内购券
+        $('.to_use_mon').on('click', function () {
+            var $that = $(this);
+            var voucherEls = $('.voucher_item_list .voucher_code_val').filter(':checked');
+            if (voucherEls.length < 1) {
+                $('.use_voucher_error').text('请选择内购券').removeClass('hide');
+                return false;
+            }
+            var cur_val = [];
+            var usedEls = [];
+            voucherEls.each(function () {
+                cur_val.push($(this).val());
+                usedEls.push($(this));
+            });
+            $that.text('正在验证内购券...');
+            var newAjax = new AjaxUtil();
+            var odata = {current_val: cur_val};
+            newAjax.pulicFn(odata);
+            newAjax.requSuccess = function (data) {
+                if ('use_point' in data && !isNaN(data.use_point)) {
+                    if(maxUse_count>data.use_point){
+                        $('#use_score_count').val(data.use_point).trigger('keyup');
+                    }
+                }
+                if(!data.current_voucher_data){
+                    $('.use_voucher_error').text(data.voucher_msg).removeClass('hide');
+                    $('.to_use_mon').text('使用内购券');
+                    return false;
+                }
+                $('.got_vouchers').hide();
+                $('.to_use_mon').text('使用内购券');
+                if (!data.current_voucher_data) {
+                    $('.use_voucher_error').text(data.voucher_msg).removeClass('hide');
+                    return false;
+                }
+                for (var i = 0, len = usedEls.length; i < len; i++) {
+                    usedEls[i].attr('checked', false);
+                    usedEls[i].parents('tr').hide();
+                }
+                if (data.voucher_list instanceof Array) {
+                    $('.voucher_all_card').text(data.voucher_list.length);
+                }
+                addVoucherList(eachVoucherList(data.voucher_list), data.voucher_list);
+                restoreInput();
+                voucherListArray = voucherListArray.concat(cur_val);
+                var input_list = voucherListArray.join(',');
+                $('#for_voucher_list').val(input_list);
+            };
+            newAjax.ajax(newAjax);
+        });
+        $('#voucher_add_cont').on('click', '.vo_to_del', function () {
+            var $that = $(this);
+            showPrompt($that.siblings('.for_popup_bug'), '', '确认删除内购券吗？', true, true,
+                    function (result) {
+                        if (result == 'ok') {
+                        var del_cur_val = $that.parent('.voucher-mon').data('void');
+                        var del_list_str = voucherListArray.join(',');
+                        var del_voucherListArray = del_list_str.replace(del_cur_val,'').split(',');
+                        for(var i=0;i<del_voucherListArray.length;i++){
+                            if(del_voucherListArray[i]==''){
+                                 del_voucherListArray.splice(i,1);
+                            }
+                        }
+                        voucherListArray = del_voucherListArray;
+                        var newAjaxs = new AjaxUtil();
+                        var odata = {del_current_val:del_cur_val};
+                        newAjaxs.pulicFn(odata);
+                        newAjaxs.requSuccess = function(data){
+                           $that.parent('.voucher-mon').remove();
+                            var codeEl = $('.voucher-table .voucher_item_list').find('tr .voucher_code_val');
+                           codeEl.each(function(){
+                               if($(this).val() == data.del_current_val){
+                                   $(this).parents('tr').show();
+                               }
+                           });
+
+                            if ('use_point' in data && !isNaN(data.use_point)) {
+                                if(data.use_point<maxUse_count){ 
+                                    $('#use_score_count').val(data.use_point).trigger('keyup');
+                                    $('#use_score_count').trigger('postScore');
+                                };
+                            }
+                        };
+                        newAjaxs.ajax(newAjaxs);
+                        var input_list = del_voucherListArray.join(',');
+                        if (del_voucherListArray.length == 0) {
+                            $('.voucher-cont').addClass('dis');
+                            $('.voucher_show_wz').addClass('dis');
+                        }
+                        $('#for_voucher_list').val(input_list);
+                    };
+                });
+        })
+        function addVoucher(e, myNum) {
+            $('.to_add_mon').text('添加内购券');
+            $('.voucher-cont').removeClass('dis');
+            $('.voucher_show_wz').removeClass('dis');
+            //sheetsNum('add');
+            var obj = $('#to_vocher_copy').clone();
+            $('#voucher_add_cont').append(obj);
+            obj.removeAttr('id');
+            obj.removeClass('dis');
+            obj.attr('data-void', myNum);
+            obj.find('.true_money').text(e);
+        }
+
+        function addVoucherList(e, nList) {
+            $('#voucher_add_cont .voucher-mon').remove();
+            for (var i = 0; i < nList.length; i++) {
+                $('.voucher-cont').removeClass('dis');
+                $('.voucher_show_wz').removeClass('dis');
+                //sheetsNum('add');
+                var obj = $('#to_vocher_copy').clone();
+                $('#voucher_add_cont').append(obj);
+                obj.removeAttr('id');
+                obj.removeClass('dis');
+                obj.attr('data-void', nList[i].voucher_number);
+                obj.find('.true_money').text(Number(nList[i].money).toFixed(0));
+            }
+        }
+
+        var showError = function (tips) {
+            $('.to_add_mon').text('添加内购券');
+            $('.vo-error').text(tips);
+        }
+        var sheetsNum = function (status) {
+            var all_sheets = Number($('.voucher_all_card').text());
+            if (status == 'add') {
+                $('.voucher_all_card').text(all_sheets + 1);
+            } else {
+                $('.voucher_all_card').text(all_sheets - 1);
+            }
+        }
+
+        var eachVoucherList = function (e) {
+            return Number(e[e.length - 1].money);
+        }
+        var checkvoucherListArray = function (arr, obj) {
+            var len = arr.length;
+            var flag = false;
+            for (var i = 0; i < len; i++) {
+                if (arr[i] == obj) {
+                    flag = true;
+                }
+            }
+            return flag;
+        }
+        var restoreInput = function () {
+            $('.voucher-int-div').addClass('dis');
+            $('.to_add_voucher').removeClass('hover');
+            $('.vo-error').text('');
+            $('.go_input').removeClass('dis');
+            $('#voucher_input_key').val('');
+        }
+
+        function delHtmlTag(str) {
+            var str = str.replace(/<\/?[^>]*>/gim, "");//去掉所有的html标记
+            var result = str.replace(/(^\s+)|(\s+$)/g, "");//去掉前后空格
+            return result.replace(/\s/g, "");//去除文章中间空格
+        }
+        function postScore(check_point, use_point){
+            var global_val = $('#global').val();
+            var new_add_data = {address:$('.address-list-li.address-selected').find('input[name=address]').val()};
+            var base_data = {check_point:check_point,voucher_list:voucherListArray,global:global_val,shipping:$('input[name=shipping]').val(),cart_type:$('#global_cart_type').val()};
+            if(check_point){
+                base_data.use_point = use_point;
+            }
+            if($('#makechoice_free_addr').length>0){
+                if(document.getElementById('makechoice_free_addr').checked==true){
+                    var mem_cpaddr_id = $('#save_free_addr').data('memcpaddr');
+                    var free_address_data = {mem_cpaddr_id:mem_cpaddr_id};
+                }
+            }
+            
+            var use_point_price=null;
+            if($('#sel_to_use_score').hasClass('check')){
+            		use_point_price={use_point_price:1}
+        		}else{
+        			use_point_price={use_point_price:0}
+        		}
+            var target_data = $.extend(base_data,voucher_order_info_list,free_address_data,new_add_data,use_point_price);
+            $.ajax({
+                url:'cart-total.html',
+                type:'post',
+                dataType:'json',
+                data:target_data,
+                success:function(data){
+                    if(data.html_content){
+                        $('#order_price').html(data.html_content);
+                    }
+                }
+            })
+        }
+        $('#sel_to_use_score').on('change', function () {
+            var _checked = $(this).is(':checked');
+            if (_checked || _checked == 'true') {
+            		$('#sel_to_use_score').addClass('check')
+                $('#c_score_input_area').removeClass('hides');
+                $('.checkout-score-cont #sel_to_use_span').text('使用');
+                $('span.c-score-controls').css({'background-color':'#33d2d6','border-color':' #33d2d6'});
+                $('.pointPay').show();
+            } else {
+                $('#c_score_input_area').addClass('hides');
+                $('.checkout-score-cont #sel_to_use_span').text('使用内购积分');
+                $('span.c-score-controls').css({'background-color':'','border-color':'#d4d4d4'});
+                $('#sel_to_use_score').removeClass('check');
+                $('.pointPay').hide();
+            };
+            var newAjax = new AjaxUtil();
+            var odata = {};
+            newAjax.pulicFn(odata);
+            newAjax.requSuccess = function(data){
+            		$('#use_score_count').val(data.use_point);
+            };
+            newAjax.ajax(newAjax);
+        });
+        $('#use_score_count').donetyping(function () {
+            var newAjax = new AjaxUtil();
+            var odata = {};
+            newAjax.pulicFn(odata);
+            newAjax.requSuccess = function (data){
+
+            };
+            newAjax.ajax(newAjax);
+        }, 1e3);
+        $('#use_score_count').on('postScore', function(){
+            var use_point = $('#use_score_count').val();
+            var check_point = $('#sel_to_use_score').is(':checked') ? true : false;
+            postScore(check_point, use_point);
+        });
+        //calc deductions
+        $('#use_score_count').on('keyup', function (e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+            if($(this).val().indexOf(0) === 0){
+                $(this).val(0);
+            }
+            var num = Number($(this).val());
+            var max_score = Number($('.max_can_use_score')[0].innerHTML);
+            if (num > max_score) {
+                $(this).val(max_score);
+            };
+            maxUse_count = $(this).val();
+            var exchangeRate = Number($(this).data('ex'));
+            var deductions = Number($(this).val()) / exchangeRate;
+            $('.paragraphsp').text(deductions.toFixed(2));
+            var cur_val = delHtmlTag($('.voucher-input').val());
+        })
+        $('#nogoods-close').on('click',function(){
+            $('#nogoods').addClass('dis');  
+            $('button[type="submit"]').text('提交订单');
+        })
+        //充值积分
+        //ie8 placeholder surpport
+        if( !('placeholder' in document.createElement('input')) ){   
+            $('input[placeholder],textarea[placeholder]').each(function(){    
+              var that = $(this),    
+              text= that.attr('placeholder');    
+              if(that.val()===""){    
+                that.val(text).addClass('placeholder');    
+              }    
+              that.focus(function(){    
+                if(that.val()===text){    
+                  that.val("").removeClass('placeholder');    
+                }    
+              })    
+              .blur(function(){    
+                if(that.val()===""){    
+                  that.val(text).addClass('placeholder');    
+                }    
+              })    
+              .closest('form').submit(function(){    
+                if(that.val() === text){    
+                  that.val('');    
+                }    
+              });    
+            });
+        }
+        var modal = function(target,width) {
+            var that = this,
+                _body = $('body'),
+                body_hg = _body.height(),
+                dialog = target.find('.o-modal-dialog'),
+                dialog_hg = 0;
+            that.adapt = function(){
+                //margin_val为白色对话框上下外边距，可根据实际情况设置数值
+                var window_hg = $(window).height(),
+                    margin_val = 80;
+                if((dialog_hg+margin_val)<window_hg){
+                    target.find('.o-modal-backdrop').height(window_hg);
+                    that.setAbsolute();
+                }else{
+                    target.find('.o-modal-backdrop').height(dialog_hg+margin_val);
+                    that.setRelative(margin_val);
+                }
+            }
+            that.show = function(){
+                var o_width,n_width;
+                target.css('display', 'block');
+                that.setAbsolute();
+                o_width = $(window).width();
+                _body.addClass('o-hidden');
+                n_width = $(window).width();
+                _body.css('padding-right',n_width-o_width);
+            }
+            that.hide = function(){
+                target.css('display', 'none');
+                _body.removeClass('o-hidden');
+                _body.removeAttr('style');
+            }
+            that.setAbsolute = function(){
+                dialog_hg = dialog.height();
+                dialog.css({'position':'absolute','top':'50%','left':'50%','margin-left':'-'+ (width/2) +'px','margin-top':'-'+ (dialog_hg/2) +'px'});
+            }
+            that.setRelative = function(margin_val){
+                dialog.css({'position':'relative','top':'0','left':'0','margin-left':'auto','margin-top':(margin_val/2)+'px','margin-right':'auto'});
+            }
+            target.find('.close,.o_modal_cancel').click(function() {
+                  that.hide();
+            })
+            that.show();
+
+            that.adapt();
+            target.find('.o-modal-dialog').width(width);
+            $(window).resize(function(){
+                  that.adapt();
+            })
+        }
+        var alertTips = function(msg){
+            if($('#alert-tips').length>0) return;
+            $('body').append('<div id="alert-tips"><p>'+ msg +'</p></div>');
+            $('#alert-tips').css({
+                'margin-top':'-'+$('#alert-tips').height()/2+'px',
+                'margin-left':'-'+$('#alert-tips').width()/2+'px'
+            })
+            setTimeout(function(){
+                $('#alert-tips').remove();
+            },3000)
+        }
+         //积分充值
+        var score_input_timer;
+        var clearInfoModal = function(){
+            if(navigator.userAgent.indexOf("MSIE 8.0")>0){
+                $('#score_recharge_input').removeClass('act error').addClass('placeholder').val('请输入积分卡密码').siblings('.re_error,.re_right').addClass('dis');
+            }else{
+                $('#score_recharge_input').removeClass('act error').val('').siblings('.re_error,.re_right').addClass('dis');
+            }
+        }
+        var validateScoreCard = function(obj){
+            var card_number = obj.val().replace(/\s/g, ''),
+                origin_val = Number($('#all_score_number').text());
+            if(obj.hasClass('disabled')) return;
+            obj.addClass('disabled');
+            $.post('member-query_pointcard.html',{card_number:card_number},function(e){
+                if(Object.keys(e)[0]=='error'){
+                    obj.removeClass('act').addClass('error').siblings('.re_right').addClass('dis').siblings('.re_error').removeClass('dis').find('span').text(e.error);
+                }else{
+                    obj.removeClass('error').siblings('.re_error').addClass('dis').siblings('.re_right').removeClass('dis').find('span').text('验证成功，本次可充值'+ e.data.point +'内购积分');
+                }
+                obj.removeClass('disabled');
+            },'json');
+        }
+        var score_recharge_modal;
+        $('#score_recharge_btn').on('click',function(){
+            clearInfoModal();
+            score_recharge_modal = new modal($('#score_recharge_modal'),510);
+        })
+        //删除内容禁掉字符替换
+        var verified_scroe = false;
+        var last_value = "";
+        var scoreCheckPointCard = function(){
+            var that = $('#score_recharge_input'),
+                score_input_content_current = that.val().replace(/\s/g, ''),
+                before_val = that.val(),
+                current_val = that[0].value.replace(/\s/g, '').replace(/(\w{4})(?=\w)/g, "$1 ").toUpperCase();
+                if (last_value != before_val){
+                    verified_scroe = false;
+                }
+                last_value = before_val;
+
+                if(before_val!=current_val) {
+                    that[0].value = current_val;
+                }
+
+                if(verified_scroe) return;
+                if(that.val().length==19){
+                    validateScoreCard(that);
+                    verified_scroe = true;
+                }else{
+                    that.removeClass('error').addClass('act').siblings('.re_error,.re_right').addClass('dis');
+                }
+        }
+        $('#score_recharge_input').on({
+            focus:function(){
+                $(this).addClass('act company_theme_color_rgb_border');
+                score_input_timer = setInterval(scoreCheckPointCard,10);
+            },
+            blur:function(){
+                $(this).removeClass('act company_theme_color_rgb_border');
+                clearInterval(score_input_timer);
+            }
+        })
+        $('#score_recharge_confirm').on('click',function(){
+            var int_obj = $('#score_recharge_input'),
+                card_number = int_obj.val().replace(/\s/g, ''),
+                origin_val = Number($('#all_score_number').text()),
+                that = $(this),
+                use_score_count = $('#use_score_count');
+            if(card_number==''||card_number==0){
+                int_obj.removeClass('act').addClass('error').siblings('.re_right').addClass('dis').siblings('.re_error').removeClass('dis').find('span').text('错误的积分卡');
+                return;
+            }
+            if(that.hasClass('disabled')) return;
+            that.addClass('disabled');
+            $.post('member-use_pointcard.html',{card_number:card_number},function(e){
+                if(Object.keys(e)[0]=='error'){
+                    int_obj.removeClass('act').addClass('error').siblings('.re_right').addClass('dis').siblings('.re_error').removeClass('dis').find('span').text(e.error);
+                }else{
+                    score_recharge_modal.hide();
+                    alertTips('充值成功!');
+                    use_score_count.val(Number(use_score_count.val())+Number(e.data.point));
+                    var newAjax = new AjaxUtil();
+                    var odata = {};
+                    newAjax.pulicFn(odata);
+                    newAjax.requSuccess = function (data) {
+                        if(use_score_count.val()>=data.use_point){
+                            use_score_count.val(data.use_point);
+                        }
+                        $('.left_score_num').text(data.payment_point); 
+                    };
+                    newAjax.ajax(newAjax);
+                }
+                that.removeClass('disabled');
+
+            },'json')
+            
+        })
+    })
+</script>
+<script type="text/javascript">
+/*     function changeAdd(e,data){
+        var addValue = $(e).find("input[name='addr_id']").val();
+        var oinput = $('input[id*="for_shipping_"]');
+        var nowinput;
+        for(var i = 0;i<oinput.length;i++){
+            var inputvalue = JSON.parse($(oinput[i]).val());
+            if(inputvalue.addr_id == addValue){
+                nowinput = $(oinput[i]);
+                break;
+            };
+        };
+        data.area_addr = data.area;
+        data.area = data.ship_area_id;
+        delete(data.member_id);
+        delete(data.time);
+        delete(data.ship_area_id);
+        nowinput.val(JSON.stringify(data));
+        nowinput.siblings('#receiver').html(data.name);
+        nowinput.parent().siblings('.m-t15').html(data.area_f);
+        nowinput.parent().siblings('.d-inline').html('('+data.zip+')');
+        nowinput.parent().siblings('.addr-num-limit').html(data.addr);
+        nowinput.parent().siblings('.usemobile').html(data.mobile);
+    };*/
+<{if $money_format}>priceControl.spec = <{$money_format}>;<{/if}>
+var Order = function() {
+    var self = this;
+    // this.member = !!Memory.get('member');
+    <{if $minfo}>
+    this.goods = {
+        module: $('#order_goods')[0],
+        confirm: 'cart-goods_confirm.html',
+        minfo: Cookie.read('checkout_b2c_goods_buy_info'),
+        filled: function(json, input) {
+            json = JSON.decode(json || self.goods.minfo);
+            if(input !== true) {
+                self.goods.module.getElements('.view-goods .memo').each(function(el, i){
+                    if(json[i].name == 'minfo[product_id][]') {
+                        json.erase(json[i]);
+                    }
+                    el.set('html', json[i].value);
+                });
+            } else {
+                self.goods.module.getElements('.fill-goods [name^=minfo[]').each(function(el, i){
+                    if(el.name != 'minfo[product_id][]' && json[i].name == el.name) {
+                        el.set('value', json[i].value);
+                    }
+                });
+            }
+            return self;
+        },
+        fold: function() {
+            if(self.goods.minfo) {
+                var mod = self.goods;
+                mod.edit.removeClass('fold');
+                mod.view.removeClass('fold');
+                mod.fill.addClass('fold');
+                self.goods.filled(self.goods.minfo, true).goods.filled();
+            }
+            return self;
+        }
+    };
+    Object.append(this.goods, {
+        edit: $$(this.goods.module).getElement('.action-edit-goods'),
+        view: $$(this.goods.module).getElement('.view-goods'),
+        fill: $$(this.goods.module).getElement('.fill-goods')
+    });
+    <{/if}>
+    this.shipping = {
+        module: $('#order_shipping')[0],
+        load: 'cart-shipping_edit.html',
+        save: 'cart-shipping_save.html',
+        remove: 'cart-shipping_delete.html',
+        confirm: 'cart-shipping_confirm.html'
+    };
+    Object.append(this.shipping, {
+        edit: $$(this.shipping.module).getElement('.action-edit-shipping'),
+        view: $$(this.shipping.module).getElement('.action-change-shipping-other-li'),
+        fill: $$(this.shipping.module).getElement('.action-change-shipping-other-li'),
+        change: $$(this.shipping.module).getElement('.change-shipping')
+    });
+    this.delivery = {
+        module: $('#order_delivery')[0],
+        list: 'cart-delivery_change.html',
+        confirm: 'cart-delivery_confirm.html'
+    };
+    Object.append(this.delivery, {
+        edit: $$(this.delivery.module).getElement('.action-edit-delivery'),
+        view: $$(this.delivery.module).getElement('.view-delivery'),
+        change: $$(this.delivery.module).getElement('.change-delivery')
+    });
+    this.payment = {
+        module: $('#order_payment')[0],
+        list: 'cart-payment_change.html',
+        confirm: 'cart-payment_confirm.html'
+    };
+    <{if $tax_setting}>
+    this.invoice = {
+        module: $('#order_invoice')[0]
+    };
+    <{/if}>
+    this.coupon = {
+        module: $('#order_coupon')[0],
+        add: '<{link app=b2c ctl=cart act=add arg0=coupon}>',
+        remove: 'cart-removeCartCoupon-coupon.html'
+    };
+    <{if $point_dis_html}>
+    this.deduction = {
+        module: $('#order_deduction')[0],
+        use: 'tools-count_digist.html'
+    };
+    <{/if}>
+    this.isFastbuy = '<{if $is_fastbuy}>&isfastbuy=true<{/if}>';
+    this.total = {
+        module: $('#order_price')[0],
+        url: 'cart-total.html',
+        update: function(callback) {
+            var data = self.shipping.change.toQueryString() + '&' + self.delivery.change.toQueryString() + (self.invoice ? '&' + self.invoice.module.toQueryString() : '') + (self.deduction ? '&' + self.deduction.module.toQueryString() : '') + self.isFastbuy +'&global='+$('#global').val()+ '&extends_args=' + encodeURIComponent($('op_extends_args').value);
+            data+= '&cart_type='+ $('#global_cart_type').val() +'';
+            var objData = decodeURIComponent(data);
+            var theRequest = new Object();
+            strs = objData.split("&");
+            for(var i = 0; i < strs.length; i ++) {
+                theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1]);
+            }
+            voucher_order_info_list = theRequest;
+            self.update(self.total.url, data, self.total.module,callback);
+        },
+        isEdit: function(_target,is_lnk){
+            var el = _target.getParent('a') || _target,section=el.getParent('.section'),
+                item=section.getElements('.hid_item'),item_lnk=section.getElements('.lnklike'),
+                el_rel=el.get('_rel'),el_act_btn = el.get('_act_btn');
+            
+            item.addClass('fold');
+            section.getElements('.'+el_rel).removeClass('fold');
+            
+            if (is_lnk) return;
+            item_lnk.addClass('fold');
+            section.getElements('.'+el_act_btn).removeClass('fold');
+            
+        },
+        //= 保存订单备注
+        comment_save: function(_target){
+            var parent = _target.getParent('.hid_item');
+        
+            if (validate(parent, 'all')){           
+                new Request({
+                    url:parent.get('_url'),
+                    link: 'cancel',
+                    onComplete:function(rs){
+                        rs = JSON.decode(rs);
+                        
+                        if (rs.success){
+                            var _li = parent.getParent('.section');
+                            var _i = $$('.'+_li.get('_update')+' i');
+                            _i.each(function(item,index){
+                                item.innerHTML = rs.data[index];
+                            });
+                        }else{
+                            Dialog.alert('备注信息保存失败！');
+                        }
+                    }
+                }).post(parent.toQueryString());
+            }
+        }
+    };
+    this.update = function(url, data, update, callback) {
+        var Update = new Class({
+            Extends: Request,
+            options: {
+                url: url,
+                update: update,
+                method: 'post',
+                evalScripts: true,
+                link: 'cancel',
+                headers: {
+                    Accept: 'text/html, application/xml, text/xml, */*'
+                }
+            },
+            success: function(text){
+                var options = this.options;
+                var response = this.response;
+                var json;
+                try{
+                    json = JSON.validate(text) ? JSON.decode(text, this.options.secure) : null;
+                    if(json && json.error) return Message.error(json.error);
+                }catch(e){}
+                response.html = text.stripScripts(function(script){
+                    response.javascript = script;
+                });
+                response.html = JSON.parse(response.html).html_content;
+                if (options.update){
+                    $$(options.update).set('html', response.html);
+                    Browser.exec(response.javascript);
+                }
+                callback && callback(response.html, response.javascript);
+                setSayut(JSON.parse(text));
+                if ($$('#change_shipping input[name=address]:checked').length>0){
+                    _address_edit($$('#change_shipping input[name=address]:checked')[0],'radio');
+                }
+            }
+        });
+        new Update(url, update, callback).send(data);
+    };
+    this.send = function(url, data, callback, update) {
+        url = url || self[url];
+        new Request({
+            url: url,
+            link: 'cancel',
+            onComplete: function(rs){
+                var json;
+                try{
+                    json = JSON.validate(rs) ? JSON.decode(rs) : null;
+                    if(json && json.error) return Message.error(json.error);
+                }catch(e){}
+                callback && callback.call(this, rs, json);
+            }
+        }).send(data);
+    };
+}
+var order = new Order();
+Object.merge(validatorMap, {
+    onesecond: function(element, v, type, parent){
+        return parent.getElements('input[type=' + type + '][vtype='+ element.get('vtype') +']').some(function(el){
+            el.onblur = function(){validate(this)};
+            return el.value.trim() != '';
+        });
+    },
+    requiredcustom: function(element, v, type, parent){
+        var name = element.name;
+        if(!parent.getElements('input[type=' + type + ']' + name ? '[name="' + name + '"]' : '').some(function(el) {
+            return el.checked == true && el.value != '0';
+        })) {
+            showWarn(element, element.get('data-validatemsg'));
+            return false;
+        }
+        return true;
+    }
+});
+
+function selectArea(sels) {
+    var selected = '';
+    sels.each(function(s){
+        if(s.isDisplayed()) {
+            var text = s[s.selectedIndex].text.trim().clean();
+            if(['<{t}>北京<{/t}>','<{t}>天津<{/t}>','<{t}>上海<{/t}>','<{t}>重庆<{/t}>'].indexOf(text)>-1) return;
+            selected += text;
+        }
+    });
+    // var arr = $('change_shipping').getElement('.action-change-shipping:checked');
+    // if(arr) {
+    //     var val = JSON.decode(arr.value);
+    //     val.area = sels[0].getParent().getElement('input[name=area]').value;
+    //     arr.value = JSON.encode(val);
+    // }
+
+    //$('op_splice_area').innerHTML = selected;
+    //$('addr_area').value = selected;
+    //$('address').value = $('address').value.replace(selected, '');
+};
+
+function hideWarn(el, self) {
+    el = self ? el : el.getParent('.order-section-content');
+    el.retrieve('tips_instance', {hide: function(){}}).hide();
+}
+function showWarn(el, msg) {
+    formTips.warn(msg, el.getParent('.order-section-content')).toElement().setStyle('margin-left', '4%');
+    return false;
+}
+
+<{if $minfo}>
+order.goods.fold();
+<{/if}>
+order.total.update();
+
+$$('#main').addEvents({
+    'click': function(e){
+        var el = $(e.target)[0];
+
+        //= 点击document隐藏删除确认框
+        var dtc = $$('.dialog-tips-container')[0];
+        var target = $$(document.body).retrieve('dialog-tip:show');
+        var element;
+        if(dtc && !dtc.contains(el) && target && !target.contains(el)) dtc.retrieve('instance').hide();
+
+        if(el.getParent('.order-section')) {
+            el.getParent('.order-section').removeClass('highlight');
+            el.getParent('.order-section-content') && hideWarn(el);
+        }
+        //修复FF点击select闪烁的问题
+        if(el.getParent('.fill-shipping') && el.getParent('li') && (el.match('option') || el.match('select') || el.match('input[type=text]'))) {
+            e.preventDefault();
+        }
+    },
+	//= 添加新地址
+	'click:relay(.action-add-shipping)': function(e) {
+		e.stop();
+		var target =$(e.target)[0],li =  target.getParent('li'),shipping_el = $$('.action-change-shipping-other-li')[0],_selected_li = $$('.address-list-li');
+		li.addClass('fold');
+		_selected_li.each(function(item,index){
+			if (item.hasClass('fold')){
+				item.removeClass('fold');
+			}
+		});
+		
+		//if ($$('#change_shippivalidateOrderng input:checked').length>0) $$('#change_shipping input:checked')[0].checked = false;
+		shipping_el.inject(li,'after');
+		shipping_el.removeClass('fold');
+		shipping_el.addClass('selected');
+		shipping_el.getElement('input[name=addr_id]').value = '';
+		shipping_el.getElement('input[name=name]').value = '';
+		shipping_el.getElement('input[name=addr]').value = '';
+		shipping_el.getElement('input[name=zip]').value = '';
+		shipping_el.getElement('input[name=mobile]').value = '';
+		
+		var sels = shipping_el.getElement('span.region').getElements('select');
+		sels[0].selectedIndex = 0;
+		sels[1].hide();
+		sels[2].hide();
+	},
+    //= 修改地址
+    'click:relay(.action-edit-address)': function(e) {
+		var _target = $(e.target)[0]||$(e)[0];
+        _address_edit(_target,'button');
+    },
+    //= 配送到这个地址
+    'click:relay(.action-save-address)': function(e) {
+        e.stop();
+        var parent = this.getParent('li');
+		if(validate(parent, 'all')) {
+			var _addr_id = parent.getElement('input[name=addr_id]').value;
+			new Request({
+				url: '<{link app=b2c ctl=site_cart act=shipping_add}>',
+				link: 'cancel',
+				onComplete: function(rs) {
+					rs = JSON.decode(rs);
+					if (rs.success){
+                    location.reload();
+                    return;
+                    $$('.action-change-shipping-other-li').addClass('fold');
+                    $$('.action-change-shipping-other-li').addClass('fold');
+                    $$('#order_shipping .change-shipping').removeClass('fold');
+                    $$('#order_shipping .change-shipping .change-shipping-li').removeClass('fold');
+                    $$('#change_shipping input[name=address]:checked').length>0&&$$('#change_shipping input[name=address]:checked')[0].getParent('li').removeClass('fold');
+                    $$('.caution.error.notice-inline').addClass('fold');
+                    var newAjax = new AjaxUtil();
+                    var odata = {};
+                    newAjax.pulicFn(odata);
+                    newAjax.requSuccess = function (data){
+                        changeAdd(parent,rs.data);
+                    };
+                    newAjax.ajax(newAjax);
+                    return;
+					}else{
+						return Dialog.alert('添加(修改)失败！');
+					}
+				}
+			}).post(parent.toQueryString());
+		}
+    },
+    //= 取消修改收货地址
+    'click:relay(.action-cancel-address)': function(e) {        
+        $$('#order_shipping .change-shipping li').removeClass('fold');
+        $$('.action-change-shipping-other-li')[0].addClass('fold');
+        $$('#change_shipping input[name=address]:checked').length>0&&$$('#change_shipping input[name=address]:checked')[0].getParent('li').removeClass('fold'); 
+        $$('.caution.error.notice-inline').addClass('fold');
+    },
+    //= 提交订单
+    'click:relay(.action-submit-order)': function(e) {
+        this.set('html','正在为您创建订单...');
+        var global_cart_type_val=document.getElementById('global_cart_type').value;
+        if(global_cart_type_val!=2){
+            if(!validateOrder()) {
+                this.set('html','提交订单');
+                e.stop();
+            }
+        }
+        
+        var order_form = this.getParent('form');
+        order_form.store('target',{
+        	onRequest:function(){
+        		this.set('disabled', true);
+        	}
+        });
+    },
+    //= 选择/添加新收货地址
+    'change:relay(.action-change-shipping)': function(e){
+        var cond = this.value == 0;
+        var li = this.getParent('li');
+        var update = li.getElement('address');
+
+        if(cond && li.getAllPrevious().length >= 10) {
+        if(li.getAllPrevious().length >= 10) {
+            e.stop();
+            li.getParent().getElement('li.selected .action-change-shipping').checked = true;
+            return formTips.warn('最多添加10条，想要使用新收货地址，请先删除一条收货地址', update, {where: 'after', store: this.getParent('.change-shipping')});
+        }
+        }
+		
+		var _target = $(this).getParent('li').getElement('.action-edit-address');
+		_address_edit(_target,'radio');	
+        //switchSelected(this, cond);
+    },
+    //=地址选中
+	'change:relay(.address-list-li)': function(e){
+		var _el_lis = $('change_shipping').getElements('.address-list-li');
+		_el_lis.removeClass('_li_selected');
+		_el_lis.removeClass('selected_hover');
+		
+		$(this).addClass('_li_selected');
+		$(this).addClass('selected_hover');
+	},
+	/** 
+	 * 交互内容（鼠标划过事件）
+	 */
+	'mouseover:relay(.address-list-li)': function(e){
+		//$(this).getElement('.action-edit-address').removeClass('fold');
+		if (!$(this).hasClass('_li_selected'))	$(this).addClass('selected_hover');
+	},
+	'mouseout:relay(.address-list-li)': function(e){
+		//$(this).getElement('.action-edit-address').addClass('fold');
+		if (!$(this).hasClass('_li_selected'))	$(this).removeClass('selected_hover');
+	}
+});
+
+function _address_edit(target,type){
+	var li =  target.getParent('li'),
+	el  = li.getElement('.action-change-shipping');
+	
+	// 将内容放到相应的表单里面
+	//switchSelected(this, true);
+	var _data = el.value;
+	_data = JSON.decode(_data);
+	
+	$('#change_shipping')[0].getElements('li').removeClass('selected');
+	$('#change_shipping')[0].getElements('li').removeClass('fold');
+	//target.getParent('li').addClass('selected');
+	li.getElement('.action-change-shipping').checked = true;
+	var shipping_el = $$('.action-change-shipping-other-li')[0];
+	shipping_el.inject(li,'after');
+	if (type=='button') li.addClass('fold');	
+	if (type=='button') shipping_el.removeClass('fold');
+	else shipping_el.addClass('fold');
+	// $$('.action-add-shipping')[0].getParent('li').removeClass('fold');
+	
+	shipping_el.addClass('selected');
+	shipping_el.getElement('input[name=addr_id]').value = _data.addr_id;
+	shipping_el.getElement('input[name=name]').value = _data.name;
+	shipping_el.getElement('input[name=addr]').value = _data.addr;
+	shipping_el.getElement('input[name=zip]').value = _data.zip;
+	shipping_el.getElement('input[name=mobile]').value = _data.mobile;
+	
+	var sels = $$('.action-change-shipping-other-li').getElement('span.region')[0].getElements('select');
+	var _str = _data.area_addr.split(':')[1].split('/');
+	_str.each(function(s,i){
+		var sel = sels[i];
+		var opt = sel.getChildren().filter(function(el){return el.get('text')==s;});
+		region_sel.changeResponse(sel,opt[0]);
+	});
+	
+	/** 修改底部信息 **/
+	if ($$('.total-ship-addr span.detail').length>0){
+		$$('.total-ship-addr span.detail')[0].innerHTML = _data.area_f+_data.addr+_data.addr;
+	}
+	
+	if ($$('.total-ship-name span.detail').length>0){
+		$$('.total-ship-name span.detail')[0].innerHTML = _data.name;
+	}
+	
+	if ($$('.total-ship-name span.tel').length>0){
+		$$('.total-ship-name span.tel')[0].innerHTML = '电话:'+(_data.mobile?_data.mobile:_data.tel);
+	}
+	/** end **/
+}
+
+//= 折叠/展开指定项
+function fold(type, isfold, mod) {
+    if(!type) return;
+    type = type + '';
+    var parent = order[type].module;
+    var fill = parent.getElements('[class^=fill-]')
+    var change = parent.getElement('[class^=change-]');
+    var view = parent.getElement('[class^=view-]');
+    var edit = parent.getElement('[class^=action-edit-]');
+    var notice = parent.getElement('.notice');
+    if(typeOf(isfold)=='element') {
+        if(type == 'goods') {
+            mod = 'fill';
+        }
+        fold(type, !isfold.hasClass('action-cancel'), mod);
+    }
+    else if(isfold === false) {
+        view.removeClass('fold');
+        fill && fill.addClass('fold');
+        change && change.addClass('fold');
+        notice && notice.addClass('fold');
+        edit&&(edit.removeClass('fold').removeClass('action-cancel').innerHTML = '[修改]');
+    }
+    else if(isfold == 'notice' && notice) {
+        if(mod) {
+            Memory.set(type + '.stat', !edit || edit.hasClass('fold') ? notice && !notice.hasClass('fold') ? 'none' : 'noselect' : edit && edit.hasClass('action-cancel') ? 'editing' : 'view');
+        }
+        var stat = Memory.get(type + '.stat');
+        if(!stat || stat === 'none') return;
+        if(notice.hasClass('fold')) {
+            notice.removeClass('fold');
+            hideWarn(notice);
+            parent.removeClass('highlight');
+            view.addClass('fold');
+            change&&change.addClass('fold');
+            edit&&edit.addClass('fold');
+        }
+        else {
+            notice.addClass('fold');
+            if(stat == 'view') {
+                view.removeClass('fold');
+            }
+            else {
+                change&&change.removeClass('fold');
+            }
+            if(stat != 'noselect') {
+                edit&&edit.removeClass('fold');
+            }
+        }
+    }
+    else {
+        var who = mod !== 'fill' ? change : fill;
+        who && who.removeClass('fold');
+        view.addClass('fold');
+        notice && notice.addClass('fold');
+        edit&&(edit.addClass('action-cancel').innerHTML = '[取消修改]');
+    }
+}
+//= 载入商品必填
+function  loadGoods(el) {
+    var parent = order.goods.module;
+    var data = parent.getElement('.fill-goods');
+    var view = parent.getElement('.view-goods');
+    var goods_info = data.toJSON(true);
+
+    fold('goods', false);
+    Cookie.write('checkout_b2c_goods_buy_info', goods_info, {path:Shop.base_url});
+    order.goods.filled(goods_info);
+}
+//设当前选中状态
+function switchSelected(el, load) {
+    var parent = (el.match('li') ? el : el.getParent('li')).addClass('selected');
+    var label = parent.getElement('label');
+    parent.retrieve('html:source') || label && parent.store('html:source', label.innerHTML);
+    if(el.match('li') || el.hasClass('action-edit-address')) {
+        if(Browser.ie) order.shipping.change.getElement('.action-change-shipping:checked').checked = false;
+        parent.getElement('.action-change-shipping').checked = true;
+    }
+    load && loadShipping(el);
+    var selected = parent.getSiblings('li.selected')[0];
+    if(selected) {
+        selected.removeClass('selected').retrieve('html:source') && selected.getElement('label').set('html', selected.retrieve('html:source'));
+    }
+}
+//= 保存收货地址
+function saveShipping(el) {
+    var parent = el.getParent('li');
+    var update = parent.getElement('label');
+    order.update(order.shipping.save, parent, update, function(rs){
+        switchSelected(parent);
+        if(parent.hasClass('selected')) {
+            order.shipping.edit.addClass('fold');
+            order.delivery.edit.addClass('fold');
+        }
+    });
+}
+//= 添加收货地址
+function addShipping(el, method) {
+    var method = method || 'save';
+    var parent = el.getParent('li') || el.getParent('.fill-shipping');
+    var update = parent.getElement('label') || el.getParent('.order-section-content').getElement('.view-shipping');
+    var li;
+    order.send(order.shipping.save, parent, function(rs){
+        if(el.match('input')) {
+            if(el.value == 0) {
+                addAddress(update,parent,rs,true);
+            }
+            else {
+                update.set('html', rs);
+            }
+        }
+        else {
+            addAddress(update,parent,rs);
+        }
+        if(method == 'confirm') {
+            loadShipping(el.getParent('.order-section-content').getElement('.change-shipping .action-change-shipping:checked'), 'confirm');
+            fold('shipping');
+        }
+    });
+}
+function addAddress(update, parent, rs, unfold) {
+    var li;
+    if(update.tagName == 'LABEL') {
+        li = new Element('li', {html: rs}).inject(parent, 'before');
+        update.set('html', parent.retrieve('html:source'));
+    }
+    else if(update.tagName == 'TABLE') {
+        var inject = parent.addClass('fold').getParent().getElement('.change-shipping');
+        li = new Element('li', {html: rs}).inject(inject, 'top');
+        unfold&&inject.removeClass('fold');
+    }
+    switchSelected(li);
+    order.shipping.edit.addClass('fold');
+}
+//= 删除收货地址
+function deleteAddress(el) {
+    var parent = el.getParent('li');
+    var change = order.shipping.change;
+    var data = parent.getElement('.action-change-shipping');
+    order.send(order.shipping.remove, data.name+'='+data.value, function(rs){
+        hideWarn(change, true);
+        if(parent.hasClass('selected')) {
+            order.shipping.edit.addClass('fold');
+            //order.delivery.edit.addClass('fold');
+            //order.payment.edit.addClass('fold');
+        }
+        parent.destroy();
+        var cases = change.getElement('.action-change-shipping');
+        if(cases.value == 0) {
+            order.shipping.edit.addClass('fold');
+            cases.checked = true;
+            switchSelected(cases, true);
+        }
+    });
+}
+//= 载入填写收货信息区域
+function loadShipping(el, method) {
+    method = method || 'load';
+    var parent;
+    var update;
+    if(method == 'load') {
+        parent = el.getParent('li');
+        update = parent.getElement('label');
+    }
+    else {
+        parent = el.getParent('.change-shipping') || el.getParent('.fill-shipping');
+        update = parent.getParent().getElement('.view-shipping');
+    }
+    order.update(order.shipping[method], parent, update, function(rs){
+        bindDatepicker();
+        if(method == 'confirm') {
+            fold('shipping', false);
+
+            var region = 'area=' + (parent.getElement('li.selected') ? JSON.decode(parent.getElement('li.selected').getElement('.action-change-shipping').value).area : parent.getElement('input[name=area]').value);
+            linkage('delivery', region);
+        }
+    });
+}
+function loadDelivery(el) {
+    var mod = order.delivery;
+    var data = mod.change;
+    var update = mod.view;
+    order.update(mod.confirm, data.toQueryString() + order.isFastbuy, update, function(rs){
+        fold('delivery', false);
+        //linkage('payment', data);
+		order.total.update();
+    });
+}
+function loadPayment(el) {
+    var mod = order.payment;
+    var data = mod.change;
+    var update = mod.view;
+    order.update(mod.confirm, data, update, function(rs){
+        fold('payment', false);
+        order.total.update();
+    });
+}
+function linkage(next, data){
+    var mod = order[next];
+    var notice = mod.module.getElement('.notice');
+    var change = mod.change;
+    var view = mod.view;
+    var edit = mod.edit;
+    order.update(mod.list, data, change, function(rs){
+        showWarn(change, mod.module.get('data-linkagemsg'));
+        fold(next);
+        edit.addClass('fold');
+    });
+}
+function setPrice(el, rate) {
+    var area = order.deduction.module;
+    var value = typeOf(el) == 'element' ? priceControl.format(el.value * rate) : el;
+    area.getElement('.action-deduct-price').set('text', value);
+}
+
+function validateOrder(){
+	var mod = order['shipping'];
+	var _el = $('#change_shipping')[0].getElements('input.action-change-shipping:checked');
+	var _add = $('#makechoice_free_addr').prop('checked');
+	if (mod.module&&(_el.length<=0 && !_add)){
+		mod.module.addClass('highlight');
+		Dialog.alert(mod.module.get('data-validatemsg'), function(){
+			new Fx.Scroll(window,{duration:250, link:'ignore'}).toElementEdge(mod.module);
+		});
+		
+		mod.module.removeClass('highlight');		
+		return false;
+	}
+
+    //=检查保税区
+    if($$('input[name=idcardname]').length > 0 && $$('input[name=idcardno]').length > 0){
+        if($$('input[name=idcardname]')[0].value == '' || $$('input[name=idcardno]')[0].value == ''){
+            $$('#need_id_error')[0].removeClass('dis');
+            return false;
+        }
+    }
+	return true;
+}
+
+if(order.deduction) {
+    var inputscore = order.deduction.module.getElement('.action-input-score');
+    var inputscorevalue = '';
+    //= 积分输入
+    inputscore.addEvents({
+        'inputchange': function(e){
+            var parent = this.getParent('.content');
+            var max = Math.min(parent.getElement('.action-max-score').get('text'), parent.getElement('.action-user-score').get('text'));
+            var rate = parent.getElement('input[name="point[rate]"]').value;
+            var price = parent.getElement('.action-deduct-price');
+            if(this.value == 0) {
+                this.value == '';
+                return;
+            }
+            if(isNaN(this.value)) {
+                this.value = inputscorevalue;
+                //setPrice(0);
+                return;
+            }
+            if(!this.value.test(/^(0|[1-9][0-9]*)?$/)) {
+                this.value = this.value.substr(0, this.value.length - 1);
+                return;
+            }
+            if(Number(this.value) > max) {
+                inputscorevalue = this.value = max;
+                setPrice(this, rate);
+                return this.tips('本次能使用的最大积分为' + max);
+            }
+            inputscorevalue = this.value;
+            setPrice(this, rate);
+        },
+        'enter': function(e){
+            e.stop();
+        }
+    });
+}
+function alertNogoods(data){
+    var nogoodsarray = data.items;
+    var nogoodsli = '';
+    var m=nogoodsarray.length;
+    for(var i = 0;i<m;i++){
+        nogoodsli += '<li>'+nogoodsarray[i].name + '</li>';
+    };
+    if(m>4){
+        $('#nogoodsul').css({'height':'240px','overflow-y':'scroll'})
+    };
+    $('#nogoodsul').html(nogoodsli);
+    $('#nogoods').removeClass('dis');
+    return false;
+}
+</script>
+<div id="nogoods" class="no-goods dis">
+    <div class="firopt"></div>
+    <div class="nogoods-list">
+      <h3>当前收货地址以下商品暂时库存不足或无货<p>请返回购物车修改后提交</p></h3>
+      <ul id="nogoodsul">
+      </ul>
+        <a href="/cart.html">
+            <button type="button" class="btn face-n btn-desc2 btn-font hg45 wd350">返回购物车</button>
+        </a>
+        <i id="nogoods-close"></i>    
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<{foreach name="goods" from=$goodsData key=key item=goods}>
+	<div class="product " href="#">
+            <div class="img">
+           <{if $goods.products.store <= 0}> <div class="sell_out"><img src="<{$res_url}>/images/gallery-sale-out.png"/></div><{/if}>
+                <a href="<{link app=b2c ctl=site_product arg0=$goods.products.product_id}>" target="_blank" title="<{$goods.name}>"  ><img src="<{$goods.image_default_id|default:$imageDefault.S.default_image|storager:'s'}>" alt="<{$goods.name}>"/></a>
+            </div>
+            <div class="txt">
+                <div class="price">
+                    <span class="new"><{$goods.products.price|cur_odr}></span>
+                    <span class="old">市场价：<{$goods.products.mktprice|cur_odr}></span>
+                </div>
+                <div class="note">
+                    <p></p>
+                </div>
+                <div class="name">
+                    <p><{$goods.name}></p>
+                </div>
+            </div>
+        </div>
+        
+<{/foreach}>
+<div class="clearfix"></div>
+<{pagers data=$pager}>

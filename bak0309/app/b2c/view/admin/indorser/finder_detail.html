@@ -1,0 +1,18 @@
+<div class="tableform">
+  <div class="division">
+    <table width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <th><label><{t}>背书人名称：<{/t}></label></th>
+        <td><{$indorser.indorser_name}></td>
+        <th><label><{t}>背书人图片标识：<{/t}></label></th>
+        <td><img src="<{$indorser.indorser_logo|storager:'s'}>" alt="背书人图片标识" /></td>
+        <th><label><{t}>背书人背景图片：<{/t}></label></th>
+        <td><img src="<{$indorser.indorser_bklogo|storager:'s'}>" alt="书人背景图片" /></td>
+        <th><label><{t}>背书人性别：<{/t}></label></th>
+        <td><{$indorser.sex|gender}></td>
+		 <th><label><{t}>背书人星座：<{/t}></label></th>
+        <td><{$indorser.constellatory|constellatory}></td>
+      </tr>
+    </table>
+  </div>
+</div>

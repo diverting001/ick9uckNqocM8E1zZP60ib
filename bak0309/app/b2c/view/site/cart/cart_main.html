@@ -1,0 +1,96 @@
+<input type="hidden" name="active_type" value="<{$festival_data}>">
+<{if $aCart && $aCart.object.goods}>
+<form action="<{link app=b2c ctl=site_cart act=_check_checkout}>" method="post" id="form_local" class="cart_form_cont">
+  <input type="hidden" name="global" value="false">
+  <!-- 购物车内容 -->
+  <div id="cart_main_title" class="cart-main-title">
+    <ul>
+        <li class="wd80"><{t}><a id="check_all"  class="<{if $uglobal_cart_all_check==1 }>checked<{/if}>" href="javascript:;"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/icons/check-active.png"></a>全选<{/t}></li>
+        <li class="wd330"><{t}>商品<{/t}></li>
+        <li class="wd150"><{t}>单价<{/t}></li>
+        <li class="wd165"><{t}>数量<{/t}></li>
+        <li class="wd150"><{t}>价格<{/t}></li>
+    </ul>
+    
+  </div>
+  <div id="cart_main" class="cart-main-cont">
+    <{include file="site/cart/item/goods.html" app=b2c}>
+  </div>
+  <div class="cart_foot cart-foot">
+
+        <div id="cart_oper" class="cart-foot-cont">
+        		<div style="display: none;">
+            <div class="l total-save-box <{if $aCart.yhd_goods_number<=0}>dis<{/if}>">
+            		<div>
+            			<p class="total-save font16 cart-new-foot-save" style="margin-top: 15px;">
+                   <i class="color-red">省钱</i>
+                    比直接在1号店购买节省了<span class="nnum"><{$aCart.yhd_cheap_subtotal|cur_odr}></span>元</p>
+                    <p class="total-save total_save font16 cart-new-foot-save">
+                   <i class="color-red color-blue">返券</i>
+                   交易完成加送<span class="nnum_save"><{$aCart.yhd_subtotal_voucher}></span>元内购券 </p>
+            		</div>
+            </div>
+            </div>
+            <div class="r one-line">
+                <p class="o-info"><span class="total-number">商品共 <i><{$aCart.real_items_quantity}></i> 件</span>
+                <span class="total-other"><{if $aCart.subtotal_gain_score>0}><i>(订单可得积分<span class="subtotal-integral dis">
+                        <{$aCart.subtotal_gain_score}></span>)</i> <{/if}><{t}> 小计: <{/t}></span>
+                <span class="total-price"><i><{$aCart.promotion_subtotal|cur_odr}></i></span></p>
+            </div>
+
+
+        </div>
+      <div class="order-price cart-right" id="order_price">
+          <a href="javascript:void(0)" type="submit" class="btn wd270 hg45 face-n btn-desc2 fr cart_btn" id="cart-new-buy" rel="_request">立即结算</a>
+      </div>
+   </div>
+</form>
+<{/if}>
+<{if $_aCart && $_aCart.object.goods}>
+<div class="global-cart-title">
+    <span class="g-cart-name">内购海外商品</span>
+    <span class="g-cart-tip">内购海外商品需要单独下单支付</span>
+</div>
+<form action="<{link app=b2c ctl=site_cart act=_check_checkout}>" method="post" id="form_global" class="cart_form_cont">
+   <!-- 购物车内容 -->
+    <input type="hidden" name="global" value="true">
+    <div id="cart_main_title_gloabl" class="cart-main-title">
+        <ul>
+            <li class="wd80"><{t}><a id="check_global_all"  class="<{if $global_cart_all_check==1 }>checked<{/if}>" href="javascript:;"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/icons/check-active.png"></a>全选<{/t}></li>
+            <li class="wd330"><{t}>商品<{/t}></li>
+            <li class="wd150"><{t}>单价<{/t}></li>
+            <li class="wd165"><{t}>数量<{/t}></li>
+            <li class="wd180"><{t}>价格<{/t}></li>
+        </ul>
+
+    </div>
+    <div id="cart_main_global" class="cart-main-cont">
+        <{include file="site/cart/item/goods_global.html" app=b2c}>
+    </div>
+    <div class="cart_foot cart-foot">
+        <div id="cart_oper_global" class="cart-foot-cont">
+            <div class="l">
+                <!--<p class="total-save font16 cart-new-foot-save">为您节省：<span class="nnum"><{$_aCart.save_money|cur_odr}></span></p>-->
+            </div>
+            <div class="r">
+                <p class="o-info">
+                    <span class="total-number">商品共 <i><{$_aCart.real_items_quantity}></i> 件</span>
+                    <span class="total-other"><{if $_aCart.subtotal_gain_score>0}><i>(订单可得积分<span class="subtotal-integral dis">
+                        <{$_aCart.subtotal_gain_score}></span>)</i> <{/if}><{t}> 小计: <{/t}></span>
+                    <span class="total-price"><i><{$_aCart.promotion_subtotal|cur_odr}></i></span>
+                </p>
+                <{if $dt_info}>
+                <p class="o-tx">
+                    <i><{$dt_info.detail}></i>
+                </p>
+                <{/if}>
+            </div>
+
+
+        </div>
+        <div class="order-price cart-right" id="order_price_global">
+            <a href="javascript:void(0)" type="submit" class="btn wd270 hg45 face-n btn-desc2 fr cart_btn" id="cart-new-buy-global" rel="_request">国际支付</a>
+        </div>
+    </div>
+</form>
+<{/if}>

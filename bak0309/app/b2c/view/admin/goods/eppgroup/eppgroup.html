@@ -1,0 +1,157 @@
+<style>
+.autocompleter-choices{ position:absolute;}
+.bnadd{ position:relative }
+</style>
+<div class="gray_form">
+<h3><{t}>新增/更新群组商品<{/t}></h3>
+<div id="x-g-basic" class="goods-detail">
+<form id="_form" method="post" action="index.php?app=b2c&ctl=admin_goods_eppgroup&act=toAdd" class="tableform">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+    <tr>
+        <th><font color='red'>*</font><{t}>群组名称：<{/t}></th>
+        <td><{input type="text" size="60" id="id_gname" name="group[title]" required="true" vtype='required' value=$data.title }>
+        <input type="hidden" name="group[ge_id]" value="<{$data.ge_id}>">
+        </td>
+    </tr>
+
+	<tr>
+        <th><{t}>简短简介：<{/t}></th>
+        <td><{input type="textarea" class="x-input" value=$data.brief name="group[brief]" style="resize:none;" cols="50" rows="5" maxth="255" }>
+          <div class="notice-inline"><{t}>简短的商品群组介绍,请不要超过70个字<{/t}></div></td>
+    </tr>
+
+
+	<tr>
+		<th><{t}>选择商品：<{/t}></th>
+		<td>
+		<p class="clearfix">
+		<span class="fl"><{button label="从商品列表添加商品" id="btn_add_item" type="button" name="Submit"}></span>
+		</p>
+		</td>
+    </tr>
+		<tr>
+		<th><{t}>说明：<{/t}></th>
+		<td>
+		<p class="clearfix">
+		<span class="fl">这里的排序是从小到大排列，是<span class='red'>升序</span>。还有所选择的商品都是<span class='red'>上架</span>的商品；非上架商品不可选择。</span>
+		</p>
+		</td>
+    </tr>
+    <tr>
+    <td colspan=3>
+		<table border="0" cellspacing="0" class="gridlist" cellpadding="0">
+			<thead>
+				<tr>
+					<th>商品编码</th>
+					<th>商品名称</th>
+					<th style="width:80px;">排序</th>
+					<th style="width:80px;">删除</th>
+				</tr>
+			</thead>
+			<tbody id="productList">
+			<{foreach from=$goodslist item=v}>
+				<tr>
+				<td><input type="hidden" class="activeProductsId" name="goods[goods_id][<{$v.goods_id}>]" value="<{$v.goods_id}>"><{$v.bn}></td>
+				<td><{$v.name}></td>
+				<td><input type="text" name="goods[order][<{$v.goods_id}>]" value="<{$v.order}>"  class="productNumsGroup" style="width:50px;" maxlength=6 required="true" vtype="positive" ></td>
+				<td><{img src="bundle/delecate.gif" class="pointer del" onclick="delGoodsList(this);" app="desktop"}></td>
+				</tr>
+			<{/foreach}>
+			</tbody>
+		</table>
+    </td>
+    </tr>
+</tbody>
+</table>
+</form>
+</div>
+</div>
+<{capture name='footbar'}>
+<table cellspacing="0" cellpadding="0" class="table-action">
+      <tbody>
+		<tr valign="middle">
+        <td>
+            <{button class="btn-primary" type='submit' onclick="submitForm(event)" label="保存并返回"}>
+        </td>
+        </tr>
+        </tbody>
+</table>
+<{/capture}>
+<script language='javascript'>
+function submitForm(event){
+    $('_form').store('target', {
+        onComplete: function(jsontext) {
+        	var result = eval("(" + jsontext + ")");
+			if(result.status == 'success'){
+				window.opener.W.page("index.php?app=b2c&ctl=admin_goods_eppgroup&act=index");
+				window.close();
+			}
+        }
+    });
+    $('_form').fireEvent('submit',new Event(event));
+}
+
+
+//弹出货品选择页面
+$('btn_add_item').addEvent('click', function(e) {
+    var url = 'index.php?app=desktop&act=alertpages&goto=' + encodeURIComponent('index.php?app=b2c&ctl=admin_goods_eppgroup&act=public_find_goods_list');
+    var callurl = 'index.php?app=b2c&ctl=admin_goods_eppgroup&act=public_find_goods_detail_json',
+    store = [];
+    Ex_Loader('modedialog',function(){
+      new finderDialog(url, {
+          params: {
+              url: callurl,
+              name: 'goods_id[]',
+              app:'b2c',
+          },
+          width: 1000,
+          height: 700,
+          onCallback: function(data) {
+              jsondata = eval("("+data+")");
+              writeProductList(jsondata);
+          }
+      });
+    });
+});
+
+//写入页面货品数据
+function writeProductList(data){
+    var length = data.length;
+    var is;
+    for(var i=0;i<length;i++){
+        _writeProductList(data[i]);
+    }
+}
+function _writeProductList(data){
+	var activeProductsId = $$('.activeProductsId');
+	for(var i=0 ; i<activeProductsId.length ; i++){
+		if(data.goods_id == activeProductsId[i].get('value')){
+			alert('该商品已选择过');
+			return false;
+		}
+	}
+	var order = activeProductsId.length+1;
+	var info = '<td><input type="hidden" class="activeProductsId" name="goods[goods_id]['+data.goods_id+']"  value="'+data.goods_id+'">'+data.bn+'</td>';
+	info += '<td>'+data.name+'</td>';
+	info += '<td><input type="text" name="goods[order]['+data.goods_id+']" value="'+order+'"  class="productNumsGroup" style="width:50px;" maxlength=6 required="true" vtype="positive" ></td>';
+	info +='<td><{img src="bundle/delecate.gif" class="pointer del" app="desktop"}></td>';
+	
+
+	new Element("tr",{html:info}).inject('productList').getElement('.del').addEvent('click',function(){
+		delGoodsList(this);
+    });
+}
+
+//删除单行货品数据
+function delGoodsList(obj){
+    if (confirm('确定删除吗?')){
+        obj.getParent("tr").destroy();
+    }
+}
+
+</script>
+
+
+
+

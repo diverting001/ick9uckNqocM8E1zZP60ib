@@ -1,0 +1,40 @@
+<form id="topicForm" action="index.php?app=b2c&ctl=admin_topic_cat&act=save"  method="POST">
+<input type="hidden" name="cat[topic_cat_id]" value="<{$topic_cat_info.topic_cat_id}>">
+<div class="tableform">
+	<div class="division">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+			  <th><{t}>专题分类名称：<{/t}></th>
+			  <td><{input type="text" name="cat[topic_cat_name]" style="width:120px" vtype="required" value=$topic_cat_info.topic_cat_name}><em><font color='red'>*</font></em></td>
+			</tr>
+			<tr>
+			  <th><{t}>专题url：<{/t}></th>
+			  <td><{input type="text" name="cat[topic_cat_url]" vtype="required" value=$topic_cat_info.topic_cat_url}></td>
+			</tr>
+
+		</table>
+	</div>
+</div>
+
+  <div class="table-action">
+	<{button type="submit" id="btn-topic-cat-add" label=$___b2c="保存"|t:'b2c'}>
+</div>
+
+</form>
+<script>
+var btn =$('btn-topic-cat-add');
+var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+$('topicForm').store('target',{
+	onComplete:function(){
+		try{
+			var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+		}catch(e){}
+
+		if(_dialogIns)
+		{
+			_dialogIns.close();
+			finder.refresh.delay(400,finder);
+		}
+	}
+});
+</script>

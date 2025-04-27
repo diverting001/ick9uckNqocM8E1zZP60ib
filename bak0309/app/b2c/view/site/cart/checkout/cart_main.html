@@ -1,0 +1,22 @@
+  <div id="cart_main_title" class="dis">
+    <ul>
+        <li class="w330"><{t}>商品<{/t}></li>
+        <li class="w67"><{t}>单价<{/t}></li>
+        <li class="w81"><{t}>数量<{/t}></li>
+        <li class="w165"><{t}>优惠<{/t}></li>
+        <li class="w151 last"><{t}>实付金额<{/t}></li>
+    </ul>
+    <div class="clearfix"></div>
+  </div>
+<{if $cart_type neq 2}>
+<!-- 商品清单 -->
+<div id="cart_main" class="cart-main checkout-cart-main m-t20 m-b20">
+<p class="md-tit m-b20">确认商品</p>
+  <!-- 购物车条目 -->
+  <{if $item_section}>
+      <{foreach from=$item_section item=section}>
+        <{include file=$section.file app=$section.app}>
+      <{/foreach}>
+  <{/if}>
+</div>
+<{/if}>

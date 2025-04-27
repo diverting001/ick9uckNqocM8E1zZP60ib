@@ -1,0 +1,99 @@
+<form method="POST" id='newmember-edit-form' action="index.php?app=b2c&ctl=admin_goods_single&act=toAdd" class="tableform">
+    <div class="division">
+        <table width="100%" >
+            <tr><th><em class="red">*</em><{t}>选择商品：<{/t}></th><td> <{input type="object" object=goods breakpoint=1 name=goods_id app=b2c cols="name"   cols="name" value=$single.goods_id textcol="name" view="b2c:admin/goods/rows.html"}> </td></tr>
+            <tr><th><em class="red">*</em><{t}>PC端图片：<{/t}></th><td><{input type="image" name="single[pc_pic]"  value=$single.pc_pic vtype="required"}></td></tr>
+            <tr><th><em class="red">*</em><{t}>手机端图片：<{/t}></th><td><{input type="image" name="single[h5_pic]"  value=$single.h5_pic vtype="required"}></td></tr>
+            <tr><th><em class="red">*</em><{t}>显示平台：<{/t}></th><td> <{input type="select" name="single[platform]" style="font-size:12px;" required='1' value=$single.platform  options=$platform_list }></td></tr>
+            <tr><th><em class="red">*</em><{t}>是否显示：<{/t}></th><td> <{input type="select" name="single[sshow]" style="font-size:12px;" required='1' value=$single.sshow  options=$goods_show_list }></td></tr>
+            <tr><th><em class="red">*</em><{t}>排序：<{/t}></th><td><{input type="unsigned" value=$single.sorder name="single[sorder]" maxlength="10" style="width:60px"}></td></tr>
+        </table>
+        <hr style="margin:5px 0;">
+    </div>
+    <{if  $single.gs_id}>
+ <input type="hidden" name="single[gs_id]" value="<{$single.gs_id}>">
+<{/if}>
+</form>
+<{area inject='.mainFoot'}>
+<div class="table-action"><{button type="submit"  label=$___b2c="保存"|t:'b2c' id='newmember-edit-form-submit'}></div>
+<{/area}>
+
+
+<script>
+
+
+    (function(){
+        var _form = $('newmember-edit-form');
+        var btn =$('newmember-edit-form-submit');
+        var finder = finderGroup['<{$env.get.finder_id}>'];
+
+        _form.store('target',{
+            onComplete:function(){            
+
+            },
+            onSuccess:function(response){
+                var hash_res_obj = JSON.decode(response);
+                if (hash_res_obj.success != undefined && hash_res_obj.success != "")
+                {
+                    try{
+                        var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+                    }catch(e){}
+
+                    if(_dialogIns)
+                    {
+                        _dialogIns.close();
+                        finder.refresh.delay(400,finder);
+                    }
+                }
+                else
+                {
+                    //alert(hash_res_obj.error);
+                }            
+            }
+        });
+
+        btn.addEvent('click',function(){
+            _form.fireEvent('submit',{stop:$empty});
+
+
+
+        });
+
+    })();
+
+    function nameCheck(input){
+        new Request({
+            url:'<{link app=b2c ctl=site_passport act=namecheck}>',
+            method:'post',
+            data:input.name+'='+encodeURIComponent(input.value=input.value.trim()),
+            onSuccess: function(rs) {
+                rs = JSON.decode(rs);
+                if(rs.error) {
+                    input.getNext().innerHTML = '<span class="error caution notice-inline">' +rs.error + '</span>';
+                }
+                else if(rs.success) {
+                    input.getNext().innerHTML = '<span class="success notice-inline">' +rs.success + '</span>';
+                }
+            }
+        }).send();
+    }
+
+    function emailCheck(input){
+        new Request({
+            url:'<{link app=b2c ctl=site_passport act=emailcheck}>',
+            method:'post',
+            data:input.name+'='+encodeURIComponent(input.value=input.value.trim()),
+            onSuccess: function(rs) {
+                rs = JSON.decode(rs);
+                if(rs.error) {
+                    input.getNext().innerHTML = '<span class="error caution notice-inline">' +rs.error + '</span>';
+                }
+                // else if(rs.success) {
+                //     input.getNext().innerHTML = '<span class="success notice-inline">' +rs.success + '</span>';
+                // }
+            }
+        }).send();
+    }
+</script>
+
+

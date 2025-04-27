@@ -1,0 +1,76 @@
+<div class="tabs-wrap">
+  <ul>
+    <li class="tab current"><span><{t}>搜索词设置<{/t}></span></li>
+  </ul>
+</div>
+<div>
+  <form method="post" action="index.php?app=b2c&ctl=admin_searchkeyword&act=set" id="setForm">
+    <div class="tableform">
+      <div class="division">
+          <table>
+            <tr>
+              <th><{t}>导出排除词：<{/t}></th>
+              <td>
+                <textarea name="words" style="width:300px;height:400px;"><{ $result.words}></textarea>
+              </td>
+            </tr>
+            <tr>
+              <th>
+              <td>
+                <p style="width:400px">
+                  <{t}>Top300导出排除词，每行一个格式如下：<{/t}><br />
+				  <{t}>
+						<br />
+						苹果<br />
+						华为<br />
+						小米<br />
+				 <{/t}>
+
+                  </p>
+			  </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="table-action">
+        <{button type="submit"  label=$___b2c="保存"|t:'site'}>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+(function() {
+    function sw(bool) {
+        if( bool ) {
+           $('switch-on-box').show();
+           $('switch-off-box').hide();
+        } else {
+           $('switch-on-box').hide();
+           $('switch-off-box').show();
+        }
+    }
+
+    $('switch-off').addEvent('click', function(){
+      sw(false);
+    });
+
+    $('switch-on').addEvent('click', function() {
+     sw(true);
+    });
+    
+    $('setForm').addEvent('submit', function(e){
+       e.stop();  
+       this.send({
+           onComplete: function() {
+               
+           }
+       });
+    });
+
+
+})();
+
+
+</script>

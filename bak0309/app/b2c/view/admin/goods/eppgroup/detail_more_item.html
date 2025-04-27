@@ -1,0 +1,51 @@
+<div class="tableform" style="width:950px;margin: 0 auto;">
+<h4 style="border:none;">群组信息:</h4>
+<div class="division">
+<table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+<thead>
+      <tr>
+        <th style="width:50px;">群组名称</th>
+        <th style="text-align: left;padding-left:10px;" ><{$data.title}></th>
+		<th style="width:50px;" >简介</th>
+		<th style="text-align: left;padding-left:10px;"><{$data.brief}></th>
+      </tr>
+</thead>
+</table>
+</div>
+<h4 style="border:none;">商品详情信息:(<{$current}>/<{$total}>) &nbsp;&nbsp;共<{$count}>个商品，每页有<{$pagelimit}>个商品.</h4>
+<div class="division">
+<table border="0" cellspacing="0" class="gridlist" cellpadding="0" style="width:925px;">
+<thead>
+      <tr>
+        <th>商品编码</th>
+        <th>商品名称</th>
+		<th style="width:50px;">排序</th>
+      </tr>
+      <{foreach from=$items item=item key=keys}>
+      <tbody>
+      <tr>
+        <td><{$item.bn}></td>
+        <td><{$item.name}></td>
+		<td><{$item.order}></td>
+        </tr>
+        </tbody>
+      <{/foreach}>
+</thead>
+
+</table>
+<div class="table-action" id="pager">
+      <{$pager}>
+</div>
+<script language="javascript">
+	var pager = document.getElementById('pager').getElementsByTagName('a');
+	for(var i=0;i<pager.length;i++){
+		pager[i].target = '_self';
+	}
+</script>
+<{capture name="footbar"}>
+<div class="table-action">
+    <{button label="关 闭" type="button" onclick="window.close();"}>
+</div>
+<{/capture}>
+</div>
+</div>

@@ -1,0 +1,39 @@
+<div class="tableform">
+<h4>群组信息:</h4>
+<div class="division">
+<table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+<thead>
+      <tr>
+        <th style="width:50px;">群组名称</th>
+        <th style="text-align: left;padding-left:10px;" ><{$data.group.title}></th>
+		<th style="width:50px;" >简介</th>
+		<th style="text-align: left;padding-left:10px;"><{$data.group.brief}></th>
+      </tr>
+</thead>
+</table>
+</div>
+<h4>商品信息:</h4>
+<div class="division">
+<table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+<thead>
+      <tr>
+        <th>商品编码</th>
+        <th>商品名称</th>
+		<th style="width:50px;">排序</th>
+      </tr>
+      <{foreach from=$data.goods item=items key=keys}>
+      <tbody>
+      <tr>
+        <td><{$items.bn}></td>
+        <td><{$items.name}></td>
+		<td><{$items.order}></td>
+        </tr>
+        </tbody>
+      <{/foreach}>
+</thead>
+</table>
+<div style="width:100%;text-align:right;line-height:25px;">
+<a href='index.php?app=b2c&ctl=admin_goods_eppgroup&act=more_items&ge_id=<{$data.group.ge_id}>' target="_blank">查看更多</a>
+</div>
+</div>
+</div>

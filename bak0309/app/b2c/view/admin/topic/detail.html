@@ -1,0 +1,250 @@
+<form id="topicForm" action="index.php?app=b2c&ctl=admin_topic&act=savenew"  method="POST">
+<input type="hidden" name="topic_id" value="<{$topic_info.topic_id}>">
+<div class="tableform">
+	<div class="division">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+			  <th><{t}>专题名称：<{/t}></th>
+			  <td><{input type="text" name="topic_name" style="width:120px" vtype="required" value=$topic_info.topic_name}><em><font color='red'>*</font></em></td>
+			</tr>
+            <tr>
+                <th><{t}>专题链接：<{/t}></th>
+                <td><{input type="text" name="link" style="width:120px" value=$topic_info.link}></td>
+            </tr>
+			<tr>
+			  <th><{t}>专题分类：<{/t}></th>
+			  <td><{input type="select" name="topic_cat_id" vtype="required" options=$topic_cats value=$topic_info.topic_cat_id}><em><font color='red'>*</font></em></td>
+			</tr>
+            <tr>
+                <th><{t}>专题所属群组：<{/t}></th>
+                <td><{input type="select" name="topic_group_id" options=$topic_group value=$topic_info.topic_group_id}></td>
+            </tr>
+
+
+			<tr>
+			  <th><{t}>专题介绍：<{/t}></th>
+			  <td><{input type="html" name="topic_desc" value=$topic_info.topic_desc}></td>
+			</tr>
+
+			<tr>
+			  <th><{t}>专题头图：<{/t}></th>
+			  <td>
+                <!--{input type="image" class="x-input" name="image_id" value=$topic_info.image_id width=60 height=40}-->
+				<div class="division pic-main" style="margin:0;">
+					<div class="clearfix">
+						<span class="pic-uploader">
+							<{button app="desktop" class="btn-upload" label=$___b2c="添加商品图片"|t:'b2c' icon="image_new.gif"}>
+						</span>
+					</div>
+					<div class="pic-area">
+						<{include file="admin/topic/img/timage_goods.html"}>
+					</div>
+				</div>
+			  </td>
+			</tr>
+			<tr>
+			  <th><span class="red">对于专题头图(轮播图)说明：</span></th>
+			  <td>不需要将图片image_id，再复制到选择的商品的图片ID中去了，只需要添加图片即可</td>
+			</tr>
+			<tr>
+			  <th><{t}>专题聚合图片：<{/t}></th>
+			  <td><{input type="image" name="list_image_id"  value=$topic_info.list_image_id}> 尺寸：宽470，高不限</td>
+			</tr>
+			<tr>
+			  <th><{t}>排序：<{/t}></th>
+			  <td><{input type="text" name="ordernum" value=$topic_info.ordernum style="width:30px;"}></td>
+			</tr>
+
+		</table>
+	</div>
+	
+	<!-- 专题和商品关联区域 -->
+	<div class="division">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+			  <th><{t}>选择商品的方式：<{/t}></th>
+			  <td><{input type="select" name="select_goods_type" style="font-size:12px;" required='1' id="select_goods_eppgroup_type" value=$topic_info.select_goods_type  options=$select_goods_type_list  onchange="selectgoodstypelist()"  }> <{help}>自定义选择商品：即直接选择商品；使用EPP商品群组：即使用预先设置商品群组，是在商品模块设置的<{/help}></td>
+			</tr>
+			<tr >
+			  <th><{t}>说明：<{/t}></th>
+			  <td><{t}>选择商品的方式是"自定义选择商品"：商品是按照商品排序字段<span class="red">降序</span>排列；方式是"使用EPP商品群组"：商品是按照商品排序字段<span class="red">升序</span>排列。<{/t}></td>
+			</tr>
+			<tr id="select_goods_list" style="display:none;">
+			  <th><{t}>自定义选择商品：<{/t}></th>
+			  <td><{input type="object" object="goods" multiple="true" rowselect="true"  textcol="name" name="goods[goods_ids]" value=$goods_ids view="b2c:admin/goods/detail/zuobiaoadmin.html"}></td>
+			</tr>
+			<tr id="select_goods_group" style="display:none;">
+			  <th><{t}>EPP商品群组：<{/t}></th>
+			  <td><{input type="object" object="goods_eppgroup" app=b2c  breakpoint=1   textcol="title" name="goods_eppgroup_id" value=$topic_info.goods_eppgroup_id }></td>
+			</tr>
+			
+		</table>
+	</div>
+	<!-- en -->
+	
+	<!-- 背书人相关 -->
+	<div class="division">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+			  <th><{t}>相关背书人：<{/t}></th>
+			  <td><{input type="object" object="indorser" rowselect="true" textcol="indorser_name" name="indorser_id" value=$topic_info.indorser_id view="b2c:admin/topic/rows.html"}></td>
+			</tr>
+			<tr>
+			  <th><{t}>专题背书：<{/t}></th>
+			  <td><{input type="html" name="indorser_content" value=$topic_info.indorser_content}></td>
+			</tr>			
+		</table>
+	</div>
+	<!-- end -->
+</div>
+
+  <div class="table-action">
+	<{button type="submit"  label=$___b2c="保存"|t:'b2c'}>
+</div>
+
+</form>
+<script>
+$('topicForm').store('target',{
+	onComplete:function(){
+		if(opener.finderGroup['<{$env.get._finder.finder_id}>'])
+		opener.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+		window.close();
+	}
+});
+
+Ex_Loader('uploader',function(){
+
+  $$('.pic-uploader').each(function(el,j){
+	if (document.getElements('.swiff-uploader-box')) {
+		document.getElements('.swiff-uploader-box').destroy();
+	}
+	var pic_main = el.getParent('.pic-main');
+	var area = pic_main.getElement('.pic-area');
+	var pics = pic_main.getElement('.all-pics');
+	new Swiff.Uploader( {
+		allowDuplicates: true,
+		verbose: true,
+		url:'index.php?app=b2c&ctl=admin_topic&act=timage_swf_remote&sess_id='+sess_id,
+		path: '<{$image_dir}>/uploader.swf',
+		typeFilter: {
+			'Images (*.jpg, *.jpeg, *.gif, *.png)': '*.jpg; *.jpeg; *.gif; *.png'
+		},
+		fileSizeMax:'<{$IMAGE_MAX_SIZE}>',
+		target:el,
+		onSelect:function(rs){
+			if(rs)
+			rs.each(function(v){
+				if(v.size>this.fileSizeMax){
+					alert(v.name+'<{t}>\n\n文件超出大小<{/t}>');
+				};
+			},this);
+		},
+		onSelectFail:function(rs){
+			rs.each(function(v){
+				if(v.validationError=='sizeLimitMax'){
+					alert(v.name+'<{t}>\n\n文件超出大小<{/t}>');
+				};
+			});
+		},
+		onSelectSuccess:function(rs){
+			var PID='up_';
+			var _this=this;
+			rs.each(function(v,i){
+				 new Element('div',{'class':'gpic-box','id':PID+j+v.id}).inject(pics);
+			});
+			this.start();
+		},
+		onFileOpen:function(e){
+			$('up_'+j+e.id).setHTML('<em style="font-size:13px;font-family:Georgia;">0%</em>');
+		},
+		onFileProgress:function(e){
+			$('up_'+j+e.id).getElement('em').set('text',e.progress.percentLoaded+'%');
+		},
+		onFileComplete: function(res){
+			if(res.response.error){
+				return  new MessageBox.error('<{t}>文件<{/t}>'+res.name+'<{t}>上传失败<{/t}>');
+			}
+			$('up_'+j+res.id).setHTML(res.response.text);
+			/*if(!$E('.current',area)&&$E('.gpic',area)){
+			  $E('.gpic',area).onclick();
+			}*/
+		}
+	});
+
+  });
+
+});
+
+goodsEditor = {
+	pic:{
+		del:function(obj){
+            if(confirm('确认删除本图片吗?')){
+                obj = $(obj);
+                var pic_box=obj.getParent('.gpic-box'),picNext=pic_box.getNext('.gpic-box');
+                try{
+                if(obj.get('ident')){
+                       if($$('#all-pics input[name=image_default]')[0])
+                       $$('#all-pics input[name=image_default]')[0].value=obj.get('ident');
+                       $('all-pics').eliminate('cururl');
+                       pic_box.destroy();
+                   /*    if($$('#all-pics .gpic-box .current')[0])return;
+                       if($$('#all-pics .gpic-box').length&&$$('#all-pics .gpic-box').length>0){
+                         $('all-pics').empty().set('html','<div class="notice" style="margin:0 auto">请重新选择默认商品图片.</div>');
+                       }else{
+                         $('all-pics').empty().set('html','<div class="notice" style="margin:0 auto">您还未上传商品图片.</div>');
+                       }   */
+                }}catch(e){
+                   pic_box.destroy();
+                }
+                if(picNext)picNext.getElement('.gpic').onclick();
+            }
+        },
+        setDefault:function(id,obj){
+            var pic_main = $(obj).getParent('.pic-main');
+            var area = pic_main.getElement('.pic-area');
+            var target=$E('.gpic[image_id='+id+']',area);
+            //var target=$$('#pic-area .gpic[image_id='+id+']')[0];
+                if(target.hasClass('current')){return;}
+                var cur,imgdefinput;
+                if(cur = $E('.current',area)){
+                     cur.removeClass('current');
+                 }
+                if(imgdefinput = $E('input[name=image_default]',area)){
+                   imgdefinput.set('value',id);
+                }
+            target.addClass('current');
+        },
+        getDefault:function(){
+            var pic_main = obj.getParent('.pic-main');
+            var area = pic_main.getElement('.pic-area');
+            var o = $E('input[name=image_default]',area);
+            //var o = $$('#pic-area input[name=image_default]')[0];
+
+            if(o){
+              return o.value;
+            }else{
+              return false;
+            }
+        },
+        viewSource:function(act){
+           return new Dialog(act,{title:'查看路径',singlon:false,'width':650,'height':300});
+        }
+	}
+};
+
+function selectgoodstypelist(){
+    var value = $('select_goods_eppgroup_type').value;
+    if(value == 'group'){
+        $('select_goods_list').style.display = "none";
+        $('select_goods_group').style.display = "";
+    }else{
+    	 $('select_goods_list').style.display = "";
+    	 $('select_goods_group').style.display = "none";
+    }
+}
+window.addEvent('domready',function(){
+	selectgoodstypelist();
+});
+
+
+</script>

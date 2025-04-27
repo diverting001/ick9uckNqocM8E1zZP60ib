@@ -1,0 +1,86 @@
+
+<div id="order_coupon" class="order-right  order-coupon section">
+	<!-- 使用内购码 -->
+<div id="order_code" style="float: left;line-height: 20px; width: 237px;" class="dis">
+    <span id="sale-code-price" style="cursor:pointer;color: #496895; font-size: 14px;">+&nbsp;更多专属福利，请输入暗号</span>
+    <div id="sale-code-inputbox" style="float: left; width: 227px; background-color: #f5f5f5; clear: both;color: #060606; display:none;">
+        <ul>
+            <li> 
+                <input id="member_sale_code" type="text" autofocus="autofocus" style="width:150px; margin-left: 50px;margin-top: 10px;" />
+            </li>
+        </ul>               
+        <div class="foot-btn clearfix">
+            <a id="sale-code-price-cancle" style="cursor:pointer; float:right; margin-right: 60px;">取消</a>
+            <a id="sale-code-price-use" style="cursor: pointer; float:right;">使用</a>
+        </div>      
+    </div>
+                    	<script>
+                    	// $("#sale-code-price")[0].addEvent('click',function(e){
+                    	// 	$("sale-code-inputbox").setStyle("display","block");
+                    	// });
+                    	// $("#sale-code-price-cancle")[0].addEvent('click',function(e){
+                    	// 	$("#sale-code-inputbox")[0].setStyle("display","none");
+                    	// });
+                    	
+             //        	$("#sale-code-price-use")[0].addEvent("click",function(e){
+             //        		var obj = $("#member_sale_code")[0];
+        					// new Request({url:'<{link app=b2c ctl=site_member act=getScaleCode }>',
+        					// 	method:'POST',
+        					// 	data:"code="+obj.get('value'),
+        					// 	onSuccess:function(rs) {
+        					// 		try{
+        		   //                  	rs = JSON.decode(rs);
+        		   //              	}catch(e){
+        		   //              		rs.error = '系统参数失败，请稍候再试';
+        		   //              	}
+        					// 		if(rs.msg){
+             //                            if($('#order_memo_textarea')[0]){
+             //                                Memory.set('order_memo_value',$('#order_memo_textarea')[0].getValue());
+             //                            }
+        					// 			window.location.reload();
+        					// 		}else{
+        					// 			 Message.error(rs.error,3);
+        					// 		}
+        					// 	}
+        					// }).send();
+             //        	});
+                    	</script>
+                    	<!-- 使用优惠券 -->
+    <a _rel="promotion-info" class="btn btn-black mr20 action-edit-coupon" href="javascript:void(0);">+&nbsp;使用优惠券</a>
+    <div class="used<{if !$aCart.object.coupon}> fold<{/if}> clearfix hid_item coupon-f">
+      <!--<q>已使用：<a href="javascript:void(0);" _rel="coupon-edit" class="lnklike action-edit-coupon">[添加]</a></q>-->
+      <ul class="usedlist">
+        <{foreach from=$aCart.object.coupon item=coupon}>
+        <{if $coupon.used}>
+        <{assign var=_used_coupon value=$coupon}>
+        <li>
+          <i title="<{$coupon.name}>"><{$coupon.coupon}>-<{$coupon.name}></i>
+          <a href="javascript:void(0);" rel="<{$coupon.obj_ident}>" _rel="coupon-edit" data-code="<{$coupon.coupon}>" class="lnklike action-cancel-coupon">[删除]</a>
+        </li>
+        <{/if}>
+        <{/foreach}>
+      </ul>
+    </div>  
+    <div class="hid_item leho-box-radius promotion-info item fold coupon-edit">
+        <h3>请输入优惠券号码 </h3>
+        <ul>
+            <{if $coupon_lists}>
+            <{foreach from=$coupon_lists item=coupon}>
+            <li> 
+                <input type="radio" value="<{$coupon.memc_code}>" id="_coupon_list_<{$coupon.cpns_id}>"cpns_id class="_rdio_cart_chk_coupon" name="coupon[coupon]"<{if $_used_coupon.cpns_id==$coupon.cpns_id}> checked="checked"<{/if}> /> 
+                <label for="_coupon_list_<{$coupon.cpns_id}>"> <{$coupon.coupons_info.cpns_name}> </label> 
+            </li>
+            <{/foreach}>
+            <{/if}>
+            <li> 
+                <input type="radio" id="_coupon_list_other" value="__COUPON_OTHER__" class="_rdio_cart_chk_coupon_other"  name="coupon[coupon]" value="__COUPON_OTHER__"   /> 
+                <!-- <label for="_coupon_list_other">直接输入优惠码: </label> --><input type="text" class="x-input leho-input _cart_chk_coupon_other" style="width:170px;" name="coupon[other]" value="" />
+            </li>
+        </ul>               
+        <div class="foot-btn clearfix">
+            <a _rel="coupon-f" class="btn btn-cancel fr action-edit-coupon" style="cursor:pointer; margin-right: 60px;">取消</a>
+            <a class="btn btn-save fr action-confirm-coupon" style="cursor: pointer">使用</a>
+        </div>      
+    </div>
+</div>
+</div>

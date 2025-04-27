@@ -1,0 +1,22 @@
+<div id="gEditor-GCat-mallcategory" class="object-select clearfix">
+	<div class="label" id="<{$id}>">
+	<{if $mallcategory}>
+	<{$mallcategory.cat_name}>
+	<{else}>
+	<{t}>前台展示类目不限<{/t}>
+	<{/if}>
+	</div>
+	<div class="handle">&nbsp;</div><input type="hidden" id="gEditor-GCat-mallcategory-input" name=<{$mallparams.name}> value="<{$mallcategory.cat_id}>" />
+</div>					
+<script>
+	$('gEditor-GCat-mallcategory').addEvent('click',function(){
+		var handle = $('gEditor-GCat-mallcategory'),cat_id= handle.getElement('input').value;
+		new Dialog('index.php?app=b2c&ctl=admin_goods_cat&act=get_submallcat&p[0]='+cat_id,{
+			title:'选择前台展示类目',
+			width:600,height:420,resizeable:false,
+			onShow:function(){
+				this.handle=handle;
+			}
+		});
+	});
+</script>

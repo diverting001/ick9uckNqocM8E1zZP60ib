@@ -1,0 +1,258 @@
+@charset "utf-8";
+/**header begin**/
+.life-header .container{
+	width:1215px;
+}
+.life-header {
+  position: relative;
+  z-index: 111; }
+  .life-header a.before-line:before {
+    content: "";
+    width: 1px;
+    height: 12px;
+    background: #35333e;
+    position: absolute;
+    top: 2px;
+    left: -10px; }
+  .life-header .top {
+    width: 100%;
+    min-width: 1100px;
+    background-color: #282a38;
+    border-top: 2px solid #6F53FF;
+    /* border-bottom: 1px solid #35333e;  */
+  }
+    .life-header .top span {
+      color: #7a7784;
+      line-height: 32px;
+      font-size: 12px;
+      letter-spacing: 1px; }
+    .life-header .top p {
+      float: right;
+      line-height: 32px;
+      color: #7a7784;
+      font-size: 12px;
+      letter-spacing: 1px; }
+      .life-header .top p a {
+        position: relative;
+        letter-spacing: 1px;
+        color: #7a7784; }
+        .life-header .top p a:hover {
+          color: #fff; }
+  .life-header .bottom {
+    position: relative;
+    min-width: 1100px;
+    background-color: #2e303f; }
+    .life-header .bottom li.account {
+      position: relative;
+      width: 213px;
+      height: 114px; }
+      .life-header .bottom li.account:hover .account-information .wrapper {
+        display: block;
+        background: #22212e; }
+        .life-header .bottom li.account:hover .account-information .wrapper .icon-arrow-right-angle {
+          font-size: 16px;
+          position: relative;
+          top: 2px;
+          left: 20px; }
+      .life-header .bottom li.account .account-logo {
+        position: absolute;
+        height: 100%;
+        z-index: 10;
+        left: 105px; }
+      .life-header .bottom li.account .account-information {
+        position: relative;
+        height: 100%;
+        top: 0; }
+        .life-header .bottom li.account .account-information .wrapper {
+          position: absolute;
+          overflow: hidden;
+          width: 213px;
+          max-height: 435px;
+          left: 0;
+          padding-top: 114px;
+          display: none;
+          transition: transform 800ms ease 0ms, opacity;
+          top: -1px; }
+          .life-header .bottom li.account .account-information .wrapper .msg-tip {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #8b8a93;
+            border-top: 1px solid #272626; }
+            .life-header .bottom li.account .account-information .wrapper .msg-tip .show-msg-link {
+              display: block;
+              width: 100%;
+              height: 100%;
+              color: #8b8a93;
+              font-size: 14px;
+              line-height: 41px; }
+          .life-header .bottom li.account .account-information .wrapper .msg-list {
+            width: 275px;
+            min-width: 275px;
+            position: relative; }
+            .life-header .bottom li.account .account-information .wrapper .msg-list .msg-line {
+              position: relative;
+              width: 100%;
+              height: 70px;
+              border-bottom: 1px solid #2D2E2F;
+              padding: 15px;
+              box-sizing: border-box; }
+              .life-header .bottom li.account .account-information .wrapper .msg-list .msg-line .icon-close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                color: #8b8a93;
+                font-size: 16px;
+                cursor: pointer; }
+              .life-header .bottom li.account .account-information .wrapper .msg-list .msg-line:hover {
+                background: #2e303f; }
+              .life-header .bottom li.account .account-information .wrapper .msg-list .msg-line .msg-title {
+                font-size: 14px;
+                color: #6e54ff; }
+              .life-header .bottom li.account .account-information .wrapper .msg-list .msg-line .msg-content {
+                font-size: 12px;
+                color: #8b8a93; }
+                .life-header .bottom li.account .account-information .wrapper .msg-list .msg-line .msg-content .show-detail-link {
+                  display: inline;
+                  font-size: 13px;
+                  line-height: 1;
+                  text-decoration: underline;
+                  margin-left: 5px; }
+          .life-header .bottom li.account .account-information .wrapper .show-all {
+            width: 100%;
+            height: 40px; }
+            .life-header .bottom li.account .account-information .wrapper .show-all > a {
+              display: block;
+              width: 100%;
+              height: 40px;
+              line-height: 40px;
+              color: #8b8a93;
+              font-size: 14px; }
+        .life-header .bottom li.account .account-information .mask {
+          width: 275px;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: -31px;
+          z-index: 3;
+          background: #22212e;
+          display: none; }
+    .life-header .bottom .container {
+      position: relative; }
+    .life-header .bottom .feedback {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding-top: 20px;
+      cursor: pointer; }
+      .life-header .bottom .feedback .img {
+        margin-bottom: 3px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #5c3ad2;
+        text-align: center; }
+        .life-header .bottom .feedback .img img {
+          position: relative;
+          top: 11px; }
+      .life-header .bottom .feedback p {
+        letter-spacing: 1px;
+        color: #8b8a93; }
+      .life-header .bottom .feedback:hover .img {
+        background-color: #724df2; }
+      .life-header .bottom .feedback:hover p {
+        color: #fff; }
+    .life-header .bottom ul {
+      position: relative;
+      margin: 0 auto;
+      min-width: 1066px;
+      display: table;
+      content: "";
+      clear: both; }
+      .life-header .bottom ul li {
+        position: relative;
+        float: left;
+        width: 213px;
+        height: 100%; }
+        .life-header .bottom ul li ul.hot_nav {
+          display: none;
+          position: absolute;
+          left: 0px;
+          top: 114px;
+          width: 213px;
+          max-width: 213px;
+          min-width: 213px;
+          line-height: 52px;
+          border-top: 1px solid #3b3944;
+          background: #333544; }
+          .life-header .bottom ul li ul.hot_nav li {
+            float: none;
+            line-height: 52px;
+            height: 52px; }
+            .life-header .bottom ul li ul.hot_nav li a {
+              display: block;
+              height: 52px;
+              line-height: 52px;
+              font-size: 14px;
+              color: #8b8a93; }
+              .life-header .bottom ul li ul.hot_nav li a:hover {
+                background: #3b3944;
+                color: #fff; }
+        
+        .life-header .bottom ul li a {
+          display: block;
+          width: 100%;
+          height: 100%;
+          font-size: 18px;
+          color: #8b8a93;
+          letter-spacing: 2px;
+          text-align: center;
+          line-height: 110px; }
+          .life-header .bottom ul li a.active, .life-header .bottom ul li a:hover {
+            background-color: #333544;
+            color: #fff; }
+        .life-header .bottom ul li.mr214 {
+          margin-right: 214px; }
+    .life-header .bottom .logo {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      margin-left: -42px;
+      width: 84px;
+      height: 84px;
+      background: url(../images/newheader/logo_double.png) no-repeat;
+      background: url(../images/newheader/ie8_logo.png) no-repeat\9;
+      background-size: 100% 100%;
+      z-index: 2; }
+      .life-header .bottom .logo a {
+        display: block;
+        width: 100%;
+        height: 100%; }
+      .life-header .bottom .logo .tip {
+        position: absolute;
+        top: 7px;
+        right: -5px;
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        background-color: #ff0000;
+        border-radius: 50%;
+        color: #fff;
+        text-align: center;
+        font-size: 12px;
+        line-height: 20px; }
+        .life-header .bottom .logo .tip.hide {
+          display: none; }
+    .life-header .bottom .true-logo {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      margin-left: -42px;
+      width: 84px;
+      height: 84px;
+      z-index: 1;
+      border-radius: 50%;
+      overflow: hidden; }
+/**header end**/

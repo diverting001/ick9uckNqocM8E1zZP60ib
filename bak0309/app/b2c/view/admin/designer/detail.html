@@ -1,0 +1,77 @@
+<form id="designerForm" action="index.php?app=b2c&ctl=admin_designer&act=save"  method="POST" >
+<input type="hidden" name="designer_id" value="<{$designer.designer_id}>">
+<div class="tableform">
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>设计师名字：<{/t}></th>
+  <td><{input type="text" name="name" style="width:120px" vtype="required" value=$designer.name}><em><font color='red'>*</font></em></td>
+</tr>
+</table>
+</div>
+
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th>设计师头像：</th>
+  <td>
+  <{input type="image" name="avatar" value=$designer.avatar width=160 height=90}>请上传设计师头像</td>
+</tr>
+ <tr>
+     <th><{t}>前台是否显示<{/t}>:</th>
+     <td><label><input type="radio" name="display" <{if $designer.display=="true"||$designer.display==""}>checked<{/if}> value="1"><{t}>是<{/t}></label>&nbsp;&nbsp;
+        <label><input type="radio" name="display" value="0" <{if $designer.display=="false"}>checked<{/if}>><{t}>否<{/t}></label>
+    </td>
+ </tr>
+<tr>
+  <th><{t}>排序：<{/t}></th>
+  <td><input style="width:50px;" vtype="unsigned" class="inputstyle" value="<{$designer.p_order|default:0}>" name="p_order" class="_x_ipt"/>
+    <span class="notice-inline"><{t}>数字越小越靠前<{/t}></span></td>
+</tr>
+</table>
+</div>
+
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>网址：<{/t}></th>
+  <td><{input type="text" name="addon[sns][site]" style="width:120px" value=$designer.addon.sns.site}></td>
+</tr>  
+<tr>
+  <th><{t}>新浪微博：<{/t}></th>
+  <td><{input type="text" name="addon[sns][sina]" style="width:120px" value=$designer.addon.sns.sina}></td>
+</tr>
+<tr>
+  <th><{t}>Instagram：<{/t}></th>
+  <td><{input type="text" name="addon[sns][instagram]" style="width:120px" value=$designer.addon.sns.instagram}></td>
+</tr>
+<tr>
+  <th><{t}>点点：<{/t}></th>
+  <td><{input type="text" name="addon[sns][diandian]" style="width:120px" value=$designer.addon.sns.diandian}></td>
+</tr>
+</table>
+</div>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>备注说明：<{/t}></th>
+  <td><{input type="html" name="memo" value=$designer.memo}></td>
+</tr>
+</table>
+</div>
+</div>
+
+  <div class="table-action">
+	<{button type="submit"  label=$___b2c="保存"|t:'b2c'}>
+</div>
+
+</form>
+<script>
+$('designerForm').store('target',{
+	onComplete:function(){
+		if(opener.finderGroup['<{$env.get._finder.finder_id}>'])
+		opener.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+		window.close();
+	}
+});
+</script>

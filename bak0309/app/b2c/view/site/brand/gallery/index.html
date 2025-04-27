@@ -1,0 +1,321 @@
+<div id="main" class="clearfix">
+  <!-- 商品列表开始 -->
+  <div class="page-maincontent gallery-maincontent">
+    <!-- 筛选区 -->
+    <div id="filter_container" class="filter-container hide">
+      <b class="op-search-result"><{$total}></b>
+      <!-- 筛选条件 -->
+      <div id="gallery_filter" class="gallery-filter ">
+        <div id="filter_selected" class="filter-selected clearfix">
+          <dl class="filter-selected-list clearfix">
+            <dt class="filter-selected-title">您已选择：</dt>
+            <dd class="filter-selected-values">
+            <{foreach from=$active_filter item=item}>
+            <span class="filter-selected-entries" data-label="<{$item.label}>" data-single="true">
+              <label for="" class="filter-selected-label"><{$item.title}>：</label>
+              <{foreach from=$item.options item=row}>
+              <span class="filter-selected-item" data-fid="<{$item.label}>-<{$row.data}>"><{$row.name}><a href="javascript:void(0);" class="action-delete-filter icon">&#xd7;</a></span>
+              <{/foreach}>
+            </span>
+            <{/foreach}>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+   <div class="designer-boardlayout">
+       <div id="gallery_sortbar" class="gallery-sortbar clearfix both">
+           <div class="gallery-sort">
+               <a href="javascript:void(0);" class="action-sort <{if $orderby-sql == 'uptime desc'}> active<{/if}>" data-sort="uptime desc"><em id="sort0" onclick="changeColor(0)">最新上架</em></a>
+               <a href="javascript:void(0);" class="action-sort <{if $orderby_sql == 'buy_w_count desc'}> active<{/if}>" data-sort="buy_w_count desc"><em id="sort1" onclick="changeColor(1)">最受欢迎</em></a>
+               <a href="javascript:void(0);" class="action-sort <{if $orderby-sql == 'view_count desc'}> active<{/if}>" data-sort="view_count desc"><em id="sort2" onclick="changeColor(2)">热卖推荐</em></a>
+               <a href="javascript:void(0);" id="iamnotactive" <{if $orderby_sql == 'price asc' || $orderby_sql == 'price desc'}> class="action-sort <{$orderby_sql|replace:' ':'-'}> active" data-sort="<{$orderby_sql}>"<{else}> class="action-sort price-desc" data-sort="price desc"<{/if}>><em id="sort3" onclick="changeColor(3)">&nbsp;&nbsp;价格<span class="icon asc" id="icon-asc">&#x2b;</span><span class="icon desc" id="icon-desc">&#x2a;</span></em></a>
+               <select name="orderBy" id="" class="action-orderby clearfix hide" >
+                   <{foreach from=$screen.orderBy item=orderBy}>
+                   <option value="<{$orderBy.sql}>" <{if $orderBy.sql == $orderby_sql}>selected<{/if}>><{$orderBy.label}></option>
+                   <{/foreach}>
+               </select>
+           </div>
+       </div>
+      <div id="gallery_show" class="product_list"> 
+      <{if $goodsData}>
+          <{include file='site/brand/gallery/type/grid.html'}>
+      <{else}>
+        <{$env.conf.site.errorpage.search}>
+      <{/if}>
+       </div>
+    </div>
+    <div id="product_notify" class="product-notify" style="display:none;">
+      <p class="desc"><{t}>该货品暂时缺货，请在下面输入您的邮箱地址或手机号码，当我们有现货供应时，我们会发送邮件通知您！<{/t}></p>
+      <form class="form" method="post" action="<{link app=b2c ctl=site_product act=toNotify}>">
+        <input type="hidden" name="item[0][goods_id]" value="">
+        <input type="hidden" name="item[0][product_id]" value="">
+        <ul>
+          <li class="form-item">
+            <label for="email" class="form-label"><{t}>邮箱地址<{/t}>：</label>
+            <span class="form-act">
+              <{input type="text" name="email" id="" size="30" vtype="required&&email"}>
+            </span>
+          </li>
+          <li class="form-item">
+            <label for="cellphone" class="form-label"><{t}>手机号码<{/t}>：</label>
+            <span class="form-act">
+              <{input type="text" name="cellphone" id="" size="30" vtype="required"}>
+            </span>
+          </li>
+          <li class="form-item form-item-last">
+            <label class="form-label"></label>
+            <span class="form-act">
+              <{button type="submit" class="btn-caution" label=$___b2c="提交"|t:'b2c' rel="_request"}>
+            </span>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div>
+</div>
+
+<{assign var='imageset' value=$env.conf.image.image.set}>
+<script>
+$('icon-desc').innerHTML = ('&#x2b;');
+$('sort0').className = ('afterclick');
+
+var Router = {
+    'filter': {
+        query: '<{link app=b2c ctl=site_gallery act=ajax_get_goods}>'
+    }
+};
+
+var Query = function(url, data, update, options) {
+    var self = this;
+    this.update = function(url, data, update, options) {
+        if(typeof(update) == 'object') {
+            update = Module.gallery.show;
+        }
+        options = Object.merge({
+            url: url,
+            link: 'ignore',
+            update: update
+        }, options || {});
+        new Request.HTML(options).post(data);
+    };
+    this.filter = function(data, fn){
+        var url = Router.filter.query;
+        self.update(url,data,Module.gallery.show, {
+            onRequest:function() {
+            },
+            onSuccess:function(rs){
+                updateNum();
+                miniCart.init();
+                fn&&fn(rs);
+            }
+        });
+    };
+    this.addtocart = function(url, data, target) {
+        var form = $('_addtocart_submitform') || new Element('form#_addtocart_submitform',{
+            action: url,
+            method: 'post',
+            target: target,
+            style: 'display:none'
+        }).inject(document.body);
+        var formElements = Array.from(data).invoke('clone', false);
+        form.empty().adopt(formElements).submit();
+    };
+};
+
+Query = new Query;
+
+Module = new Module('gallery', ['filter', {'selected': 'filter_selected'}, 'sortbar', 'show' ]);
+
+gorderBy = function(e,obj){
+    var sort = Module.elements('gallery.sortbar','.action-sort');
+    var hl = sort.every(function(s){
+
+        var sortby = s.get('data-sort');
+        var order = obj.value;
+
+        if(order.indexOf('price ') === 0 && sortby.indexOf('price ') === 0) {
+            if(order !== sortby) {
+                toggleOrderby(s, false);
+            }
+            toggleActive(s);
+            return false;
+        }
+        if(order == sortby) {
+            toggleActive(s);
+            return false;
+        }
+        return true;
+    }, this);
+    if(hl) sort.removeClass('active');
+    Query.filter(getData());
+
+}
+Module.gallery.sortbar.addEvents({
+    'click:relay(.action-sort)':function(e){
+        e.preventDefault();
+        toggleOrderby(this);
+        if(!document.getElementsByClassName('afterclick')){
+            $('icon-desc').innerHTML=('&#x2a;');
+        }
+        if(!this.hasClass('active') || this.match('[class*=price-]')) {
+            Query.filter(getData());
+            $('icon-desc').innerHTML=('&#x2a;');
+        }
+
+        if(this.match('[class*=price-]')){
+            this.id='iamactive';
+        }
+        else if($('iamactive')){
+            $('iamactive').id='iamnotactive';
+        }
+        toggleActive(this);
+    },
+    'change:relay(.action-orderby)':function(e) {
+        gorderBy(e,$(e.target));
+    }
+});
+
+Module.gallery.show.addEvents({
+    'click:relay(a.flip:not(.over))':function(e){
+        e.preventDefault();
+        Query.filter(getData(this), function(e){
+            try{
+                //console.info(Module.gallery.sortbar);
+                new Fx.Scroll(document.body, {link:'cancel', duration: 0}).toElementEdge($('container'));
+            }catch(e){}
+        });
+    }
+});
+
+function getData(el) {
+    var cat = 'cat_id=<{$screen.cat_id}>';
+    var vcat = 'virtual_cat_id=<{$filter.virtual_cat_id}>';
+    var designer = 'designer_id=<{$info.designer_id}>';
+    var topic = 'topic_id=<{$info.topic_id}>';
+    var brand = 'brand_id=<{$brand_data.brand_id}>';
+    var filter= [cat,vcat,designer,brand,topic];
+    var param = location.search;
+    if(param) {
+        param = param.split('?')[1];
+        filter.push(param);
+    }
+    var page;
+    if(el) page = 'page=' + getFlipPage(el);
+    var data = filter.concat(Array.from(Module.gallery.selected.getElements('[data-fid]').get('data-fid')), decodeURI(Module.gallery.sortbar.toQueryString()), page);
+    data = data.join('&').replace(/-/g, '[]=');
+    data && Memory.set('gallery.filter', data);
+    return data;
+}
+
+function getFlipPage(el) {
+    var page = getPage().current;
+    if(el) {
+        if(el.hasClass('next')) page += 1;
+        else if(el.hasClass('prev')) page -= 1;
+        else page = el.get('text');
+    }
+    return page;
+}
+
+function getPage() {
+    var pagedata = {};
+    var pagelimit = '<{$pageLimit|default:20}>';
+    try {
+        pagedata = JSON.decode(Module.gallery.show.getElement('.action-pagedata').value) || {};
+    }catch(e){}
+    return {
+        sum: pagedata.total || 0,
+        current: pagedata.pagecurrent || 1,
+        total: pagedata.pagetotal || 1
+    };
+}
+
+function updateNum() {
+    return true;
+    var page = getPage();
+    $('filter_container').getElement('.op-search-result').innerHTML = page.sum;
+    Module.element('gallery.sortbar', '.page-current').innerHTML = page.current;
+    Module.element('gallery.sortbar', '.page-total').innerHTML = page.total;
+    var prev = Module.element('gallery.sortbar', '.page-action .prev');
+    var next = Module.element('gallery.sortbar', '.page-action .next');
+    if(page.total == 1) {
+        prev.addClass('over');
+        next.addClass('over');
+    }
+    else if(page.total > 1){
+        next.removeClass('over');
+        if(page.total == page.current) {
+            prev.removeClass('over');
+            next.addClass('over');
+        }
+        else {
+            if(page.current == 1) {
+                prev.addClass('over');
+            }
+            else {
+                prev.removeClass('over');
+            }
+            next.removeClass('over');
+        }
+    }
+}
+
+function hideFilterPop(el) {
+    if(!el.getElement('input:focus')){
+        el.removeClass('filter-pop-active');
+    }
+}
+
+function hideDropdown(el) {
+    el.removeClass('current');
+}
+
+function toggleText(el, attr) {
+    attr = attr || 'data-toggle';
+    var a = el.get(attr);
+    var b = el.get('text');
+    el.set(attr, b).set('text', a);
+}
+
+function toggleActive(el, cls) {
+    if(!el) return;
+    cls = cls || 'active';
+    el.addClass(cls).getSiblings('.'+cls).removeClass(cls);
+    $('iamnotactive').className=('action-sort price-desc');
+    $('iamnotactive').setAttribute("data-sort","price desc");
+    $('icon-desc').innerHTML=('&#x2b;');
+}
+
+function toggleOrderby(el, set){
+    // if(el.hasClass('active')) return;
+    var sel = Module.element('gallery.sortbar', '.action-orderby');
+    var sort = '';
+    if(el.hasClass('price-desc')) {
+        el.swapClass('price-desc', 'price-asc');
+        sort = 'price asc';
+        el.set('data-sort', sort);
+    }
+    else if(el.hasClass('price-asc')) {
+        el.swapClass('price-asc', 'price-desc');
+        sort = 'price desc';
+        el.set('data-sort', sort);
+    }
+    else {
+        sort = el.get('data-sort');
+    }
+    if(set !== false) sel.value = sort;
+}
+
+//排序按钮样式
+function changeColor(num){
+    for(var i=0;i<=3;i++){
+        var str = $('sort'+i);
+        if(i==num){
+            str.className="afterclick";
+        }else{
+            str.className="";
+        }
+    }
+}
+</script>

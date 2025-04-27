@@ -1,0 +1,49 @@
+<{capture name="header"}>
+  <link href="../apps/ome/statics/ome.css" rel="stylesheet" type="text/css">
+<{/capture}>
+<div class="tableform">
+<div class="division">
+<form method="post" action="index.php?app=b2c&ctl=admin_order_activity&act=saveLogi" id="terminal">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0" >
+        <tbody>
+        <tr>
+        <th ><em class="c-red">*</em> 物流公司：</th>
+          <td>
+          <{input type="text&&required" size="40" name="logi[logi_name]" value=$logi.logi_name}>
+          </td>
+        </tr>
+        <tr>
+        <th ><em class="c-red">*</em> 运单号：</th>
+          <td>
+          <{input type="text&&required" size="40" name="logi[logi_no]" value=$logi.logi_no}>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+ <input type="hidden" name="logi[order_id]" value="<{$logi.order_id}>">
+<div class="table-action">
+<{button class="btn-primary" type="submit" id="saveterminal" name="submit" label="提交"}>
+</div>
+</form>
+  </div>
+    </div>
+
+
+<script>
+$('terminal').store('target',{
+    onRequest:function(){
+       $('saveterminal').set('disabled', 'true');
+    },
+    onComplete:function(jsontext){
+       var json = Json.evaluate(jsontext);
+       if (typeof(json.error) != 'undefined'){
+           $('saveterminal').set('disabled', '');
+       }else{
+           $('saveterminal').set('disabled', 'true');
+           parent.finderGroup['<{$env.get.finder_id}>'].refresh.delay(400,parent.finderGroup['<{$env.get.finder_id}>']);
+           $('saveterminal').getParent('.dialog').retrieve('instance').close();
+       }
+    }
+    });
+
+</script>
