@@ -1,0 +1,7 @@
+<cronentries>
+  <cron id="sms189_tasks_flushqueue">
+    <description>每分钟触发发送短信</description>
+    <schedule>*/1 * * * *</schedule>
+    <enabled>true</enabled>
+  </cron>
+</cronentries>

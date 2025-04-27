@@ -1,0 +1,19 @@
+<div id="cat-config" style="display:none;"></div>
+	<div class="tableform widgetconfig">
+	  <div class="division">
+	  <table width="100%" border="0" cellspacing="0" cellpadding="0" id="showChange">
+		  <tr>
+			<th width="10%">显示分类：</th>
+			<td width="90%">  
+				<input name="limit" class="inputstyle" value="<{$setting.limit}>" vtype="required&&number"/>&nbsp;&nbsp;个
+			</td>
+		  </tr>
+		  <tr>
+			<th><{t}>商品分类：<{/t}></th>
+			<td>
+				<{input type="object" object=goods_cat name="cat_name" app=b2c multiple="true" cols="cat_name" cols="cat_name,cat_id" value=$setting.cat_name textcol="cat_name" view="b2c:admin/goods/category/cat_order.html"}>
+			</td>
+        </tr>
+	  </table>
+	</div>
+</div>

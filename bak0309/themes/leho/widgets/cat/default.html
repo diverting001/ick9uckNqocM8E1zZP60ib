@@ -1,0 +1,22 @@
+<{foreach from=$data item=item}>
+	<li class="<{if $item.items}> dropmenu<{/if}>" >
+		<a class="l-mod auto-bind-widget" data-widget-type='DropMenu' <{if $item.items}> dropmenu="dropdown-box"<{/if}> href="<{$item.catLink}>"><{$item.catName}><i></i></a>
+		<{if $item.items}>
+			<ul class="dropdown-box">
+			<{foreach from=$item.items item=subitem}>
+				<!--<li class="cat l-group">	-->
+				<li class="cat">	
+					<a href="<{$subitem.catLink}>"> <{$subitem.catName}> </a>				
+					<{if $subitem.items}>
+				
+					<{foreach from=$subitem.items item=ssitem}>
+					<em><a href="<{$ssitem.catLink}>"><{$ssitem.catName}></a></em>
+					<{/foreach}>
+							
+					<{/if}>
+				</li>
+			<{/foreach}>
+			</ul>
+		<{/if}>
+	</li>
+<{/foreach}>

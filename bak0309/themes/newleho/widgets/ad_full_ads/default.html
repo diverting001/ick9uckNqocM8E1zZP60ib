@@ -1,0 +1,29 @@
+<div class="flexslider" id="flexslider_<{$widgets_id}>">
+    <ul class="slides" id="ul_slides_<{$widgets_id}>">
+    <{foreach from=$data.pic item=parent key=parentId}>
+        <li style="background:url(<{$parent.link}>) 50% 0 no-repeat;"  shref='<{$parent.linktarget}>'></li>
+     <{/foreach}>   
+    </ul>
+</div>
+
+<script>
+jQuery(document).ready(function($){ 
+	$("#flexslider_<{$widgets_id}>").flexslider({
+	    directionNav: true,
+	    pauseOnAction: false
+	});
+	$('#flexslider_<{$widgets_id}>').hover(
+			function () { $("#flexslider_<{$widgets_id}> .flex-prev,#flexslider_<{$widgets_id}> .flex-next").css("display", "block"); },
+            function () { $("#flexslider_<{$widgets_id}> .flex-prev,#flexslider_<{$widgets_id}> .flex-next").css("display", "none"); }
+   );
+	$("#ul_slides_<{$widgets_id}> li").each(function(){
+         $(this).bind("click",function(){
+          var _href = $(this).attr('shref');
+          if(_href!=""){
+               window.open($(this).attr('shref'));
+          }
+         });
+   });
+	
+});
+</script>

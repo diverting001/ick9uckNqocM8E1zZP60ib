@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <title><{$title}></title>
+    <link href="<{$env.cdn_base_url}>/app/b2c/neigou_statics/css/card_password_info.css" rel="stylesheet">
+    <link href="<{$env.cdn_base_url}>/app/b2c/neigou_statics/css/passport.css?v=20200401" rel="stylesheet">
+    <script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/libs/jquery-3.6.0.min.js"></script>
+    <script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/libs/jquery-migrate-3.3.2.min.js"></script>
+</head>
+<body <{if $login_theme && $action == 'login'}>style="background: #fff; overflow-y:hidden;"<{/if}>>
+<{require file="block/normal/passport_header.html"}>
+<{main}>
+<script>
+    var CLUB_DOMAIN = '<{$env.const.CLUB_DOMAIN}>';
+</script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/passport.js?v=202003231637"></script>
+<script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fcecdf9484535d12320f36e4ff84d1859' type='text/javascript'%3E%3C/script%3E"));
+    // var _url = '/fake_statistics/visit'+location.pathname+location.search;
+	// $.post(_url,{platform:'web'});
+</script>
+<script>
+    window.onload = function () {
+        $('.p_l .nav_introduce').hover(function(){
+            $('.nav_list').show();
+        },function(){
+            $('.nav_list').hide();
+        })
+        $('.nav_list').hover(function(){
+            $('.nav_list').show();
+        },function(){
+            $('.nav_list').hide();
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+#doc-ft {
+    background-color: #2E3353;
+    font-size: 12px;
+
+    .login {
+        float: left;
+        height: 28px;
+        line-height: 28px;
+        margin: 15px 0;
+
+        a {
+            color: #A3A7BF;
+        }
+
+        span {
+            margin: 0 8px;
+            color: #3E4364;
+        }
+    }
+
+    .right {
+        float: right;
+        height: 28px;
+        line-height: 28px;
+        margin: 15px 0;
+
+        a {
+            height: 28px;
+            display: inline-block;
+            background-color: #3E4364;
+            border-radius: 14px;
+            margin-left: 15px;
+        }
+
+        .pc {
+            color: #A3A7BF;
+            padding: 0 30px;
+        }
+
+        .totop {
+            width: 28px;
+            color: #3E4364;
+            background: url(../img/totop.png) no-repeat;
+            background-size: 28px;
+        }
+    }
+
+    p {
+        margin: 0;
+        text-align: center;
+        height: 22px;
+        line-height: 22px;
+        color: #757BAB;
+        background-color: #1E2342;
+        font-size: 9px;
+    }
+}

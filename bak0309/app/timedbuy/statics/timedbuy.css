@@ -1,0 +1,57 @@
+@charset "utf-8";
+/* CSS Document */
+
+.btn-timedbuy{
+float: left;
+display: block;
+height: 44px;
+width: 178px;
+position: relative;
+line-height: 40px;
+font-size: 16px;
+color: #fff;
+border: 0;
+padding-left: 40px;
+background-color:red;
+}
+.btn-timedbuy-ready{
+float: left;
+display: block;
+height: 44px;
+width: 178px;
+position: relative;
+line-height: 40px;
+font-size: 16px;
+color: #fff;
+border: 0;
+padding-left: 40px;
+background-color:#00ce30;
+}
+.btn-timedbuy-over{
+float: left;
+display: block;
+height: 44px;
+width: 178px;
+position: relative;
+line-height: 40px;
+font-size: 16px;
+color: #fff;
+border: 0;
+padding-left: 40px;
+background-color:grey;
+}
+.btn-timedbuy s,.btn-timedbuy-over s ,.btn-timedbuy-ready s {position: absolute;
+left: 30px;
+top: 10px;
+width: 25px;
+height: 24px;
+display: block;
+background-position: -70px -293px;
+background-image: url(product_mod_spr_24.png);
+background-repeat: no-repeat;
+}
+
+.GoodsInfoWrap .btnBar .btnwrap {height:auto;line-height:auto}
+#leho-timebuy .font-red {color: #FF4E00;font-size: 12px}
+.timebuy-timer{height:25px;line-height:20px;clear:both;*margin-left:-7px;font-size:12px;color:#FF4E00;}
+.leho-timebuy-span{color:#FF4E00;}

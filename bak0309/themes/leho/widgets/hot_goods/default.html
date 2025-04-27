@@ -1,0 +1,31 @@
+<div class="single-product-bd"><a class="pic-link" href="<{$setting.goods_url}>" target="_blank" title="<{$setting.goods_name}>"><img class="pic" src="<{$setting.goods_image|storager:''}>"  alt="<{$setting.goods_name}>" /></a>
+    <div class="title clearfix">
+        <h4><{$setting.goods_name}></h4>
+        <a href="<{$setting.button_url}>" class="button orange fr gobuy-btn" target="_blank"><{$setting.button}></a>
+    </div>
+    <div class="feed-detail-box clearfix">
+        <{if $setting.yiren_image}>
+        <div class="userface">
+            <a href="" class="face-radius">
+                <img width="66" height="66" src="<{$setting.yiren_image|storager:''}>" />
+            </a>
+        </div>
+        <div class="detail">
+            <h5><{$setting.yiren_name}></h5><{$setting.des}>
+        </div>
+        <{else}>
+        <div class="detail-onlytxt"><{$setting.des}></div>
+        <{/if}>
+
+        <{if $setting.goods_price}>
+        <p class="mod-price">
+        <span>¥</span> <strong><{$setting.goods_price}></strong>
+        <{if $setting.old_goods_price}><span class="saleRmb">¥</span> <strong class="salePrice"><{$setting.old_goods_price}></strong><{/if}>
+
+        <!--<i class="bg-black">独家</i>-->
+        <!--<i></i>-->
+        </p>
+        <{/if}>
+    </div> 
+</div>
+

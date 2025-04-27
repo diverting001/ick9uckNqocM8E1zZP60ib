@@ -1,0 +1,23 @@
+<div class="title">Events Ending Soon<br/>即将结束</div>
+<{if $data.data}>
+<ul>
+	<{foreach from=$data.data item=item name=endinglist}>
+	<li <{if $smarty.foreach.endinglist.iteration % 3 == 0 }> class="last" <{/if}> >
+		<div  class="event_img" >
+			<a href="<{link app=shangou ctl=site_event arg0=$item.evt_id}>" ><image src="<{$item.evt_logo|storager}>" title="<{$item.evt_name}>" alt="<{$item.evt_name}>"></a>
+		</div>
+		<div class="timer">
+			<a href="<{link app=shangou ctl=site_event arg0=$item.evt_id}>" title="<{$item.evt_name}>" alt="<{$item.evt_name}>"><{$item.evt_name}></a>
+		<!-- 限时倒计时时间 -->
+		<span class="date events-time-wrap">
+		    <input type="hidden" class="timeStart" value="<{$item.s_time}>" />
+            <input type="hidden" class="timeEnd" value="<{$item.e_time}>" />
+		距离活动结束还有<span ><t class="day">-</t>天</span><span ><t  class="hour">-</t>小时</span><span ><t  class="minute">-</t>分</span>
+		
+		</span>
+		</div>
+	</li>
+	 <{/foreach}>
+</ul>
+<{else}>
+<{/if}>

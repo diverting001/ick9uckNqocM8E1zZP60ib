@@ -1,0 +1,240 @@
+.wrapper {
+  margin: 0 10px; }
+
+body {
+  font-size: 10px; }
+
+#meta {
+  border-bottom: 1px solid #E9E9E9; }
+  #meta h1 {
+    font-size: 15px;
+    color: #333;
+    line-height: 21px;
+    font-weight: normal;
+    padding: 15px 0; }
+  #meta .price {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E9E9E9; }
+    #meta .price .main {
+      float: left;
+      width: 60%;
+      height: 72px; }
+      #meta .price .main div {
+        font-size: 18px;
+        color: #6F53FF; }
+        #meta .price .main div strong {
+          font-size: 32px;
+          font-weight: normal; }
+      #meta .price .main p {
+        margin: 0;
+        margin-top: 12px; }
+      #meta .price .main .mart, #meta .price .main .discount {
+        color: #7B8185; }
+      #meta .price .main .mart {
+        margin-right: 10px; }
+      #meta .price .main em {
+        font-style: normal;
+        color: #33D2D6; }
+    #meta .price .jd {
+      float: right;
+      width: 35%;
+      height: 72px;
+      padding-left: 3%;
+      border-left: 1px solid #E9E9E9;
+      padding-top: 50px;
+      line-height: 22px;
+      background: url(../img/jd.png) right 5px no-repeat;
+      background-size: 88px 33px; }
+      #meta .price .jd p {
+        margin: 0; }
+  #meta .prop {
+    border-bottom: 1px solid #E9E9E9;
+    background: url(../img/jiantou.png) right center no-repeat;
+    background-size: 12px 20px; }
+    #meta .prop p {
+      font-size: 12px;
+      padding: 15px 0;
+      height: 52px;
+      line-height: 22px;
+      margin: 0; }
+  #meta .submit {
+    margin: 20px 0 10px; }
+    #meta .submit button {
+      height: 44px;
+      width: 100%;
+      border-radius: 22px;
+      font-size: 14px;
+      line-height: 24px;
+      padding: 10px 0;
+      text-align: center;
+      border: none;
+      background-color: #6F53FF;
+      color: #FFF; }
+  #meta .info {
+    margin: 0 0 10px;
+    font-size: 12px;
+    line-height: 24px;
+    height: 24px;
+    text-align: center;
+    color: #6F53FF; }
+
+#detail table, #detail tr, #detail td, #detail th {
+  border: 1px solid #E9E9E9;
+  font-size: 10px;
+  font-weight: normal;
+  text-align: center; }
+#detail table {
+  width: 100%;
+  margin-bottom: 60px;
+  background-color: #F7F7F7; }
+#detail tr {
+  height: 27px;
+  line-height: 27px; }
+#detail th {
+  color: #7B8185; }
+#detail td {
+  color: #282A3C; }
+#detail img {
+  max-width: 100%; }
+#detail p {
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  margin: 12px 0; }
+
+#gouwuche {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 46px;
+  height: 46px;
+  background: url("../img/gouwuche.png") 0 0 no-repeat;
+  background-size: 46px;
+  border-radius: 50%; }
+
+#prop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100000;
+  background-color: rgba(0, 0, 0, 0.4); }
+  #prop .close {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url(../img/close.png) 0 0 no-repeat;
+    background-size: 100%; }
+  #prop .content {
+    background: #FFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 40px;
+    right: 0;
+    padding: 15px; }
+    #prop .content .hd {
+      padding-bottom: 15px;
+      border-bottom: 1px solid #E9E9E9; }
+      #prop .content .hd img {
+        float: left;
+        width: 75px;
+        height: 75px;
+        border: 1px solid #E9E9E9; }
+      #prop .content .hd h1 {
+        margin: 0;
+        margin-left: 85px;
+        font-size: 12px;
+        line-height: 19px;
+        font-weight: normal; }
+      #prop .content .hd .price {
+        margin: 0;
+        margin-left: 85px;
+        font-size: 16px;
+        color: #6F53FF; }
+        #prop .content .hd .price strong {
+          font-size: 28px;
+          font-weight: normal; }
+    #prop .content .prop {
+      margin: 15px 0; }
+      #prop .content .prop .row {
+        margin: 5px 0 5px; }
+        #prop .content .prop .row h4 {
+          margin: 0;
+          height: 20px;
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: normal;
+          margin-bottom: 10px; }
+      #prop .content .prop a {
+        display: inline-block;
+        height: 35px;
+        width: 35px;
+        border: 1px solid #E9E9E9;
+        padding: 1px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        color: #7B8185;
+        line-height: 32px;
+        font-size: 12px;
+        background: url(about:blank) 1px 1px no-repeat; }
+        #prop .content .prop a.active {
+          border: 2px solid #907BFF;
+          padding: 0;
+          background-position: 0 0; }
+        #prop .content .prop a.img-text {
+          width: auto;
+          padding-left: 42px;
+          padding-right: 11px; }
+        #prop .content .prop a.active.img-text {
+          padding-left: 41px;
+          padding-right: 10px; }
+        #prop .content .prop a.text {
+          width: auto;
+          padding: 0 15px; }
+        #prop .content .prop a.active.text {
+          padding: 0 14px; }
+      #prop .content .prop .count span {
+        height: 35px;
+        width: 35px;
+        display: inline-block;
+        background: url(../img/plus.png) no-repeat;
+        background-size: 70px 105px;
+        border: 1px solid #E9E9E9; }
+        #prop .content .prop .count span.plus {
+          background-position: -35px 0; }
+        #prop .content .prop .count span.enabled {
+          background-position: 0 -35px; }
+        #prop .content .prop .count span.enabled.plus {
+          background-position: -35px -35px; }
+        #prop .content .prop .count span.enabled:hover {
+          background-position: 0 -70px;
+          border-color: #907BFF; }
+        #prop .content .prop .count span.enabled.plus:hover {
+          background-position: -35px -70px; }
+      #prop .content .prop .count input {
+        display: inline-block;
+        width: 47px;
+        height: 35px;
+        border-width: 1px 0;
+        border-radius: 0;
+        vertical-align: top;
+        border-color: #E9E9E9;
+        text-align: center; }
+    #prop .content .submit button {
+      height: 44px;
+      width: 100%;
+      border-radius: 22px;
+      font-size: 14px;
+      line-height: 20px;
+      padding: 12px 0;
+      text-align: center;
+      border: none;
+      background-color: #6F53FF;
+      color: #FFF; }
+
+/*# sourceMappingURL=mobile-detail.css.map */

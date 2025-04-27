@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<{header}>
+<link rel="stylesheet" href="images/css.css">
+</head>
+<!--[if lte IE 6]>
+    <script type="text/javascript" src="images/DD_belatedPNG_0.0.8a.js"></script>
+    <script type="text/javascript">
+    DD_belatedPNG.fix('.png,.png:hover');
+    </script>
+<![endif]-->
+<body data-lazyload-config="{
+  onAfter:function(img){
+    try{if(img.get('data-img-zoom') == 'true') fixImageSize(img);}catch(e){}
+  }
+}">
+    <{require file="block/header.v2.html"}>
+    <div class="innerbox">
+        <div class="mainbox">
+            <{main}>
+        </div>
+    </div>
+    <{require file="block/footer.v2.html"}>
+</body>
+</html>

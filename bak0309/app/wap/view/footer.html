@@ -1,0 +1,165 @@
+<div class="am-modal am-modal-alert" tabindex="-1" id="custom_alert">
+  <div class="am-modal-dialog">
+    <div class="am-modal-bd">
+    </div>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn">知道了</span>
+    </div>
+  </div>
+</div>
+<script>
+function is_weixn(){  
+    var ua = navigator.userAgent.toLowerCase();  
+    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+        return true;  
+    } else {  
+        return false;  
+    }  
+} 
+
+if($('.am-titlebar-title').length){
+        document.title = $('.am-titlebar-title').text();
+}
+
+!function(){
+    if($('.leho-mini-titlebar').length){
+        return $(document.body).css('padding-top',74);
+    }
+    if($('.leho-titlebar').length){
+       return  $(document.body).css('padding-top',92);
+    }
+    $(document.body).css('padding-top',50);
+}();
+
+
+if(is_weixn()){
+   // $('.am-titlebar').hide();
+} 
+
+window.alert = function(content){
+    var icon ="";
+    if(content.match(/[请|错|不]/)){
+        icon = "<i class='am-icon-exclamation-triangle am-icon am-text-warning'></i>&nbsp;";
+    }
+    $('#custom_alert').find('.am-modal-bd').html(icon+content);
+    $('#custom_alert').modal('open');
+};
+    
+
+     $(document).on('ajaxBeforeSend', function(e, xhr, options){
+            $.AMUI.progress.start();
+    });
+    $(document).on('ajaxComplete', function(e, xhr, options){
+           $.AMUI.progress.done();
+    });
+
+    (function(){
+
+
+        //点击更换验证码
+        function changeVerify(element, hasEvent) {
+            $.each(element,function(){
+                var url;
+                var img;
+                var el = this;
+                if(el.tagName === 'IMG') {
+                    img = el;
+                    url = el.getAttribute('src').split('?')[0];
+                }
+                else if(el.tagName === 'A') {
+                    img = el.previousElementSibling;
+                    url = el.getAttribute('href');
+                }
+                if(hasEvent) $(el).on('touchend click', function(e){e.preventDefault();}).on('tap longTap', changeCode.bind(el, img, url));
+                else changeCode(img, url);
+            });
+        }
+
+        function changeCode(img, url){
+            url = url || img.src.split('?')[0];
+            var random = +new Date;
+            img.src = url + '?' + random;
+            return false;
+        }
+        changeVerify($('form .auto-change-verify-handle'), true);
+
+        $(document).on('submit', 'form', function(){
+            var sel = $('.region select'),
+                region_false = false;
+            $.each(sel,function(){
+                if((this.style.visibility == 'visible') && (this.selectedIndex==0))
+                    region_false = true;
+            });
+            if(region_false){
+                alert('请选择完整地区！');
+                return false;
+            }
+
+            var required = $(this).find('input[required]');
+
+            if(required.length){
+                var checkEmpty = false, ipt;
+                $.each(required,function(){
+                    ipt = $(this);
+                    if(ipt.val()=='' && ipt.offset().height){
+                        checkEmpty = ipt;
+                        if(ipt.attr('data-caution'))
+                            alert(ipt.attr('data-caution'));
+                        return false;
+                    }
+                });
+                if( checkEmpty )return false;
+            }
+            if($(this).attr('data-type') == 'ajax'){
+                var self = $(this);
+                self.find('[type=submit]').button('loading');
+                $[$(this).attr('method')]($(this).attr('action'),$(this).serialize(),function(re){
+                    self.find('[type=submit]').button('reset');
+                    try{
+                        re = JSON.parse(re);
+                    }catch(e) {}
+                    var update = self.attr('data-update');
+                    if(re.error){
+                        if($('form .auto-change-verify-handle').length > 0){
+                            $('form .auto-change-verify-handle').trigger('click');
+                        }
+                        return alert(re.error);
+                    }else{
+                        if($(update).size()) {
+                            $(update).html(re);
+                        }else {
+                            //$('#success .checkout-success').html(re.success);
+                            location.href = re.redirect;
+                            //setTimeout(function(){location.href = re.redirect},1000);
+                        }
+                    }
+                });
+                return false;
+            }else{
+                return true;
+            }
+        });
+
+
+        //更新购物车数量
+        //if($.fn.cookie('S[MEMBER]')){
+            !function(){
+                    var cart_num = $.fn.cookie('S[CART_NUMBER]');
+                    if(isNaN(cart_num))cart_num = 0;
+                    if(cart_num>0){
+                             $('.cart-num').text(cart_num);     
+                    }else{
+                         $('.cart-num').hide();
+                    }
+                    setTimeout(arguments.callee,1000);
+            }();
+              
+        //}
+
+
+    })();
+</script>
+
+
+
+

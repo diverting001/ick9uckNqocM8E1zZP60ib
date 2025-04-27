@@ -1,0 +1,153 @@
+<script>
+var getCookie= function(name){
+    var v = document.cookie.match('(?:^|;)\\s*' + name + '=([^;]*)');
+    return v ? decodeURIComponent(v[1]) : null;
+}
+var alertTips=function(text,overtime){
+    if(!$('.alertTips').length){
+        $('body').append('<div class="alertTips">'+text+'</div>');
+        setTimeout(function(){
+            var _this=$('.alertTips')
+            _this.remove();
+        },overtime)
+    }
+}
+!function($){
+    !function(){
+        //更新购物车数量
+        getCartCont()
+//      setInterval(function(){
+//          getCartCont()
+//      },5000)
+        function getCartCont(){
+        	$.ajax({
+                url:'<{$smarty.const.MALL_DOMAIN_URL_DYNPTL}>/cart/CartMini/miniCount',
+                type: "GET",
+                dataType: 'jsonp',
+                data:{platform:1},
+                success:function(data){
+                    if(data.body.cart_count&&data.body.cart_count>0){
+                        var catNum=data.body.cart_count>99?99:data.body.cart_count
+                        $('.detail-cart i.detail_cart_num').removeClass('dis').show().text(catNum);
+                    }
+                }
+            })
+        }
+    }()
+
+    function is_weixn(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    if($('.am-titlebar-title').length){
+        document.title = $('.am-titlebar-title').text();
+    }
+    (function(){
+        //点击更换验证码
+        function changeVerify(element, hasEvent) {
+            $.each(element,function(){
+                var url;
+                var img;
+                var el = this;
+                if(el.tagName === 'IMG') {
+                    img = el;
+                    url = el.getAttribute('src').split('?')[0];
+                }
+                else if(el.tagName === 'A') {
+                    img = el.previousElementSibling;
+                    url = el.getAttribute('href');
+                }
+                if(hasEvent) $(el).on('touchend click', function(e){e.preventDefault();}).on('tap longTap', changeCode.bind(el, img, url));
+                else changeCode(img, url);
+            });
+        }
+
+        function changeCode(img, url){
+            url = url || img.src.split('?')[0];
+            var random = +new Date;
+            img.src = url + '?' + random;
+            return false;
+        }
+        changeVerify($('form .auto-change-verify-handle'), true);
+
+        $(document).on('submit', 'form', function(){
+            var sel = $('.region select'),
+                    region_false = false;
+            $.each(sel,function(){
+                if((this.style.visibility == 'visible') && (this.selectedIndex==0))
+                    region_false = true;
+            });
+            if(region_false){
+                $('.myselects').next('.mess_arror').show().text('请选择完整地区');
+                return false;
+            }
+
+            var required = $(this).find('input[required]');
+
+            if(required.length){
+                var checkEmpty = false, ipt;
+                $.each(required,function(){
+                    ipt = $(this);
+                    if(ipt.val()=='' && ipt.offset().height){
+                        checkEmpty = ipt;
+                        if(ipt.attr('data-caution'))
+                            alert(ipt.attr('data-caution'));
+                        return false;
+                    }
+                });
+                if( checkEmpty )return false;
+            }
+            if($(this).attr('data-type') == 'ajax'){
+                var self = $(this);
+                self.find('[type=submit]').button('loading');
+
+                $[$(this).attr('method')]($(this).attr('action'),$(this).serialize(),function(re){
+
+                    self.find('[type=submit]').button('reset');
+                    try{
+                        re = JSON.parse(re);
+                    }catch(e) {
+                    		//alert(e);
+                    }
+                    var update = self.attr('data-update');
+                    if(re.error){
+                        if($('form .auto-change-verify-handle').length > 0){
+                            $('form .auto-change-verify-handle').trigger('click');
+                        }
+                        //yhd checkout error
+
+                        var yhd_error;
+                        try{
+                            yhd_error = JSON.parse(re.error)|| false;
+                        }catch(e){
+                            return alertTips(re.error,2000)
+                        }
+                        if(yhd_error.type == 'YHD_PREORDER_CHECK'){
+                            $('#yhd_checkout_layer').show();
+                            $('#yhd_error_goods_list').html('');
+                            for(var i=0;i<yhd_error.items.length;i++){
+                                $('#yhd_error_goods_list').append('<li>'+ yhd_error.items[i].name +'</li>')
+                            }
+                        }
+                    }else{
+                        if($(update).size()) {
+                            $(update).html(re);
+                        }else {
+                            location.href = re.redirect;
+                        }
+                    }
+                });
+                return false;
+            }else{
+                return true;
+            }
+        });
+    })();
+
+}(Zepto)
+</script>

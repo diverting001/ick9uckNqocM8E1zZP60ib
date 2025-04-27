@@ -1,0 +1,30 @@
+<{if $data}>
+<ul id="faxian_single">
+	<{foreach from=$data item=item name=eventslist}>
+	<li <{if $env.foreach.eventslist.iteration %3 == 0}>  class="last"<{/if}>>
+		<div class="faxian_img">
+			<a href="<{$item.goodsLink}>"><image src="<{$item.pc_pic|storager}>" title="<{$item.name}>" alt="<{$item.name}>"></a>
+		</div>
+		<div class="faxian_desc">
+			<p class="faxian_title"><a href="<{$item.goodsLink}>" title="<{$item.name}>" alt="<{$item.name}>" ><{$item.name}></a></p>
+			<p class="faxian_p"><span>会员价:</span><span class=" faxian_price"><{$item.memprice|cur}></span> <del><{$item.mktprice|cur}></del></p>
+		</div>
+	</li>
+	 <{/foreach}>
+</ul>
+<script type="text/javascript">
+window.addEvent('domready', function() {
+  $$('#faxian_single>li').each(function(e){
+      e.addEvent('mouseenter',function(item){
+          this.addClass('hover');
+      });
+
+      e.addEvent('mouseleave',function(item){
+          this.removeClass('hover');
+      });
+  })
+});
+</script>
+<{else}>
+<div>暂无活动数据</div>
+<{/if}>

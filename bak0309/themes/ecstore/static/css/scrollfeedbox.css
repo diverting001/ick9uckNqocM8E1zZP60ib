@@ -1,0 +1,126 @@
+#scrollbox {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  margin-left: 620px; }
+  #scrollbox > a {
+    border: 1px solid #EBEFF5;
+    background: #F9FAFD;
+    margin-bottom: -1px;
+    position: relative;
+    display: block;
+    width: 70px;
+    height: 70px; }
+    #scrollbox > a:hover .hover {
+      display: block; }
+  #scrollbox .default, #scrollbox .hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 68px;
+    height: 68px; }
+    #scrollbox .default img, #scrollbox .hover img {
+      width: 68px;
+      height: 68px;
+      border: none; }
+  #scrollbox .hover {
+    z-index: 10;
+    display: none;
+    background: #6E53FF; }
+    #scrollbox .hover p {
+      margin: 14px;
+      line-height: 20px;
+      text-align: center;
+      color: #FFF;
+      letter-spacing: 4px; }
+  #scrollbox .shop-cart span {
+    position: absolute;
+    top: 11px;
+    left: 42px;
+    width: 20px;
+    height: 20px;
+    line-height: 18px;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 10px;
+    color: #FFF;
+    background: #6E53FF; }
+  #scrollbox .shop-cart .hover span {
+    background: #FFF;
+    color: #6E53FF; }
+  #scrollbox .weixin .wxqr {
+    display: none;
+    width: 183px;
+    height: 183px;
+    border: 1px solid #EEF2F6;
+    position: absolute;
+    top: -56px;
+    right: 68px; }
+    #scrollbox .weixin .wxqr img {
+      width: 181px;
+      height: 181px; }
+  #scrollbox .weixin:hover .wxqr {
+    display: block; }
+
+#feedbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #444;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 200; }
+  #feedbox .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1060px;
+    height: 530px;
+    margin-left: -530px;
+    margin-top: -285px;
+    background: #FFF;
+    padding: 40px 75px; }
+    #feedbox .content .close {
+      position: absolute;
+      top: 0;
+      right: -74px;
+      width: 74px;
+      height: 74px;
+      background: url(../img/closebox.png);
+      opacity: .4; }
+    #feedbox .content h3 {
+      color: #282a3c;
+      font-size: 32px;
+      text-align: center;
+      font-weight: normal; }
+    #feedbox .content p {
+      margin: 15px;
+      color: #a8b0c3;
+      font-size: 15px;
+      text-align: center; }
+    #feedbox .content textarea {
+      width: 100%;
+      height: 218px;
+      resize: none;
+      border-color: #CFD1D8;
+      border-radius: 0; }
+      #feedbox .content textarea:hover {
+        border-color: #BFC1C8; }
+    #feedbox .content button {
+      height: 70px;
+      width: 500px;
+      display: block;
+      border-radius: 35px;
+      font-size: 20px;
+      line-height: 24px;
+      padding: 15px 0;
+      text-align: center;
+      border: none;
+      background-color: #6F53FF;
+      color: #FFF;
+      margin: 35px auto 0; }
+      #feedbox .content button:hover {
+        background-color: #5B36E6; }

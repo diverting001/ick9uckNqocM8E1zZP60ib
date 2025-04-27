@@ -1,0 +1,45 @@
+#doc-hd {
+    height: 44px;
+    border-bottom: 1px solid #E1E4EA;
+
+    .wrapper {
+        position: relative;
+    }
+
+    .logined {
+    }
+
+    .back {
+        position: absolute;
+        top: 8px;
+        left: 0;
+        height: 26px;
+        width: 26px;
+        background: url(../../img/head-bg.png) 0 center no-repeat;
+        background-size: 13px 17px;
+    }
+
+    .logo {
+        margin: 0 50px;
+        height: 44px;
+        display: block;
+        background: url(../../img/logo.png) center center no-repeat;
+        background-size: 44px 13px;
+    }
+
+    .avatar {
+        position: absolute;
+        top: 8px;
+        right: 0;
+        height: 26px;
+        width: 26px;
+        border-radius: 13px;
+        border: 1px solid #C2C5CC;
+        overflow: hidden;
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}

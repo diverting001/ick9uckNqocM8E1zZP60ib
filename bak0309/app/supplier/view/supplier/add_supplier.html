@@ -1,0 +1,64 @@
+<{capture name="header"}>
+  <link href="../apps/ome/statics/ome.css" rel="stylesheet" type="text/css">
+<{/capture}>
+<div class="tableform">
+<div class="division">
+<form method="post" action="index.php?app=supplier&ctl=admin_supplier&act=saveSupplier" id="terminal">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0" >
+        <tbody>
+        <tr>
+        <th ><em class="c-red">*</em> 供应商名称：</th>
+          <td>
+          <{input type="text&&required" size="40" name="supplier[sp_name]" value=$supplier.sp_name}>
+          </td>
+        </tr>
+        <tr>
+        <th ><em class="c-red">*</em> 合作状态：</th>
+          <td>
+          <{input type="select" name="supplier[co_type]" style="font-size:12px;" required='1' value=$supplier.co_type  options=$co_type_list }>
+          </td>
+        </tr>
+       <tr>
+        <th ><em class="c-red">*</em> 合作模式：</th>
+          <td>
+          <{input type="select" name="supplier[co_mode]" style="font-size:12px;" required='1' value=$supplier.co_mode  options=$co_mode_list }>
+          </td>
+        </tr>
+        <tr>
+        <th ><em class="c-red">*</em>商务负责人：</th>
+          <td>
+           <{input type="object" object=users breakpoint=1 name="supplier[operater]" app=desktop cols="name" filter=$user_filter  cols="name" value=$supplier.operater textcol="name" }>
+           
+          </td>
+         </tr>
+        </tbody>
+      </table>
+<{if  $supplier.sp_id}>
+ <input type="hidden" name="supplier[sp_id]" value="<{$supplier.sp_id}>">
+<{/if}>
+<div class="table-action">
+<{button class="btn-primary" type="submit" id="saveterminal" name="submit" label="提交"}>
+</div>
+</form>
+  </div>
+    </div>
+
+
+<script>
+$('terminal').store('target',{
+    onRequest:function(){
+       $('saveterminal').set('disabled', 'true');
+    },
+    onComplete:function(jsontext){
+       var json = Json.evaluate(jsontext);
+       if (typeof(json.error) != 'undefined'){
+           $('saveterminal').set('disabled', '');
+       }else{
+           $('saveterminal').set('disabled', 'true');
+           parent.finderGroup['<{$env.get.finder_id}>'].refresh.delay(400,parent.finderGroup['<{$env.get.finder_id}>']);
+           $('saveterminal').getParent('.dialog').retrieve('instance').close();
+       }
+    }
+    });
+
+</script>

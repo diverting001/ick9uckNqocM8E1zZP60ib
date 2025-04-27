@@ -1,0 +1,19 @@
+<div id="index_events_category_div"></div>
+<script>
+new Request({url:'<{link app=shangou ctl=site_events act=eventscategory}>',method:'get',onSuccess:function(rt) {
+   $('index_events_category_div').set('html', rt);
+   window.addEvent('domready', function() {
+     $$('#shtop_menu .menulist').each(function(e){
+         e.addEvent('mouseenter',function(item){
+             $$('#shtop_menu .menulist').removeClass('curr');
+             this.addClass('curr');
+         });
+
+         e.getElements('.depth-2').addEvent('mouseleave',function(item){
+             e.removeClass('curr');
+         });
+     })
+   })
+}}).send();
+
+</script>

@@ -1,0 +1,79 @@
+/* 清除内外边距 */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+pre, /* text formatting elements 文本格式元素 */
+fieldset, lengend, button, input, textarea, /* form elements 表单元素 */
+th, td { /* table elements 表格元素 */
+    margin: 0;
+    padding: 0;
+}
+
+/* 设置默认字体 */
+body,
+button, input, select, textarea { /* for ie */
+    /*font: 12px/1 Tahoma, Helvetica, Arial, "宋体", sans-serif;*/
+    font: 12px arial,"Microsoft YaHei"; /* 用 ascii 字符表示，使得在任何编码下都无问题 */
+}
+
+body { margin:0 auto; overflow:hidden; max-width: 800px; min-width: 240px; max-height:1280px; min-height:240px;}
+
+h1 { font-size: 18px; /* 18px / 12px = 1.5 */ }
+h2 { font-size: 16px; }
+h3 { font-size: 14px; }
+h4, h5, h6 { font-size: 100%; }
+
+address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 */
+code, kbd, pre, samp, tt { font-family: "Courier New", Courier, monospace; } /* 统一等宽字体 */
+small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正常化 */
+
+/* 重置列表元素 */
+ul, ol { list-style: none; }
+
+/* 重置文本格式元素 */
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+abbr[title], acronym[title] { /* 注：1.ie6 不支持 abbr; 2.这里用了属性选择符，ie6 下无效果 */
+	border-bottom: 1px dotted;
+	cursor: help;
+}
+
+q:before, q:after { content: ''; }
+
+/* 重置表单元素 */
+legend { color: #000; } /* for ie6 */
+fieldset, img { border: none; } /* img 搭车：让链接里的 img 无边框 */
+/* 注：optgroup 无法扶正 */
+button, input, select, textarea {
+    font-size: 100%; /* 使得表单元素在 ie 下能继承字体大小 */
+}
+
+/* 重置表格元素 */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* 重置 hr */
+hr {
+    border: none;
+    height: 1px;
+}
+
+
+/*手机首页样式*/
+.innerbox{/*width: 320px;*/ width:100%; margin: 0 auto;}
+.header{height: 100px;background:#000;margin-bottom: 20px;text-align: center;}
+.mainbox{margin-bottom: 20px;overflow: hidden;}
+.mainbox .logo_mobile {margin: 30px auto; text-align: left; width: 93%;}
+.footer{text-align: center;}
+.new_event ul li{float: left;width: 150px;overflow: hidden;height: 100px;text-align: center;}
+#passport { margin-bottom:5px;}
+#signin {width:90%; height:auto; overflow:visible; margin: 0 auto;}
+#signin ul li { width:100%; margin-bottom:15px;}
+#signin .x-input { width:100%; height:54px;}
+#signin .x-input { width:100%;}
+#signin .btn-login {border:none; border-radius: 0; box-shadow: none; cursor: default; display: inline-block; 
+    font-size: 18px; font-weight: normal; height: 44px; margin: auto; padding: 0; text-align: center; width: 100%; 
+    background-color: #000;color:#fff;}
+.remember-checkbox {margin-top:5px;}

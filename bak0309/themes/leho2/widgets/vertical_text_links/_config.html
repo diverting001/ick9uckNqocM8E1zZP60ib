@@ -1,0 +1,42 @@
+<div class="tableform widgetconfig" >
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th><{t app='content'}>块名称:<{/t}> </th>
+            <td>
+                <input type="text" name="group_name" value="<{$setting.group_name}>">
+            </td>
+        </tr>
+    </table>
+    <h4>文本链接</h4>
+    <div class="linkcontent">
+        <{foreach from=$setting.links item=data key=key}>
+        <table  width="100%" cellpadding="0" cellspacing="0">
+            <tr><th><{t app="b2c"}>文本:<{/t}></th>
+                <td><input name="links[<{$key}>][text]" value="<{$data.text}>">
+                <th><{t app="b2c"}>链接:<{/t}></th>
+                <td><input name="links[<{$key}>][url]" value="<{$data.url}>"></td>
+                <th><{t app="b2c"}>删除该文本链接:<{/t}></th>
+                <td><span onclick="$(this).getParent('table').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___b2c="删除"|t:'b2c' title=$___b2c="删除"|t:'b2c' app="desktop"}></span></td>
+            </tr>
+        </table>
+        <{/foreach}>
+    </div>
+    <{button label=$___b2c="添加链接"|t:'b2c' class="addlink" app="desktop" icon="btn_add.gif"}>
+</div>
+<script type="text/javascript">
+    (function(){
+        var tag_type='table',tag_class='links';
+        document.getElement(".addlink").addEvent('click',function(){
+            var i=new Date().getTime();
+            var tpl='\
+            <tr><th><{t app="b2c"}>文本:<{/t}></th>\
+                <td><input name="links['+i+'][text]">\
+                <th><{t app="b2c"}>链接:<{/t}></th>\
+                <td><input name="links['+i+'][url]"></td>\
+                <th><{t app="b2c"}>删除该文本链接:<{/t}></th>\
+                <td><span onclick="$(this).getParent(\'table\').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___b2c="删除"|t:'b2c' title=$___b2c="删除"|t:'b2c' app="desktop"}></span></td>\
+            </tr>';
+            $$('.linkcontent').adopt(new Element(tag_type,{'html':tpl,'width':'100%','class':tag_class}));
+        });
+    })();
+</script>

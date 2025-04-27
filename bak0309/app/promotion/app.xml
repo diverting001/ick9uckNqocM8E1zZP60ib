@@ -1,0 +1,18 @@
+<app>
+    <name>b2c促销业务模块</name>
+    <description>b2c促销业务模块</description>
+
+    <author>
+        <name>neigou开发团队</name>
+        <email>licong@neiogu.com</email>
+        <url>http://www.neigou.com</url>
+    </author>
+
+    <version>0.1</version>
+    <license>Mit license</license>
+
+	<depends>
+		<app>base</app>
+	</depends>
+
+</app>

@@ -1,0 +1,483 @@
+<?php
+/**
+ * ShopEx licence
+ *
+ * @copyright  Copyright (c) 2005-2010 ShopEx Technologies Inc. (http://www.shopex.cn)
+ * @license  http://ecos.shopex.cn/ ShopEx License
+ */
+
+require '/data/service_router.php';
+
+#CDN
+//define('CDN_BASE_URL', 'http://cdn.neigou.com');  #level=P0 full cdn base url
+define('CDN_BASE_URL', '//' . PSR_CDN_WEB_NEIGOU_WWW_DOMAIN);  #level=P0 full cdn base url
+#define('CDN_HOST_PREFIX', 'cdn.');               #level=P1 only valid when both BASE_URL and CDN_BASE_URL are not defined
+
+# Club数据库配置
+define('CLUB_DB_MASTER_USER', PSR_DB_CLUB_USER_WEB_ECSTORE);  # 数据库用户名
+define('CLUB_DB_MASTER_PASSWORD', PSR_DB_CLUB_PASSWORD_WEB_ECSTORE); # 数据库密码
+define('CLUB_DB_MASTER_NAME', PSR_DB_CLUB_NAME);    # 数据库名
+define('CLUB_DB_MASTER_HOST', PSR_DB_CLUB_HOST); # 数据库HOST
+define('CLUB_DB_MASTER_PREFIX', '');
+
+define('CLUB_DB_SLAVE_USER', PSR_DB_CLUB_USER_WEB_ECSTORE);  # 数据库用户名
+define('CLUB_DB_SLAVE_PASSWORD', PSR_DB_CLUB_PASSWORD_WEB_ECSTORE); # 数据库密码
+define('CLUB_DB_SLAVE_NAME', PSR_DB_CLUB_NAME);    # 数据库名
+define('CLUB_DB_SLAVE_HOST', PSR_DB_CLUB_HOST); # 数据库HOST
+define('CLUB_DB_SLAVE_PREFIX', '');
+
+define('HD_DB_SLAVE_USER', PSR_DB_HD_USER_WEB_ECSTORE);  # 数据库用户名
+define('HD_DB_SLAVE_PASSWORD', PSR_DB_HD_PASSWORD_WEB_ECSTORE); # 数据库密码
+define('HD_DB_SLAVE_NAME', PSR_DB_HD_NAME);    # 数据库名
+define('HD_DB_SLAVE_HOST', PSR_DB_HD_HOST); # 数据库HOST
+define('HD_DB_SLAVE_PREFIX', 'hd_');
+
+# Club域名
+define('CLUB_DOMAIN', PSR_WEB_DIANDI_CLUB);
+//define('CLUB_CDN_DOMAIN', PSR_CDN_WEB_DIANDI_CLUB);
+define('CLUB_CDN_DOMAIN', '//' . PSR_CDN_WEB_DIANDI_CLUB_DOMAIN);
+define('CLUB_CDN_DOMAIN_DYNPTL', '//' . PSR_CDN_WEB_NEIGOU_CLUB_DOMAIN);
+define('CLUB_CDN_DIANDI_DOMAIN_DYNPTL', '//' . PSR_CDN_WEB_DIANDI_CLUB_DOMAIN);
+define('SEND_MAIL_URL', PSR_WEB_DIANDI_CLUB . "/ApiMail/SendMail");
+define('MIS_DOMAIN', PSR_WEB_NEIGOU_MIS);
+define('PAY_DOMAIN', PSR_WEB_NEIGOU_PAY);
+
+define('NEIGOU_EXP_COMPANY_ID', 69);
+
+define('NFS_SHARE_PATH', realpath(PSR_NFS_SHARE_PATH. '/neigou_store'));
+
+#百度公司id
+define('NEIGOU_BAIDU_COMPANY_ID', 2009);
+define('NEIGOU_ABBX_COMPANY_ID', 8350);//安邦保险
+define('NEIGOU_TL_COMPANY_ID', '2348');
+define('NEIGOU_SPECIALL_COMPANY_IDS', "2009,2309,2246,1900,2343,2348,2373,2933,5214");
+define('NEIGOU_SPECIALL_CHANNEL_BN', "aiguanhuai");
+define('NEIGOU_CHANNEL_BACK', json_encode(
+    array(
+        'aiguanhuai' => array(
+            'name' => '爱关怀',
+            'channel' => 'aiguanhuai',
+            'url' => 'http://m.51guanhuai.com/mall'
+        )
+    )
+));
+//水印
+define('NEIGOU_HWG_WATER_MARK', json_encode(
+    array(
+        'L' =>
+            array(
+                'default_image' => '23b79dd6a8f437f09870fdb90e41815e',
+                'width' => '600',
+                'height' => '600',
+                'wm_type' => 'image',
+                'wm_text' => '',
+                'wm_image' => 'cf0be74ab7ac948800e545b723e1db6f',
+                'wm_opacity' => '25',
+                'wm_loc' => 'mc',
+                'title' => '商品相册图',
+                'watermark' => 1
+            ),
+        'M' =>
+            array(
+                'default_image' => '4b66a4c21450e0ef2ff9632b4b8e5716',
+                'width' => '300',
+                'height' => '300',
+                'wm_type' => 'image',
+                'wm_text' => '',
+                'wm_image' => 'cf0be74ab7ac948800e545b723e1db6f',
+                'wm_opacity' => '25',
+                'wm_loc' => 'mc',
+                'title' => '商品页详细图',
+                'watermark' => 1
+            ),
+        'S' =>
+            array(
+                'default_image' => '17d39d7daefc0644caf5ff7fe22f516f',
+                'width' => '120',
+                'height' => '140',
+                'title' => '列表页缩略图'
+            ),
+    )
+));
+define('NO_SHARE_VOUCHER',
+    "2009,2309,2348,2373,2933,8618,2460,8352,2473,9464,8350,8691,8955,11707,12439,12217,11817,11734,11711,10393,3510");
+
+define('NO_MALIPAY_APP', "2386,2009,8955,12642,18816,21637,20836,17077");
+
+define('SMS_USER',PSR_SMS_USER);
+define('SMS_PWD',PSR_SMS_PWD);
+define('HD_DOMAIN',PSR_WEB_NEIGOU_HD);
+define('LIFE_DOMAIN', PSR_WEB_NEIGOU_LIFE);
+
+//stroe
+define('ECSTORE_DOMAIN', PSR_WEB_NEIGOU);
+define('ECSTORE_DOMAIN_URL_DYNPTL', '//' . PSR_WEB_NEIGOU_DOMAIN);
+//@TODO maojz 前端有使用MALL_DOMAIN的，待调整
+define('MALL_DOMAIN', PSR_WEB_NEIGOU_MALL);
+define('MALL_CDN_DOMAIN', '//' . PSR_CDN_WEB_NEIGOU_MALL_DOMAIN);
+define('NEIGOU_MALL_DOMAIN', '//' . PSR_WEB_NEIGOU_MALL_DOMAIN);
+
+define('RPC_SMS_THRIFT_IP', PSR_THRIFT_SMS_HOST);
+define('RPC_SMS_THRIFT_PORT', PSR_THRIFT_SMS_PORT);
+
+define('RPC_EXPRESS_THRIFT_IP', PSR_THRIFT_EXPRESS_HOST);
+define('RPC_EXPRESS_THRIFT_PORT', PSR_THRIFT_EXPRESS_PORT);
+
+define('RPC_VOUCHER_THRIFT_IP', PSR_THRIFT_VOUCHER_HOST);
+define('RPC_VOUCHER_THRIFT_PORT', PSR_THRIFT_VOUCHER_PORT);
+
+define('RPC_ADAPTER_THRIFT_IP', PSR_THRIFT_CENTER_HOST);
+define('RPC_ADAPTER_THRIFT_PORT', PSR_THRIFT_CENTER_PORT);
+
+define('RPC_NGRPC_THRIFT_IP', PSR_THRIFT_NGRPC_HOST);
+define('RPC_NGRPC_THRIFT_PORT', PSR_THRIFT_NGRPC_PORT);
+
+# salyut根域名
+define('SALYUT_DOMIN', PSR_WEB_NEIGOU_SALYUT);
+
+# OPENAPI接口验证签名sign
+define('OPENAPI_TOKEN_SIGN', PSR_OPENAPI_TOKEN_SIGN);
+define('ADDRESS',
+    '{"ADDRESS":[{"name":"\u0031\u53f7\u5e97\u5185\u8d2d","url":"http:\/\/'.PSR_WEB_NEIGOU_MALL_DOMAIN.'\/Platform3rd\/yhdSpecial"},{"name":"\u6d77\u5916\u8d2d","url":"http:\/\/'.PSR_WEB_NEIGOU_MALL_DOMAIN.'\/Store\/index\/first\/352"},{"name":"\u54c1\u724c\u5185\u8d2d\u000d\u000a","url":"http:\/\/'.PSR_WEB_NEIGOU_MALL_DOMAIN.'\/BrandDetail\/BrandIndex"}]}');
+
+define('OPENAPI_DOMAIN', PSR_WEB_NEIGOU_OPENAPI_SAFE);
+define('OPENAPI_OAUTH2_CLIENT_ID', PSR_OPENAPI_OAUTH2_CLIENT_ID);
+define('OPENAPI_OAUTH2_CLIENT_SECRET', PSR_OPENAPI_OAUTH2_CLIENT_SECRET);
+define('OPENAPI_OAUTH2_AUTH_URL', OPENAPI_DOMAIN . '/Authorize/V1/OAuth2/Standard/token');
+define('OPENAPI_OAUTH2_INTERNAL_SCOPE', 'internal');
+define('PAGE_PRODUCT_JD_BIG_ELE', '2');
+
+#shop域名
+define('SHOP_DOMAIN', PSR_WEB_NEIGOU_SHOP);
+
+//ES配置
+define('ESSEARCH_HOST', PSR_ESSEARCH_HOST);
+define('ESSEARCH_PORT', PSR_ESSEARCH_PORT);
+//define('ESSEARCH_INDEX', 'storeV2');
+define('ESSEARCH_INDEX', 'v3_online_store_0');
+define('ESSEARCH_TYPE', 'goods_data');
+//define('ESSEARCH_UP_INDEX', 'store_1482307782'); //更新时使用的索引名
+define('ESSEARCH_UP_INDEX', 'online_store_20180422122839'); //更新时使用的索引名
+
+define("LDPW_CURL_DOMAIN","http://interface.ld365.cn:8080/ld365.do");
+define("LDPW_CURL_PASSWORD",PSR_LDPW_CURL_PASSWORD);
+define("LDPW_CURL_SERVICE_CODE",PSR_LDPW_CURL_SERVICE_CODE);
+
+define("EXPORT_CURLOPT_PROXY", "gateway");
+define("EXPORT_CURLOPT_PROXYPORT", "3128");
+
+define('BEIFUPAY_API_URL', json_encode(
+    array(
+        '2309' => 'http://baic.iyg.ren/Order/ngorderpay.aspx',
+        '2373' => 'http://ps.wap.iyg.ren/Order/ngorderpay.aspx',
+        '5283' => 'http://wap.yx.louxiaoyi.cn/Order/NGOrderPay.aspx',
+        '37642' => 'http://gysjy.wap.iyg.ren/Order/NGOrderPay.aspx',
+        '38882' => 'http://dfz.wap.iyg.ren/Order/NGOrderPay.aspx',
+        '38883' => 'http://pjy.wap.iyg.ren/Order/NGOrderPay.aspx',
+    )
+));
+
+define('PAY_POINT_SIGN',PSR_PAY_POINT_SIGN);
+
+
+#需要主动验证支付状态的第三方支付
+define('PULL_ORDER_STATUS', json_encode(array(
+    'mallinpay',
+    'mallinpayglobal'
+)));
+define('TONGLIAN_PAY_GETWAY', 'https://qianbao.allinpay.com/service/soa');
+
+//商品列表接口缓存开关
+define('API_GOODS_USE_CACHE', PSR_API_GOODS_CACHE);
+
+define('YHD_ROOT_CAT_ID', 284);
+define('JD_ROOT_CAT_ID', 2113);
+
+define('FREE_COST_FREIGHT_COMPANY_IDS', 2246);
+define('NEIGOU_WANGU_COMPANY_ID', 2386);
+
+
+//定价redis缓存
+define('REDIS_THIRD_WEB_HOST', PSR_REDIS_THIRD_WEB_HOST);
+define('REDIS_THIRD_WEB_PORT', PSR_REDIS_THIRD_WEB_PORT);
+define('REDIS_THIRD_WEB_PWD', PSR_REDIS_THIRD_WEB_PWD);
+
+
+define('TONGLIAN_CERT_PATH',PSR_TONGLIAN_CERT_PATH);
+define('TONGLIAN_PFX',PSR_TONGLIAN_PFX);
+define('TONGLIAN_PASSWORD',PSR_TONGLIAN_PASSWORD);
+
+define('TONGLIAN_JF_CERT_PATH',PSR_TONGLIAN_JF_CERT_PATH);
+define('TONGLIAN_JF_PFX',PSR_TONGLIAN_JF_PFX);
+define('TONGLIAN_JF_PASSWORD',PSR_TONGLIAN_JF_PASSWORD);
+
+
+define('TONGLIAN_JIFEN_EXTERNAL_BN', '11817');
+
+
+define('GLOBAL_TONGLIAN_PFX',PSR_GLOBAL_TONGLIAN_PFX);
+define('GLOBAL_TONGLIAN_PASSWORD',PSR_GLOBAL_TONGLIAN_PASSWORD);
+
+define('SALYUT_CDN', '//' . PSR_CDN_WEB_NEIGOU_SALYUT_DOMAIN);
+
+#是否为测试环境
+define('TESTING', false);
+
+// cas
+define('CAS_TOKEN_KEY', 'cas_v1');
+define('CAS_SYNC_SESSION_TIMESTAMP', 600);
+define('CAS_APP_GETWAY', PSR_GCAS_GATEWAY_DD . '/api');
+define('CAS_GETWAY', PSR_GCAS_GATEWAY_DD . '/openapi');
+
+define('CAS_PARTNER_ID', PSR_GCAS_NEIGOU_PARTNER_ID);
+define('CAS_KEY', PSR_GCAS_NEIGOU_KEY);
+//库存服务同步开关
+define('STOCK_SYNC', true);
+define('GET_STOCK_SYNC', true);
+//HRA(@TODO 老项目 maojz)
+define('HRA_MODULE_ID', 14955);
+define('HRA_PACKAGE_ID', 2);
+define('SUCCESS_URL', PSR_WEB_NEIGOU.'/m/feststore-index-fest_c__-14955-2004.html');
+define('PC_SUCCESS_URL', PSR_WEB_NEIGOU.'/feststore-index-fest_c__-14955-2004.html');
+define('FAIL_URL', PSR_WEB_NEIGOU);
+define('HRA_APPID', 'wxde9fe295d4e18905');
+define('HRA_WX_URL', PSR_CAS_GETWAY_NEW);
+
+//监控服务数据库
+define('MONITOR_DB_MASTER_USER', PSR_DB_WIZARD_STAT_USER);  # 数据库用户名
+define('MONITOR_DB_MASTER_PASSWORD', PSR_DB_WIZARD_STAT_PASSWORD); # 数据库密码
+define('MONITOR_DB_MASTER_NAME', PSR_DB_WIZARD_STAT_NAME);    # 数据库名
+define('MONITOR_DB_MASTER_HOST', PSR_DB_WIZARD_STAT_HOST); # 数据库HOST
+define('MONITOR_DB_MASTER_PREFIX', '');
+define('CAS_C_LOGIN_URL', PSR_GCAS_GATEWAY_DD . '/#/login');
+define('CAS_LOGOUT_URL', PSR_GCAS_GATEWAY_DD . '/bridge/do_logout.html');
+define('CAS_CHECK_LOGIN_URL', PSR_GCAS_GATEWAY_DD . '/api/v2/accessToken/checkLoginForward');
+
+define('CLUB_DOMAIN_URL_DYNPTL', '//' . PSR_WEB_NEIGOU_CLUB_DOMAIN);
+define('AGH_API_URL', PSR_WEB_DIANDI_AGH_API);
+define('MALL_DOMAIN_URL_DYNPTL', '//'.PSR_WEB_NEIGOU_MALL_DOMAIN);
+define('LIFE_DOMAIN_URL_DYNPTL', '//'.PSR_WEB_NEIGOU_LIFE_DOMAIN);
+define('HD_DOMAIN_URL_DYNPTL', '//'.PSR_WEB_NEIGOU_HD_DOMAIN);
+//点滴关怀员工端链接
+define('DD_YUANGONG_DOMAIN_DYNPTL', PSR_WEB_DIANDI_YUANGONG_PORT);
+define('DD_YUANGONG_WEB_DOMAIN', PSR_PC_DIANDI_YUANGONG_PORT);
+define('CAS_DOMAIN_URL', PSR_GCAS_GATEWAY_DD);
+define('AGH_DOMAIN_URL', 'http://www.51guanhuai.com');
+define('DIANDI_DOMAIN_URL', PSR_WEB_DIANDI_CLUB);
+define('DD_YUANGONG_PC_URL_DYNPTL', '//' . PSR_PC_DIANDI_YUANGONG_DOMAIN);
+
+//抽屉链接
+define('CHOUTI_NEIGOU_INDEX', '//'.PSR_WEB_NEIGOU_DOMAIN);  //内购首页
+define('CHOUTI_NEIGOU_ORDERS', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/member-orders.html');  //内购订单
+define('CHOUTI_NEIGOU_CART', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/v2/cart.html');     //购物车
+define('CHOUTI_NEIGOU_RECEIVER', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/member-receiver.html'); //收货地址
+define('CHOUTI_NEIGOU_VOUCHER_CENTER', '//'.PSR_WEB_NEIGOU_MALL_DOMAIN.'/VoucherCenter/index');  //领券中心
+define('CHOUTI_NEIGOU_VOUCHER', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/member-voucher.html');    //内购券
+define('CHOUTI_NEIGOU_WELFARE', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/member-welfare_package.html');    //内购券
+define('CHOUTI_NEIGOU_VOUCHER_EXCHANGE', '//'.PSR_WEB_NEIGOU_MALL_DOMAIN.'/VoucherCenter/addMemberVoucher');    //内购券兑换
+//积分
+define('CHOUTI_JIFEN_INDEX', '//'.PSR_WEB_NEIGOU_MALL_DOMAIN.'/jifen');  //积分首页
+define('CHOUTI_JIFEN_ORDERS', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/jifenmember-orders.html'); //积分订单
+define('CHOUTI_JIFEN_CART', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/jifencart.html');  //积分购物车
+define('CHOUTI_JIFEN_RECEIVER', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/member-receiver.html?from=jifen');  //收货地址
+define('CHOUTI_JIFEN_SETPAGE', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/jifenmember-setpage.html'); //支付方式设置
+define('CHOUTI_JIFEN_BILL', '//'.PSR_WEB_NEIGOU_MALL_DOMAIN.'/jifen/PointBill/index');  //积分账单
+define('CHOUTI_JIFEN_CHARGE', '//'.PSR_WEB_NEIGOU_MALL_DOMAIN.'/Jifen/Index/addJiFen');  // jifen add
+
+define('FOOTER_NEIGOU', '//'.PSR_WEB_NEIGOU_DOMAIN);  //底通内购
+define('FOOTER_FULI', '//' . PSR_WEB_DIANDI_YUANGONG_DOMAIN);  //底通福利
+define('FOOTER_JIFEN_CART', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/jifencart.html');  //底通积分购物车
+define('FOOTER_JIFEN_ORDERS', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/jifenmember-orders.html');  //底通积分订单
+define('FOOTER_MINE', '//'.PSR_WEB_NEIGOU_DOMAIN.'/member.html'); //底通我的
+
+define('AGH_CAS_REDIRECT_GETWAY', PSR_CAS_GETWAY_NEW.'/backend/api/fe/v3/j/sso/redirect/');
+
+define('REDIS_CACHE_HOST', PSR_REDIS_CACHE_HOST);
+define('REDIS_CACHE_PORT', PSR_REDIS_CACHE_PORT);
+define('REDIS_CACHE_PWD', PSR_REDIS_CACHE_PWD);
+
+//bbs联合登录
+define('BBS_DOMAIN_NAME', 'ofobbs.neigou.com');
+define('BBS_LOGIN_URL', 'http://ofobbs.neigou.com/bbs/login.php');
+define('BBS_LOGINOUT_URL', 'http://ofobbs.neigou.com/bbs/logout.php');
+define('DISCUZ_DOMAIN_NAME', 'ofobbs.neigou.com');
+define('DISCUZ_NOTIFY_URL', 'http://ofobbs.neigou.com/');
+define('BBS_NOTIFY_ALL', false);
+define('OFO_COMPANY_ID', 10313);
+
+define('NEIGOU_HTTP_PROXY', PSR_NEIGOU_HTTP_PROXY);
+
+//北汽公司ID
+define('BEIQI_COMPANY_ID', 2309);
+
+define('AGH_CAS_SSO_GETWAY',PSR_CAS_GETWAY_NEW.'/backend/api/fe/v3/j/sso/wechat3rd/wechatPlatformBase');
+define('OFO_APPID',PSR_OFO_APPID);
+
+define('NO_PRICE_BALANCE', '10313,11132');
+
+//华夏银行
+define('HX_BANK_COMPANY_ID', 8955);
+
+
+//特殊收货地址公司
+define('NEIGOU_SPECIALL_COMPANY_ADDR', "9464");
+
+//安邦
+define('AN_BANG_COMPANY_ID', 8350);
+//金地
+define('JIN_DI_COMPANY_ID', 11707);
+// 订单取消24小时
+define('CANCEL_ORDER_24', '2268,12048,37642');
+define('EXPRESS_COMPANY_ID', '2268,12048');
+
+define('CDN_DIANDI_CLUB_DOMAIN_DYNPTL', '//' . PSR_CDN_WEB_DIANDI_CLUB_DOMAIN);
+
+define('BOC_BRANK_COMPANY_ID', '9872');
+
+// 微信配置
+define('FULIPINGTAI_WEIXIN_APPID', PSR_FULIPINGTAI_WEIXIN_APPID);
+define('FULIPINGTAI_WEIXIN_APPSECRET', PSR_FULIPINGTAI_WEIXIN_APPSECRET);
+
+// 分享裂变注册属于公司
+define('SHARE_COMPANY_ID',PSR_SHARE_COMPANY_ID);
+define('SHARE_APPID',PSR_SHARE_APPID);
+define('SHARE_SECRET',PSR_SHARE_SECRET);
+define('SHARE_CLIENT_ID',PSR_SHARE_CLIENT_ID);
+define('SHARE_CLIENT_SECRET',PSR_SHARE_CLIENT_SECRET);
+
+define('ABCHINA_COMPANY_ID', '30440');
+//CTCC 中国电信 定制登录暗号激活
+define('CTCC_COMPANY_ID',PSR_CTCC_COMPANY_ID);
+
+//智齿客服
+define('ZHICHI_KEY',PSR_ZHICHI_KEY);  //智齿key
+
+// 登陆到期 跳转页面
+define('REDIRECT_NEIGOU_LOGIN_URL', '//'.PSR_WEB_NEIGOU_DOMAIN.'/m/passport-login_failed_new.html');
+
+define('WEIXIN_CERT_PATH', PSR_PC_WEIXIN_CERT_PATH);
+define('LJ_WEIXIN_CERT_PATH', PSR_LJ_PC_WEIXIN_CERT_PATH);
+define('QYWX_WEIXIN_CERT_PATH', PSR_QIYE_WEIXIN_CERT_PATH);
+
+define('AGH_SSO', PSR_CAS_GETWAY_NEW);
+
+define('UNLIMIT_CHANNEL', json_encode(
+    array(
+        'douli',
+        'tonglian',
+        'jiugang',
+        'jiabao',
+        'fafuli',
+        'tonglian2',
+    )
+));
+//图片保存路径
+define('IMPORT_FILE_DATA_PATH', PSR_IMPORT_FILE_DATA_PATH);
+
+//默认邮费获取规则id
+define('SHIPPING_ID', 1);
+
+//管理员链接
+define('WEB_DIANDI_CLUB_DOMAIN_DYNPTL', '//' . PSR_WEB_DIANDI_CLUB_DOMAIN);
+define('CDN_WEB_DIANDI_CLUB_DOMAIN_DYNPTL', '//' . PSR_CDN_WEB_DIANDI_CLUB_DOMAIN);
+
+//农行html5支付
+define('ABCHINA_HTML_COMPANY_ID', '30440');
+
+//联通公司、会员配置
+define('UNICOM_COMPANY_ID', '34335');
+define('UNICOM_MEMBER_ID', '5303552');
+
+// 中粮相关配置
+define('ZHONGLIANG_SYNC_MEMBER', true); // 是否同步到中粮
+define('ZHONGLIANG_COMPANY_IDS', json_encode(array(38565, 38572)));
+define('ZHONGLIANG_API_URL', 'http://mapi.womai.com/wmapi/html5/thirdPublicRegister'); // api接口地址
+define('ZHONGLIANG_APP_KEY', PSR_ZHONGLIANG_APP_KEY); // appKey
+define('ZHONGLIANG_CLIENT_SECRET', PSR_ZHONGLIANG_CLIENT_SECRET); // client secret
+
+//中粮配置支付密码的公司
+define('WM_COMPANY_IDS', json_encode(array(38572)));
+
+// SHOP 配置
+define('SHOP_APPKEY', PSR_SHOP_APPKEY);
+define('SHOP_APPSECRET', PSR_SHOP_APPSECRET);
+
+// SHOPNG 配置
+define('SHOPNG_APPKEY', PSR_SHOPNG_APPKEY);
+define('SHOPNG_APPSECRET', PSR_SHOPNG_APPSECRET);
+
+define('AGH_PUSH_MESSAGE_SIGN', PSR_AGH_PUSH_MESSAGE_SIGN);
+
+//亚信掌阅 配置
+define('YAXIN_ZY_SIGN_KEY',PSR_YAXIN_ZY_SIGN_KEY);
+define('YAXIN_ZY_URL',PSR_YAXIN_ZY_URL);
+
+//openapi签名
+define('OPENAPI_SIGN',PSR_OPENAPI_SIGN);
+define('CHINA_DAILY_COMPANY', json_encode(
+    array(
+        'index'              => '43109',
+        'union'              => '43110',
+        'development_centre' => '43111',
+    )
+));
+
+define('JYFL_SMS_API', 'http://sms.juyoufuli.com/sendVcode');
+
+define('BQXNY_COMPANY_ID',43187);
+define('BQ_MARKET_COMPANY_ID',49462);
+
+// 天润公司ID
+define('TIANRUN_COMPANY_ID', 43216);
+
+define('AIR_CHINA_FXZD_COMPANY_ID',43054); // 飞行总队
+
+define('AIR_CHINA_GZ_COMPANY_ID',49504); // 贵州国航
+
+define('JYFL_HTHX_COMPANY_ID',43358); // 航天恒星-503总部
+define('COMIX_COMPANY_ID',48248); //齐心企业
+define('NANSHAN_COMPANY_ID',49202); //南山集团宏罟商城
+
+//聚优福利
+define('JUYOUFULI_APPID',PSR_JUYOUFULI_APPID);
+define('JUYOUFULI_APPSECRET_KEY',PSR_JUYOUFULI_APPSECRET_KEY);
+define('JUYOUFULI_SERVICE_URL',PSR_JUYOUFULI_SERVICE_URL);
+define('MEMBER_CARD_CENTER_SHOW',PSR_MEMBER_CARD_CENTER_SHOW); //个人中心显示卡券中心 true显示, false不显示
+define('JUYOUFULI_DEFAULT_RULE_BN',PSR_JUYOUFULI_DEFAULT_RULE_BN); //聚优福利, 默认添加一个规则id
+define('JUYOUFULI_SWEEPCODE_URL','https://saas-m.juyoufuli.com/sweepCode');
+
+// 默认配送模版
+define('DEFAULT_DELIVERY_BN', 'neigoualllimit');
+// 默认运费模版
+define('DEFAULT_FREIGHT_BN', 'neigouall');
+// POP WMS 获取最新价格（详情页）
+define('POP_WMS_LATEST_PRICE', 'SALYUT,');
+
+define('AFCAHR_COMPANY_ID', 44269); // 亚联人力
+define('LIANTONGDONGLI_COMPANY_ID', 50350); // 联通动力
+define('JUNGREEN_COMPANY_ID', 51784);//骏绿生活
+define('WOMAIBCM_COMPANY_ID', 51923);//中粮交通数字银行
+// 腾威视渠道名称
+define('TENGWEISHI_CHANNEL','tengweishi');
+
+// 分销商品成本价
+define('GALLYWIX_UPDATE_COST_PRICE', PSR_GALLYWIX_UPDATE_COST_PRICE);
+
+define('WHITE_REFERER_DOMAIN', json_encode(
+    array('fafuli.com', 'xuebank.com')
+));
+// 商品列表页是否查询订单满减
+define('GOODS_LIST_SHOW_ORDER_PROMOTION', 0);
+
+define('LIFE_CDN_DOMAIN_DYNPTL','//'.PSR_CDN_WEB_NEIGOU_LIFE_DOMAIN);
+
+define('OLD_WOMAI_DOMAIN_URL','https://qwomai-q.womai.com');
+
+//商品变更订阅 canal-数据库监听字段 default-salyut/mall变更
+define('GOODS_CHANGE_MESSAGE_SOURCE','canal');
+define('IS_USE_CANAL',true);
+define("DEFAULT_AFTER_SALES_MSG",'<div class="member-box-plan tips"><p>1、请填写寄回商品的物流信息，平台在确认收到寄回商品后，才能进行后续售后流程。</p ></div><div class="member-box-plan tips"><p>2、如有疑问请联系<a id="right_now_ask">在线客服</a >。</p ></div>');
+
+define('STORE_VISIT_FILTER_URI_LIST', json_encode(array(
+        "/openapi/weixin/wxqypay" ,
+)));

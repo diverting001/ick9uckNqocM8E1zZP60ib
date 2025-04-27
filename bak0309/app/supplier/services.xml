@@ -1,0 +1,10 @@
+<services>
+  	<!-- 供应商API -->
+    <service id="api.supplier.supplier">
+        <class>supplier_api_supplier</class>
+    </service>
+	<service id="desktop_finder.supplier_mdl_supplier">
+        <class>supplier_finder_supplier</class>
+    </service>
+
+</services>

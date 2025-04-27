@@ -1,0 +1,71 @@
+#footer{
+    background: #2e3254;
+
+    dt {
+        color: #7b6bda;
+        line-height: 52px;
+    }
+
+    dd {
+        line-height: 32px;
+        
+    }
+
+
+    .links {
+        position: relative;
+        margin: 0 auto;
+        width: 1200px;
+        border-bottom: 1px solid #757bab;
+        font-size: 14px;
+
+        .links-read {
+            width: 212px;
+        }
+
+        .links-about {
+            width: 227px;
+        }
+
+        .links-prevate {
+            width: 602px;
+        }
+
+        .share {
+            position: absolute;
+            right: 0;
+            top: 60px;
+        }
+    }
+
+    .share {
+        span {
+            width: 42px;
+            height: 42px;   
+            display: inline-block;        
+            margin-right: 18px;
+        }
+        .wx {
+            background: url('../../img/share-wx.png') center no-repeat;
+        }
+        .wb {
+            background: url('../../img/share-wb.png') center no-repeat;
+        }
+        .qq {
+            background: url('../../img/share-qq.png') center no-repeat;
+        }        
+    }
+
+    .bottom {
+        width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+        color: #5d628c;
+        height: 80px;
+        line-height: 80px;
+    }
+
+
+    
+
+}

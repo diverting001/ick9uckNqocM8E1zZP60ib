@@ -1,0 +1,42 @@
+<div id="slide_fade_<{$widgets_id}>" class="slide_fade">
+	<div class="box">
+		<ul class="list">
+			<{foreach from=$data.pic item=parent key=parentId }>
+		    <li >
+		      <a href="<{$parent.linktarget}>" >
+		        <img src="<{$parent.link}>">
+		        	<{if $parent.linkinfotitle && $parent.linkinfocontentarray }>
+		        	<div class="txt">
+						<h3 style="color:<{$parent.linkinfocolor|default:'#000000'}>"><{$parent.linkinfotitle}></h3>
+						<{foreach from=$parent.linkinfocontentarray item=content  }>
+						<p style="color:<{$parent.linkinfocolor|default:'#000000'}>"><{$content}></p>
+						<{/foreach}>
+					</div>
+					<{/if}>
+		      </a>
+		    </li>
+		    <{/foreach}>
+		</ul>
+	</div>
+	<ul class="btn clearfix">
+		<{foreach from=$data.pic item=parent key=parentId}>
+		    <li >
+		    	<img src="<{$parent.small_link}>" >
+		    </li>
+		 <{/foreach}>
+	</ul>
+</div>
+
+<script>
+
+jQuery(document).ready(function($){ 
+	$("#slide_fade_<{$widgets_id}>").cxSlide({
+		events:"<{$data.events|default:'mouseover'}>",
+		type:"fade",
+		speed:<{$data.effectSpeed|default:800}>,
+		time:<{$data.effectTime|default:8000}>,
+		auto:<{$data.autoplay|default:'true'}>,
+	});
+});
+
+</script>

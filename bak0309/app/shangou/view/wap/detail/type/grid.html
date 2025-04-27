@@ -1,0 +1,29 @@
+<ul class="sm-block-grid-2 md-block-grid-4 lg-block-grid-6">
+	<{foreach from=$goodslist item=item name=glist}>
+	<li>
+		<a href="<{link app=b2c ctl=wap_product   arg0=$item.products.product_id}>" >
+			<img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAOzs7P///yH5BAAHAP8ALAAAAAABAAEAAAICRAEAOw==" style="min-height:200px;" data-original="<{$item.image_default_id|default:$imageDefault.M.default_image|storager}>" alt="<{$item.name}>">
+		</a>
+		<div class="g-info">
+			<div class="g-brand"><{$item.brand}></div>
+			<a class="g-name line-clamp" href="<{link app=b2c ctl=wap_product   arg0=$item.products.product_id}>" ><{$item.name}></a>
+			<div class="g-price am-cf">
+                <{ if $priceinfo[$item.products.product_id]['current_price']['price'] > 0 }>
+                <div class="am-fl">专享价:<strong class="am-text-danger"><{ $priceinfo[$item.products.product_id]['current_price']['price']|cur_odr}></strong></div>
+                <{ else }>
+                <div class="am-fl"><strong class="am-text-danger"><{$item.price|cur}></strong></div>
+                <{/if}>
+
+				<div class="am-fl"><del><{$item.mktprice|cur}></del></div>
+
+			</div>
+		</div>
+		<{if $item.skustore<1}>
+		<div class="no-store">
+			<i class="am-icon-pause am-icon-btn"></i><br>
+			已售馨
+		</div>
+		<{/if}>
+	</li>
+	<{/foreach}>
+</ul>

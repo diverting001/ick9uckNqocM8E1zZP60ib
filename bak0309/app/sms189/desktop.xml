@@ -1,0 +1,20 @@
+<desktop>
+    <permissions>
+    		<permission display='true' id="sms189_admin_account">电信应用设置</permission>
+                    <permission display='true' id="sms189_admin_log_index">短信发送列表查询</permission>
+                    <permission display='true' id="sms189_admin_log_email">邮件验证码发送列表查询</permission>
+    </permissions>
+
+    <workground name="电信短信" id="setting_sms189"  order="100000">
+    	<menugroup name="电信应用设置">
+            <menu controller='admin_account' action='index' permission='sms189_admin_account' display='true' order='100000000'>应用设置</menu>
+            <menu controller='admin_account' action='refresh' permission='sms189_admin_account' display='true' order='100000001'>更新Token</menu>
+        </menugroup>
+        <menugroup name="电信短信发送列表"> 
+            <menu controller='admin_log' action='index' permission='sms189_admin_log_index' display='true' order='100000300'>短信发送列表查询</menu>
+        </menugroup>
+        <menugroup name="邮件验证码发送列表"> 
+            <menu controller='admin_log' action='email' permission='sms189_admin_log_email' display='true' order='100000400'>邮件验证码发送列表查询</menu>
+        </menugroup>
+    </workground>
+</desktop>

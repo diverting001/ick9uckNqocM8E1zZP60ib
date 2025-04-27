@@ -1,0 +1,66 @@
+<ul >
+	<{foreach from=$goodslist item=item name=glist}>
+	<li <{if $smarty.foreach.glist.iteration % 4 == 0 }> class="last"  <{/if}> >
+		<div class="gds_pic">
+		<a href="<{link app=b2c ctl=site_product   arg0=$item.products.product_id}>" target="_blank" title="<{$goods.name}>" ><image  data-src="<{$item.image_default_id|default:$imageDefault.M.default_image|storager}>" ></a>
+			<{if  !$startflag||$item.skustore  >=1 }>
+			<div class="show_quickview"><div class="show fl"><a href="<{link app=b2c ctl=site_product  act=quickview arg0=$item.products.product_id}>">Quick Look</a></div><div class="fav fl">
+			         <{if $login == 'nologin'}>
+                        <a class="fav-this-product-btn"
+                           href="<{link app=b2c ctl=site_passport act=login}>"><s></s>收藏</a>
+                        <{else}>
+                        <a class="fav-this-product-btn " data-gid="<{$item.goods_id}>" rel="_setlike_"
+                           data-url ="<{link app=b2c ctl=site_member act=ajax_like}>" href="javascript:void();"><s></s><{if $liked}>已<{/if}>收藏</a>
+                        <{/if}>
+			</div></div>
+				<{if $startflag}>
+				 <{if $item.skustore  <=3 }>
+	                <div class="left_store"> <div class="<{if  $item.skustore ==1}> store_one <{else}> <{if  $item.skustore ==2}>store_two  <{else}> store_three <{/if}> <{/if}>"><t>&nbsp;</t></div></div>
+	            <{/if}> 
+	           <{/if}> 
+			<{else}>
+			<{if 0}><div class="quickview_slod_out">已售罄</div><{/if}>
+			 <div class="sell_out"><img src="<{$res_url}>/images/gallery-sale-out.png" width='118' height='118'/></div>
+			<{/if}>
+		</div>
+
+		<div class="gdlist_info">
+			<div class="name"><{$item.name}></div>
+			<div class="sale_price" style="font-size:12px;">
+                <{ if $priceinfo[$item.products.product_id]['current_price']['price'] > 0 }>
+                <span>专享价:</span>
+                <em style="font-size:20px;margin-left: 5px;"><{ $priceinfo[$item.products.product_id]['current_price']['price']|cur_odr}></em>
+                <{ else }>
+                <em style="font-size:20px;margin-left: 5px;"><{$item.price|cur}></em>&nbsp;
+                <{/if}>
+                <del style="font-size:12px;"><{$item.mktprice|cur}></del>
+
+			</div>
+			<!-- <div class="mkt_price" style="font-size:12px;">
+				市场价
+			
+			</div> -->
+			
+		</div>
+	</li>
+	 <{/foreach}>
+</ul>
+<script>
+	window.addEvent('domready', function() {
+		$$('#gallery_show li').each(function(e){
+			e.addEvent('mouseenter',function(item){
+				if(this.getElement('.show_quickview')){
+					this.getElement('.show_quickview').setStyle('display','block');
+					this.addClass('on');
+				}
+            });
+
+			e.addEvent('mouseleave',function(item){
+				if(this.getElement('.show_quickview')){
+					this.getElement('.show_quickview').setStyle('display','none');
+					this.removeClass('on');
+				}
+            });
+		});
+	});
+</script>

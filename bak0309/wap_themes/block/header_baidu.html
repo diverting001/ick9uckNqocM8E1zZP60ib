@@ -1,0 +1,32 @@
+<header class="am-header am-header-default">
+  <div class="am-header-left am-header-nav">
+    <a href="#side_nav_menu" data-am-offcanvas>
+      <i class="am-header-icon am-icon-bars am-icon-sm"></i>
+    </a>
+  </div>
+  <h1 class="am-header-title"><a href="<{$home_url}>"><img src="<{$theme_base}>/images/logo.png" alt="LEHO.COM"></a></h1>
+  <div class="am-header-right am-header-nav">
+
+    <a href="<{link app=b2c ctl=wap_cart}>">
+      <i class="am-header-icon am-icon-shopping-cart am-icon-sm"></i>
+      <span class="cart-num am-badge am-badge-danger"></span>
+    </a>
+    <!-- <a href="<{link app=b2c ctl=wap_member}>" >
+      <i class="am-header-icon am-icon-user am-icon-sm"></i>
+    </a> -->
+  </div>
+</header>
+<div id="side_nav_menu" class="am-offcanvas">
+  <div class="am-offcanvas-bar">
+    <div class="am-offcanvas-content">
+        <ul class="am-nav">
+            <li><a href="<{$home_url}>"><span class="am-icon-home"></span> 品牌特卖</a></li>
+            <li><a href="http://www.leho.com/m/origin" ><span class="am-icon-bus"></span>  原产地精选</a></li>
+            <!-- <li><a href="<{$home_url}>">乐货发现</a></li> -->
+            <li class="am-nav-divider"></li>
+            <li><a href="<{link app=b2c ctl=wap_member act=index}>"><span class="am-icon-user"></span> 会员中心</a></li>
+            <li><a href="<{link app=b2c ctl=wap_member act=orders}>"><span class="am-icon-list"></span> 我的订单</a></li>
+        </ul>
+    </div>
+  </div>
+</div>

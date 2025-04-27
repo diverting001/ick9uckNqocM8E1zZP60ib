@@ -1,0 +1,15 @@
+<div id="index_events_list_div"></div>
+<script>
+new Request({url:'<{link app=shangou ctl=site_events act=eventslist}>',method:'get',onSuccess:function(rt) {
+   $('index_events_list_div').set('html', rt);
+   $$('#new_events ul li').each(function(e){
+	      e.addEvent('mouseenter',function(item){
+	          this.addClass('curr');
+	      });
+	      e.addEvent('mouseleave',function(item){
+	          this.removeClass('curr');
+	      });
+	  })
+}}).send();
+
+</script>

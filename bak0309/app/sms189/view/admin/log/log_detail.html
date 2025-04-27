@@ -1,0 +1,47 @@
+<h3 class="head-title">日志详情</h3>
+<div class="tableform">
+	<div class="division">
+	      <table width="100%" cellspacing="0" cellpadding="0" border="0" >
+	        <tbody>
+	       <tr>
+	       	 <th>log_id：</th>
+	       	 <td><{$apilog.log_id}></td>
+	       	</tr>
+	       <tr>
+	       	 <th>电信短信模版ID：</th>
+	       	 <td><{$apilog.template_id}></td>
+	       	</tr>
+	       <tr>
+	       	 <th>手机号：</th>
+	       	 <td><{$apilog.mobile}></td>
+	       	</tr>
+	       	<tr>
+             <th>验证码：</th>
+             <td><{$apilog.mobile_code}></td>
+            </tr>
+		   <tr>
+				<th>请求数据：</th>
+				<td><{$apilog.content|replace:" ":"&nbsp;&nbsp;"|nl2br}></td>
+		   </tr>
+		   <tr>
+	       	 <th>发送状态：</th>
+	       	 <td><{if $apilog.status == 'succ'}><font color=blue>发送成功<{else}><font color=red>发送失败<{/if}></font></td>
+	       	</tr>
+	       	
+		    <{if $apilog.status == 'succ'}>
+		   <tr>
+				<th>发送时间：</th>
+				<td><{$apilog.sendtime|cdate:'FDATE_FTIME'}></td>
+		   </tr>
+		   <{else}>
+		   <{if $apilog.msg !=''}>
+		   	 <tr>
+				<th>错误原因：</th>
+				<td><font color=red><{$apilog.msg}></font></td>
+		   </tr>
+		   <{/if}>
+		   <{/if}>
+	        </tbody>
+	      </table>
+	</div>
+</div>

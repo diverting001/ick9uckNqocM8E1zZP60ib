@@ -1,0 +1,17 @@
+<app>
+	<name>乐货-电信短信平台</name>
+	<description>电信189短信平台</description>
+
+	<author>
+		<name>Ethan</name>
+		<email>senpan@vip.qq.com</email>
+		<url>http://www.leho.com</url>
+	</author>
+
+	<version>1.0</version>
+    <license>shopex license</license>
+	
+	<depends>
+		<app>desktop</app>
+	</depends>
+</app>

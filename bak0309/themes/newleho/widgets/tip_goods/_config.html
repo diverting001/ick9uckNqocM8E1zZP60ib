@@ -1,0 +1,97 @@
+  <div class="tableform">
+  <div class="division">
+        说明:必须是4个商品
+        </div>
+</div>
+<div class="tableform">
+
+	<h4>第一个商品</h4>
+    <div class="division">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tbody>
+                <tr>
+                    <th><{t app='b2c'}>指定商品：<{/t}></th>
+                    <td>
+                       <{input type="object" object=products breakpoint=1 name="goods[0][gid]" app=b2c cols="name"   cols="name,spec_info" value=$setting['goods'][0]['gid'] textcol="name"}>
+                    </td>
+                </tr>
+                <tr>
+                    <th><{t app='b2c'}>商品图片：<{/t}></th>
+                    <td>
+                       <input name='goods[0][pic]' class="imgsrc" id="goods_pic1" value="<{$setting['goods'][0]['pic']}>"><input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('goods_pic1')">
+                    </td>
+                </tr>
+        </tbody></table>
+    </div>
+   </div>
+   <div class="tableform">
+    <h4>第二个商品</h4>
+    <div class="division">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tbody>
+                <tr>
+                    <th><{t app='b2c'}>指定商品：<{/t}></th>
+                    <td>
+                           <{input type="object" object=products breakpoint=1 name="goods[1][gid]" app=b2c cols="name"   cols="name,spec_info" value=$setting['goods'][1]['gid'] textcol="name"}>
+                    </td>
+                </tr>
+                <tr>
+                    <th><{t app='b2c'}>商品图片：<{/t}></th>
+                    <td>
+                       <input name='goods[1][pic]' class="imgsrc" id="goods_pic2" value="<{$setting['goods'][1]['pic']}>"><input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('goods_pic2')">
+                    </td>
+                </tr>
+        </tbody></table>
+    </div>
+     </div>
+   <div class="tableform">
+    <h4>第三个商品</h4>
+    <div class="division">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tbody>
+                <tr>
+                    <th><{t app='b2c'}>指定商品：<{/t}></th>
+                    <td>      <{input type="object" object=products breakpoint=1 name="goods[2][gid]" app=b2c cols="name"   cols="name,spec_info" value=$setting['goods'][2]['gid'] textcol="name"}>
+                   
+                    </td>
+                </tr>
+                <tr>
+                    <th><{t app='b2c'}>商品图片：<{/t}></th>
+                    <td>
+                       <input name='goods[2][pic]' class="imgsrc" id="goods_pic3" value="<{$setting['goods'][2]['pic']}>"><input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('goods_pic3')">
+                    </td>
+                </tr>
+        </tbody></table>
+    </div>
+     </div>
+   <div class="tableform">
+    <h4>第四个商品</h4>
+    <div class="division">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tbody>
+                <tr>
+                    <th><{t app='b2c'}>指定商品：<{/t}></th>
+                    <td>
+                           <{input type="object" object=products breakpoint=1 name="goods[3][gid]" app=b2c cols="name"   cols="name,spec_info" value=$setting['goods'][3]['gid'] textcol="name"}>
+                   
+                    </td>
+                </tr>
+                <tr>
+                    <th><{t app='b2c'}>商品图片：<{/t}></th>
+                    <td>
+                       <input name='goods[3][pic]' class="imgsrc" id="goods_pic4" value="<{$setting['goods'][3]['pic']}>"><input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('goods_pic4')">
+                    </td>
+                </tr>
+        </tbody></table>
+    </div>
+</div>
+<script>
+    function addPic(_id){
+        var url='index.php?app=desktop&act=alertpages&goto='+encodeURIComponent("index.php?app=image&ctl=admin_manage&act=image_broswer&type=big");
+        Ex_Loader('modedialog',function(){
+            return new imgDialog(url,{onCallback:function(image_id,image_src){
+                    $(_id).value=image_src;
+            }})	;
+        });
+    }
+</script>

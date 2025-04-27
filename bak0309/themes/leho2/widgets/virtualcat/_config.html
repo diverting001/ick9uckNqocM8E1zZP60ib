@@ -1,0 +1,93 @@
+<div id="cat-config">
+  <div class="tableform widgetconfig">
+    <div class="division">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <th><{t app="b2c"}>选择显示节点：<{/t}></th>
+          <td>
+            <select name="virtualcat_id[]" multiple size="5" vtype="required">
+              <{foreach from=$data item=item key=key}>
+              <{if $item.pid != '0'}><{continue}><{/if}>
+              <option value="<{$item.cat_id}>" <{if in_array($item.cat_id,$setting.virtualcat_id)}>selected<{/if}>><{$item.cat_name}></option>
+              <{/foreach}>
+    	    </select>
+    		    <{t app="b2c"}>设置后仅显示当前所选节点以及所属的子节点<{/t}>
+          </td>
+        </tr>
+        <tr>
+          <th><{t app="b2c"}>分类显示深度：<{/t}></th>
+          <td><select name="showCatDepth"><option value="1" <{if $setting.showCatDepth=="1"}>selected="selected"<{/if}>><{t app="b2c"}>仅显示一级分类<{/t}></option> <option value="2" <{if $setting.showCatDepth=="2"}>selected="selected"<{/if}>><{t app="b2c"}>显示二级分类<{/t}></option> <option value="3" <{if $setting.showCatDepth=="3"}>selected="selected"<{/if}>><{t app="b2c"}>显示三级分类<{/t}></option>
+            </select></td>
+        </tr>
+  		</table>
+        <{foreach from=$data item=item key=key}>
+        <{if $item.pid != '0'}><{continue}><{/if}>
+        <br /><br /><br />
+        <h8><{$item.cat_name}>:</h8>
+        <div class="widgetconfig">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tbody><tr class="<{$item.cat_id}>">
+                <th><{t app='b2c'}>图片：<{/t}></th>
+                <td>
+                   <input name='right_pic[<{$item.cat_id}>][path]' id="right_pic_<{$item.cat_id}>" class="imgsrc" value="<{$setting.right_pic[$item.cat_id].path}>"><input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('right_pic_<{$item.cat_id}>')">
+                </td>
+                <th><{t app='b2c'}>图片描述：<{/t}></th>
+                <td><input type="text" name="right_pic[<{$item.cat_id}>][txt]" value="<{$setting.right_pic[$item.cat_id].txt}>"></td>
+                <th><{t app='b2c'}>图片链接：<{/t}></th>
+                <td><input type="text" name="right_pic[<{$item.cat_id}>][url]" value="<{$setting.right_pic[$item.cat_id].url}>"></td>
+            </tr>
+            </tbody></table>
+            <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <h4>底部LOGO</h4>
+            <div class="linkcontent" cat_id="<{$item.cat_id}>">
+                <table  width="100%" cellpadding="0" cellspacing="0">
+                    <{foreach from=$setting.links[$item.cat_id] item=linkdata key=linkkey}>
+                    <tr><th><{t app="b2c"}>LOGO:<{/t}></th>
+                        <td><input name="links[<{$item.cat_id}>][<{$linkkey}>][logo]" id='links<{$linkkey}>' class="imgsrc" value="<{$linkdata.logo}>">
+                            <input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('links<{$linkkey}>')">
+                            <th><{t app='b2c'}>LOGO描述：<{/t}></th>
+                        <td><input name="links[<{$item.cat_id}>][<{$linkkey}>][txt]" value="<{$linkdata.txt}>"></td>
+                            <th><{t app="b2c"}>链接:<{/t}></th>
+                        <td><input name="links[<{$item.cat_id}>][<{$linkkey}>][url]" value="<{$linkdata.url}>"></td>
+                        <th><{t app="b2c"}>删除该LOGO:<{/t}></th>
+                        <td><span onclick="$(this).getParent('tr').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___b2c="删除"|t:'b2c' title=$___b2c="删除"|t:'b2c' app="desktop"}></span></td>
+                    </tr>
+                    <{/foreach}>
+                </table>
+                <{button label=$___b2c="添加LOGO"|t:'b2c' class="addlink" app="desktop" icon="btn_add.gif"}><br /><br />
+            </div>
+                </table>
+        <{/foreach}>
+        </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    (function(){
+        var tag_type='table',tag_class='links';
+        $$(".addlink").addEvent('click',function(){
+            var i=new Date().getTime();
+            var j=$$(this).getParent().getChildren(".linkcontent")[0].getProperty('cat_id');
+            var tpl='\
+            <tr><th><{t app="b2c"}>LOGO:<{/t}></th>\
+                <td><input name="links['+j+']['+i+'][logo]" id="links' + i +  '" class="imgsrc">\
+                <input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic(\'links' + i + '\')">\
+                <th><{t app="b2c"}>LOGO描述：<{/t}></th>\
+                    <td><input name="links['+j+']['+i+'][txt]"></td>\
+                <th><{t app="b2c"}>链接:<{/t}></th>\
+                <td><input name="links['+j+']['+i+'][url]"></td>\
+                <th><{t app="b2c"}>删除该LOGO:<{/t}></th>\
+                <td><span onclick="$(this).getParent(\'table\').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___b2c="删除"|t:'b2c' title=$___b2c="删除"|t:'b2c' app="desktop"}></span></td>\
+            </tr>';
+            $$(this).getParent().getChildren(".linkcontent")[0].adopt(new Element(tag_type,{'html':tpl,'width':'100%','class':tag_class}));
+        });
+    })();
+    function addPic(target){
+        var url='index.php?app=desktop&act=alertpages&goto='+encodeURIComponent("index.php?app=image&ctl=admin_manage&act=image_broswer&type=big");
+        Ex_Loader('modedialog',function(){
+            return new imgDialog(url,{onCallback:function(image_id,image_src){
+                $(target).value= image_src;
+            }})	;
+        });
+    }
+</script>

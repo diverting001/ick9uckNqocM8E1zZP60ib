@@ -1,0 +1,60 @@
+<{wap_widgets id="fb"}>
+<footer  class="am-footer am-footer-default">
+  <hr>
+    <div>
+        <span style="font-weight: bold;">温馨提示</span> ：受春节期间物流影响，
+        <span style="color: red;">2015年2月5日18点</span>后，部分地区将无法发货，春节期间仍可正常下单，订单将于
+        <span style="color: red;">2月28日</span>开始处理，给您带来不便，敬请谅解！LEHO祝您：羊年大吉！
+    </div>
+  <div class="am-footer-switch" id="login">
+    <a href="<{link app=b2c ctl=wap_member}>" class="uname"></a>
+    <span class="am-footer-divider">|</span>
+    <a href="<{link app=b2c ctl=wap_passport act=logout}>">退出登录</a>
+  </div>
+    <div class="am-footer-switch" id="no_login">
+    <a href="<{link app=b2c ctl=wap_passport act=login}>" class="uname">登录</a>
+    <span class="am-footer-divider">|</span>
+    <a href="<{link app=b2c ctl=wap_passport act=signup}>">注册</a>
+  </div>
+  <div class="am-footer-miscs ">
+    <p>&copy; 2011-2014 <a href="http://www.leho.com/wap" title="乐货" target="_blank">leho.com</a></p>
+    <p>乐货</p>
+  </div>
+</footer>
+<script>
+  !function(){
+     	var cookie = $.AMUI.utils.cookie;
+     	if(!cookie.get('UNAME')){
+     		$('footer #no_login').show();
+     		$('footer #login').hide();
+     	}else{
+     		$('footer #no_login').hide();
+     		$('footer #login').show();
+     		var _uname = cookie.get('NICKNAME') ?  cookie.get('NICKNAME') : cookie.get('UNAME');
+     		$('footer #login .uname').text(_uname);
+     	}
+     }();
+</script>
+<!-- <footer>
+	<div class="u-info am-cf">
+		<div class="am-fl">
+			<button type="button" class="am-btn am-btn-link am-btn-sm">登录</button> | 
+			<button type="button" class="am-btn am-btn-link am-btn-sm">注册</button>
+		</div>
+		<div class="am-fr">
+			<button type="button" class="am-btn am-btn-link am-btn-sm">返回顶部</button>
+		</div>
+	</div>
+	<ul class="sm-block-grid-4">
+		<li>关于我们</li>
+		<li>联系我们</li>
+		<li>退换货说明</li>
+		<li>支付方式</li>
+	</ul>
+	<p>@2011-2014 leho.com    客服热线：400-666-6365</p>
+</footer> -->
+<{wapfooter}>
+
+
+
+

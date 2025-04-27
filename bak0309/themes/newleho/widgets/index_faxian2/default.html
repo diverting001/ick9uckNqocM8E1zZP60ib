@@ -1,0 +1,18 @@
+<div class="faxian">
+<div id="index_faxian_div"></div>
+<script>
+new Request({url:'<{link app=shangou ctl=site_events act=faxian}>',method:'get',onSuccess:function(rt) {
+   $('index_faxian_div').set('html', rt);
+   $$('#faxian_single>li').each(function(e){
+	      e.addEvent('mouseenter',function(item){
+	          this.addClass('hover');
+	      });
+
+	      e.addEvent('mouseleave',function(item){
+	          this.removeClass('hover');
+	      });
+	  })
+}}).send();
+
+</script>
+</div>

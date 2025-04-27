@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta property="qc:admins" content="1540671627645076375" />
+<{header}>
+<link rel="stylesheet" href="css/main.css" />
+
+</head>
+<body>
+<{require file="block/header.html"}>
+<!-- 主内容区 -->
+<div id="container" class="page-container clearfix">
+
+
+  <div class="inner-wrap">
+<!--通栏轮播banner start-->
+    <{widgets id="main_slide"}>
+        <!--通栏轮播banner end-->
+
+      <!--分类 start-->
+        <div class="grid mod-category">
+            <{widgets id="cat_list"}>
+        </div>
+        <!--分类 end-->
+
+
+<!--推荐1栏 start-->
+        <div class="column-floor layout clearfix"> 
+            <div class="col-main">
+                <div class="midImgAd">
+                    <div class="hd">
+                        <div class=""><{widgets id="tilte_1"}></div>
+                    </div>
+                    <div class="midImg-slider" id="five_slide">
+                        <div class="switchable-content">
+                            <ul class="midImg-slider-img" >
+                                <li class="panel" >
+                                    <{widgets id="five_slide1"}>
+                                </li>
+                                <li class="panel" style="float: left;">
+                                    <{widgets id="five_slide2"}>
+                                </li>
+                                <li class="panel" style="float: left;">
+                                    <{widgets id="five_slide3"}>
+                                </li>
+                                <li class="panel" style="float: left;">
+                                    <{widgets id="five_slide4"}>
+                                </li>
+                                <li class="panel" style="float: left;">
+                                    <{widgets id="five_slide5"}>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <div class="midInfo-box clearfix active">
+                            <{widgets id="five_slide_1"}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-extra">
+                    <{widgets id="new_product_info"}>
+            </div>
+        </div> 
+        <!--推荐1栏 end-->
+      
+
+  <div class="grid product-list clearfix">
+            <div class="product-column">
+                <{widgets id="l-tilte_1"}>
+                <{widgets id="product_info_1"}>
+
+                <div class="product-column-banner">
+                    <{widgets id="av_pic_1"}>
+                </div>
+            </div>
+            <div class="product-column">
+                <{widgets id="c-tilte_1"}>
+                <{widgets id="product_info_2"}>
+                <div class="product-column-banner">
+                    <{widgets id="av_pic_2"}>
+                </div>
+            </div>
+            <div class="product-column">
+                <{widgets id="r-tilte_1"}>
+                <{widgets id="product_info_3"}>
+            </div>
+        </div>
+        <!--推荐2栏 end-->
+       
+        <!--banner start-->
+        <div class="home-c-banner clearfix">
+            <div class="gg-l"><{widgets id="av_pic_3"}></div>
+            <div class="gg-r"><{widgets id="av_pic_4"}></div>
+        </div>
+        <!--banner end-->
+
+         <!--每日精选 start-->
+
+        <div class="grid product-list category-tag-wrap clearfix">
+            <{widgets id="category-title-desc1"}>
+            <div class="product-column">
+                <{widgets id="hot_goods_1"}>
+            </div>
+            <div class="product-column">
+                <{widgets id="hot_goods_2"}>
+            </div>
+            <div class="product-column">
+                <{widgets id="hot_goods_3"}>
+            </div>
+        </div>
+        <div class="grid product-list category-tag-wrap clearfix">
+            <{widgets id="category-title-desc2"}>
+            <div class="product-column">
+                <{widgets id="hot_goods_4"}>
+            </div>
+            <div class="product-column">
+                <{widgets id="hot_goods_5"}>
+            </div>
+            <div class="product-column">
+                <{widgets id="hot_goods_6"}>
+            </div>
+        </div>
+        <div class="grid product-list category-tag-wrap clearfix">
+            <{widgets id="category-title-desc3"}>
+            <div class="product-column">
+                <{widgets id="hot_goods_7"}>
+            </div>
+            <div class="product-column">
+                <{widgets id="hot_goods_8"}>
+            </div>
+            <div class="product-column">
+                <{widgets id="hot_goods_9"}>
+            </div>
+       </div>
+        <div class="grid product-list category-tag-wrap clearfix">
+            <{widgets id="category-title-desc4"}>
+            <div class="product-column">
+                <{widgets id="hot_goods_10"}>
+            </div>
+            <div class="product-column">
+                <{widgets id="hot_goods_11"}>
+            </div>
+            <div class="product-column">
+                <{widgets id="hot_goods_12"}>
+            </div>
+        </div>
+
+        <!--每日精选 end-->
+    
+        <ul class="footer-pic-box">
+            <li> <{widgets id="foot_pic_1"}></li>
+            <li> <{widgets id="foot_pic_2"}></li>
+            <li class="last"> <{widgets id="foot_pic_3"}></li>
+        </ul>
+
+    </div>
+</div>
+
+<{require file="block/footer.html"}>
+</body>
+</html>

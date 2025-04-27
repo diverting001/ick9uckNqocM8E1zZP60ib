@@ -1,0 +1,20 @@
+<app>
+    <name>联通福利平台对接</name>
+    <description>联通福利平台对接</description>
+
+    <author>
+        <name></name>
+        <email>wanglu@leho.com</email>
+        <url>http://www.neigou.com</url>
+    </author>
+
+    <version>1.0.0</version>
+    <license>shopex license</license>
+    <parent_model_class>dbeav_model</parent_model_class>
+
+	<depends>
+		<app>desktop</app>
+	    <app>ectools</app>
+	    <app>unicom</app>
+	</depends>
+</app>

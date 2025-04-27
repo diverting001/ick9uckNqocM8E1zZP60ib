@@ -1,0 +1,28 @@
+<header>
+    <div class="container">
+        <a href="<{link app=b2c ctl=site_store act=index}>" class="logo"></a>
+        <div class="cart-out">
+            <div class="cart">
+                <a href="<{link app=b2c ctl=site_cart act=index}>" class="color28">
+                    <img src="../images/shop-img.png">&nbsp;&nbsp;<span>购物车(<span id="mini_cart_item_count">0</span>)</span>
+                </a>
+            </div>
+            <div class="cart-div"></div>
+        </div>
+        <div class="userBar-out">
+            <div class="userBar">
+                <a href="<{link app=b2c ctl=site_member act=index}>" class="userBar-name">
+                    <span class="name-limit"><{if $header_user.name }><{$header_user.name}><{else}><{$user_name}><{/if}></span>
+                </a>
+                <span class="caret"></span>
+            </div>
+            <ul class="userBar-div">
+                <li><a href="<{link app=b2c ctl=site_member act=index}>" id="abc">个人中心</a></li>
+                <li><a href="<{link app=b2c ctl=site_member act=orders}>">我的订单</a></li>
+                <li><a href="<{link app=b2c ctl=site_member act=setting}>">个人资料</a></li>
+                <li><a href="<{link app=b2c ctl=site_member act=receiver}>">收货地址</a></li>
+                <li><a href="<{link app=b2c ctl=site_passport act=logout}>">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

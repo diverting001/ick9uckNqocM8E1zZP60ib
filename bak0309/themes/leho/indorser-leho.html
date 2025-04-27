@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<{header}>
+<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/like.css" />
+    <script src="<{$_THEME_}>/js/jquery.js"></script>
+</head>
+    <script type="text/javascript">
+    jQuery.noConflict(); 
+</script>
+<script src="<{$_THEME_}>/js/handlebars.js"></script>
+<script src="<{$_THEME_}>/js/waterfall.js"></script>
+<body>
+<{require file="block/header.html"}>
+<div id="container" class="page-container clearfix indorser-container">
+  <div class="inner-wrap"> <{main}> </div>
+</div>
+<{require file="block/footer.html"}>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<li class="f14">
+	<span class="login-info" id="loginBar_<{$widgets_id}>" style="display:none">
+	<{foreach from=$data.login_content item=login}>
+	<{$login}>
+	<{/foreach}>
+        <a href="<{link app=b2c ctl=site_passport act=login full=1}>"><{t app='b2c'}>登录<{/t}></a>
+	    <a href="<{link app=b2c ctl=site_passport act=signup full=1}>" target="_top"><{t app='b2c'}>注册<{/t}></a>
+	</span>
+  
+	<span id="memberBar_<{$widgets_id}>" style="display:none;position:relative;">
+		<a class="dropmenu auto-bind-widget header-r-username" data-widget-type='DropMenu' dropmenu="dropdown-box" href="<{link app=b2c ctl=site_member act=orders full=1}>" id="uname_<{$widgets_id}>"></a>
+        <div class="dropdown-box userinfo-drop-box pr">
+            <s class="arrow"></s>
+            <div class="userinfo-inner">
+                <ul>
+                    <li><a href="<{link app=b2c ctl=site_member act=orders}>">我的订单</a></li>
+                    <li><a href="<{link app=aftersales ctl=site_member act=afterlist}>">我的售后</a></li>
+                    <li><a href="<{link app=b2c ctl=site_member act=coupon}>">我的优惠券</a></li>
+                    <li class="line-b"><a href="<{link app=b2c ctl=site_member act=receiver}>">我的收货地址</a></li>
+                    <li><a href="<{link app=b2c ctl=site_member act=index full=1}>">我的基本资料</a></li>
+                    <li><a href="<{link app=b2c ctl=site_passport act=logout}>">退出</a></li>
+                </ul>
+            </div>
+        </div>
+	</span>
+</li>
+<script>
+var e = Cookie.read('NICKNAME')?Cookie.read('NICKNAME'):'';
+if(e){
+    $("uname_<{$widgets_id}>").innerHTML = e;
+    $("memberBar_<{$widgets_id}>").setStyle('display','block');
+    if($("loginBar_<{$widgets_id}>"))
+    $("loginBar_<{$widgets_id}>").setStyle('display','none');
+}
+else{
+    $("loginBar_<{$widgets_id}>").setStyle('display','block');
+    if($("memberBar_<{$widgets_id}>"))
+    $("memberBar_<{$widgets_id}>").setStyle('display','none');
+}
+</script>
+
+

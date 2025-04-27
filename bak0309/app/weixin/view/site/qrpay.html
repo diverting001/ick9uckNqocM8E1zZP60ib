@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="<{$env.cdn_base_url}>/app/b2c/neigou_statics/css/pcwxpay.css"/>
+<div class="wxpay_main">
+	<h2>应付金额：<span><{$cur_money}></span>元</h2>
+	<div class="wxpay_main_box">
+		<div class="wx_ewm">
+			<img class="ewm"  src="<{$image_src_url}>" alt=""/>
+			<p class="tips">
+				请使用微信扫一扫<br/>扫描二维码支付
+			</p>
+		</div>
+		<div class="show_img"></div>
+		
+	</div>
+</div>
+<script>
+	var timer = setInterval(function(){
+		$.post('/wxin-order_paystatus.html',{"order_id":"<{$order_id}>"},function(e){
+		 	if(e.success){
+		 		location.href = e.redirect;
+		 		clearInterval(timer);
+		 	}
+		},'json')
+	},2000)
+	
+</script>

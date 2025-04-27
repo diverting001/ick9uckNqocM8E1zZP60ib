@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width,user-scalable=no" name="viewport"> 
+	<link rel="stylesheet" href="css/mobile.css">
+	<title>找回密码</title>
+
+</head>
+<body>
+	<header class="rem">
+		<h2>找回密码</h2>
+	</header>
+	<div class="info">
+		<div class="int">
+			<input type="text" name="userPhone" maxlength="11" placeholder="手机号">
+		</div>
+		<div class="int">
+			<div class="send">
+				<input type="text" name="userSend" placeholder="验证码">
+			</div>
+			<p class="code">发送验证码</p>
+		</div>
+		<div class="int reg">
+			<input type="submit" value="提交">
+		</div>
+	</div>
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			var timeBtn = $('.code');
+			timeBtn.click(function(){
+				var time = setInterval(setTime, 1000);
+				var seconds = 60;
+				function setTime (){
+					seconds--;
+					seconds = seconds < 10 ? "0" + seconds : seconds;
+					timeBtn.text(seconds+"秒后重新发送");
+					timeBtn.off('click');
+					if(seconds==0){
+						timeBtn.text("点击重新发送验证码");
+						clearInterval(time);
+						timeBtn.click(function(){
+							var time = setInterval(setTime, 1000);
+							var seconds = 60;
+							function setTime (){
+								seconds--;
+								seconds = seconds < 10 ? "0" + seconds : seconds;
+								timeBtn.text(seconds+"秒后重新发送");
+								timeBtn.off('click');
+								if(seconds==0){
+									timeBtn.text("点击重新发送验证码");
+									clearInterval(time);
+								}
+							}
+						})
+					}
+				}
+			})
+		})
+	
+	</script>
+</body>
+</html>

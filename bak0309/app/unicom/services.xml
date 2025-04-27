@@ -1,0 +1,5 @@
+<services>
+    <service id="openapi.unicom">
+        <class>unicom_openapi_goods</class>
+    </service>
+</services>

@@ -1,0 +1,41 @@
+<{if $data}>
+<ul>
+	<li class="home_link"><a href="./index.html"></a></li>
+<{foreach from=$data item=item name=catlist}>
+	<li class="menulist">
+		<div class="depth-1">
+			<a href="<{$item.url}>"><{$item['cat_name']}></a> <{if $item.child || $item.events }><i class="png"></i><{/if}>
+		</div>
+		 <{if $item.child || $item.events }>
+		<div class="depth-2">
+			<div class="events">
+				<div class="title">正在进行中的活动</div>
+				<div class="eventlists">
+					<{if $item.events}>
+						<ul>
+							<{foreach from=$item.events item=event }>
+							<li><a href="<{link app=shangou ctl=site_event arg0=$event.evt_id}>" title="<{$event.evt_name}>" alt="<{$event.evt_name}>"><{$event.evt_name}></a></li>
+							<{/foreach}>
+						</ul>
+						<div class="more"><a href="<{$item.url}>">查看更多</a></div>
+					<{/if}>
+				</div>
+			</div>
+			<div class="cats">
+				<div class="title">分类</div>
+				<div class="catlists">
+					<{if $item.child}>
+						<ul>
+							<{foreach from=$item.child item=catitem }>
+							<li><a href="<{$catitem.url}>"><{$catitem.cat_name}></a></li>
+							<{/foreach}>
+						</ul>
+					<{/if}>
+				</div>
+			</div>
+		</div>
+		<{/if}>
+	</li>
+	<{/foreach}>
+</ul>
+<{/if}>

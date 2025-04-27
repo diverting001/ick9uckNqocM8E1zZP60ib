@@ -1,0 +1,17 @@
+
+<a href="<{$data.linktarget}>" target="_blank"> <img  class="pic" src="<{$data.image_url}>" title="<{$data.linkinfo}>"/> </a>
+<{*foreach from=$data.showGoods item=item}>
+<span data-widget-type='DropMenu' data-widget-config="" class="radius-icon auto-bind-widget" dropmenu="viewport-popupbox" style="left:<{$item.dianx}>px;top:<{$item.diany}>px;"> </span>
+<div class="viewport-popupbox" style="left:<{$item.goodsx}>px;top:<{$item.goodsy}>px;display:none;">
+    <div class="arrow arrow-right" style=""><i class="below">◆</i><i class="above">◆</i></div>
+    <div class="inner">
+        <a href="" class="popupbox-goods-img" target="_blank" title="<{$item.name}>"><img onload="$(this).zoomImg(190,190);" src="<{$item.goods_image_url}>" alt="<{$item.name}>"/></a>
+        <div class="viewport-popupbox-good-info" >
+            <h4 class="good-name"><{$item.name}></h4>
+            <span class="new-price">¥<span class="num"><{$item.price}></span></span>
+            <span class="market-price"><del>¥<{$item.mkprice}></del></span>
+        </div>
+    </div>
+</div>
+<{/foreach*}>
+

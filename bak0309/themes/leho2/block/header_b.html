@@ -1,0 +1,42 @@
+<!-- 顶部导航 -->
+<div id="header" class="header header-b clearfix">
+    <div class="header-mod-hd clearfix">
+        <div class="">
+            <a href="http://www.leho.com" class="fl logo">
+                <img src="images/logo.gif" />
+            </a>
+        </div>
+
+        <div class="header-mod-user-info r">
+            <ul id="header_b-logined" style="display:none"> 
+                <li><a id="m-uname" href=""class="dropmenu auto-bind-widget" data-widget-type='DropMenu' dropmenu="header-shopcart-bd-box"></a>
+                <div class="header-shopcart-bd-box">
+                    <div class="dropdown-box userinfo-drop-box">
+                        <s class="arrow"></s>
+                        <div class="userinfo-inner">
+                            <ul>
+                                <li><a href="<{link app=b2c ctl=site_member act=orders}>">我的订单</a></li>
+                                <li><a href="<{link app=aftersales ctl=site_member act=afterlist}>">我的售后</a></li>
+                                <li><a href="<{link app=b2c ctl=site_member act=coupon}>">我的优惠券</a></li>
+                                <li class="line-b"><a href="<{link app=b2c ctl=site_member act=receiver}>">我的收货地址</a></li>
+                                <li><a href="<{link app=b2c ctl=site_member act=index full=1}>">我的基本资料</a></li>
+                                <li><a href="<{link app=b2c ctl=site_passport act=logout}>">退出</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+var name = Cookie.read('NICKNAME') || '';
+if(name){
+    $("m-uname").innerHTML = name;
+    $("header_b-logined").show();
+}else{
+    $("header_b-nologin").show();
+}
+</script>
+

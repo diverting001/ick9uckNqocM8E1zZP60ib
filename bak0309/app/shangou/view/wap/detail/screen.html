@@ -1,0 +1,108 @@
+<table class="am-table am-form am-text-nowrap" id="price_filter">
+          <tbody>
+            <tr>
+              <td>价格：</td>
+              <td><input type="number" class="am-form-field am-input-sm" placeholder="0"></td>
+              <td>~</td>
+              <td><input type="number" class="am-form-field am-input-sm" placeholder="9999" ></td>
+            </tr>
+          </tbody>
+</table>
+<form id="J_filter" action="#" method="post">
+          <div class="am-panel-group" id="accordion">
+            <{if $screen.cat}> 
+                  <div class="am-panel am-panel-default">
+                      <div class="am-panel-hd">
+                        <h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#filter_cat'}">
+                          分类 <small>全部</small>
+                          <i class="am-icon-chevron-down am-fr"></i>
+                        </h4>
+                      </div>
+                      <div id="filter_cat" class="am-panel-collapse am-collapse">
+                        <div class="am-panel-bd">
+                        <{foreach from=$screen.cat item=cat_row name=name}>
+                              <label><{$cat_row.cat_name|cut:12}>
+                                  <input type="radio" name="cat_id" value="<{$cat_row.cat_id}>">
+                              </label>
+                        <{/foreach}>
+                        </div>
+                      </div>
+                </div>
+              <{else}>
+              <input type="hidden" name="cat_id" value="<{$screen.cat_id}>" />
+              <{/if}>
+
+              <{if $screen.brand}>
+                <div class="am-panel am-panel-default">
+                      <div class="am-panel-hd">
+                        <h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#filter_brand'}">
+                          品牌 <small>全部</small>
+                          <i class="am-icon-chevron-down am-fr"></i>
+                        </h4>
+                      </div>
+                      <div id="filter_brand" class="am-panel-collapse am-collapse ">
+                        <div class="am-panel-bd">
+                        <{foreach from=$screen.brand item=brand_row name=name}>
+                              <label><{$brand_row.brand_name|cut:12}>
+                                  <input type="checkbox" name="brand_id[]" value="<{$brand_row.brand_id}>">
+                              </label>
+                        <{/foreach}>
+                        </div>
+                      </div>
+                </div>
+              <{/if}>
+
+                    <{if $screen.props}>
+        <{assign var='props_select' value=array()}>
+        <{foreach from=$screen.props item=props_row key=key}>
+          <{if $props_row.search == 'select'}>
+            <{assign var='props_select' value=array_merge($props_select,array($props_row))}>
+            <{continue}>
+          <{/if}>
+           <div class="am-panel am-panel-default">
+                        <div class="am-panel-hd">
+                          <h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#filter_props_<{$key}>'}">
+                            <{$props_row.name}> <small>全部</small>
+                            <i class="am-icon-chevron-down am-fr"></i>
+                          </h4>
+                        </div>
+                        <div id="filter_props_<{$key}>" class="am-panel-collapse am-collapse ">
+                          <div class="am-panel-bd">
+                          <{foreach from=$props_row.options item=options_v key=options_k name=name}>
+                                <label><{$options_v|cut:12}>
+                                    <input type="checkbox" name="p_<{$key}>[]" value="<{$options_k}>">
+                                </label>
+                          <{/foreach}>
+                          </div>
+                        </div>
+                  </div>
+                  <{/foreach}>
+        <{/if}>
+                    <{if $screen.spec}>
+        <{assign var='spec_select' value=array()}>
+       <{foreach from=$screen.spec item=spec_row key=spec_id}>
+          <{if $spec_row.search == 'select'}>
+            <{assign var='spec_select' value=array_merge($spec_select,array($spec_row))}>
+            <{continue}>
+          <{/if}>
+           <div class="am-panel am-panel-default">
+                        <div class="am-panel-hd">
+                          <h4  class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#filter_spec_<{$spec_id}>'}">
+                            <{$spec_row.name}> <small>全部</small>
+                            <i class="am-icon-chevron-down am-fr"></i>
+                          </h4>
+                        </div>
+                        <div id="filter_spec_<{$spec_id}>" class="am-panel-collapse am-collapse ">
+                          <div class="am-panel-bd">
+                          <{foreach from=$spec_row.spec_value item=spec_value key=spec_value_id name=name}>
+                                <label><{$spec_value.spec_value|cut:12}>
+                                    <input type="checkbox" name="s_<{$spec_id}>[]" value="<{$spec_value_id}>">
+                                </label>
+                          <{/foreach}>
+                          </div>
+                        </div>
+                  </div>
+                  <{/foreach}>
+        <{/if}>
+      </div>
+</form>

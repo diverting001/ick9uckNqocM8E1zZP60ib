@@ -1,0 +1,18 @@
+<site>
+    <module controller='wap_events' >
+        <name>events</name>
+        <title>闪购活动</title>
+        <disable>false</disable>
+    </module>
+    
+     <module controller='wap_event' >
+        <name>event</name>
+        <title>闪购活动</title>
+        <disable>false</disable>
+    </module>
+     <module controller='wap_time' >
+        <name>time</name>
+        <title>时间计算</title>
+        <disable>false</disable>
+    </module>
+</site>

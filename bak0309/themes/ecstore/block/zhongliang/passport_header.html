@@ -1,0 +1,53 @@
+<{if $login_theme}>
+    <{if $page_type == 'setting'}>
+            <div class="new_header">
+                <div class="container">
+                    <a href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>" class="logo"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/normal/site/images/ddgh_log.png" style="width: 128px" width="128" height="45" alt="点滴关怀"></a>
+                    <nav class="zl_p_r">
+                        <a class="nav_introduce" href="<{$smarty.const.CAS_DOMAIN_URL}>/#/login" target="_blank">登录账号</a>
+                        <a class="nav_introduce_active" href="<{$smarty.const.DIANDI_DOMAIN_URL}>/Qiye/CompanyApply/router" target="_blank">申请入驻</a>
+                    </nav>
+                </div>
+            </div>
+        <!--<header>-->
+            <!--<div class="container">-->
+                <!--<a href="<{$club_domain}>" class="logo"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/images/logo_diandi.png" height="42" alt=""></a>-->
+                <!--<a href="http://work.weixin.qq.com" class="logo" style="padding-left: 20px;padding-top: 17px;display: none;" target="_blank"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/images/qiye_weixing 3.png"  alt=""></a>-->
+                <!--<ul class="header-ul">-->
+                    <!--<li><a class="" href="<{link app=b2c ctl=site_passport act=login}>">员工登录</a></li>-->
+                    <!--&lt;!&ndash;<li>丨</li>&ndash;&gt;-->
+                    <!--<li><a class="m_l_1" href="<{link app=b2c ctl=site_passport act=activate}>">员工激活</a></li>-->
+                    <!--&lt;!&ndash;<li>丨</li>&ndash;&gt;-->
+                    <!--<li><a class="m_l_1" href="<{$club_domain}>">企业登录</a></li>-->
+                    <!--&lt;!&ndash;<li>丨</li>&ndash;&gt;-->
+                    <!--<li><a class="m_l_1" href="<{$club_domain}>/Qiye/CompanyApply/router">企业申请</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</header>-->
+    <{/if}>
+<{else}>
+    <!--<header>-->
+        <!--<div class="container">-->
+            <!--<a href="<{$club_domain}>" class="logo"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/images/logo_diandi.png" height="42" alt=""></a>-->
+            <!--<a href="http://work.weixin.qq.com" class="logo" style="padding-left: 20px;padding-top: 17px;display: none;" target="_blank"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/images/qiye_weixing 3.png"  alt=""></a>-->
+            <!--<ul class="header-ul">-->
+                <!--<li><a href="<{link app=b2c ctl=site_passport act=login}>">员工登录</a></li>-->
+                <!--&lt;!&ndash;<li>丨</li>&ndash;&gt;-->
+                <!--<li><a class="m_l_1" href="<{link app=b2c ctl=site_passport act=activate}>">员工激活</a></li>-->
+                <!--&lt;!&ndash;<li>丨</li>&ndash;&gt;-->
+                <!--<li><a class="m_l_1" href="<{$club_domain}>">企业登录</a></li>-->
+                <!--&lt;!&ndash;<li>丨</li>&ndash;&gt;-->
+                <!--<li><a class="m_l_1" href="<{$club_domain}>/Qiye/CompanyApply/router">企业申请</a></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</header>-->
+<div class="new_header">
+    <div class="container">
+        <a href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>" class="logo"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/normal/site/images/ddgh_log.png" style="width: 128px" width="128" height="45" alt="点滴关怀"></a>
+        <nav class="zl_p_r">
+            <a class="nav_introduce" href="<{$smarty.const.CAS_DOMAIN_URL}>/#/login" target="_blank">登录账号</a>
+            <a class="nav_introduce_active" href="<{$smarty.const.DIANDI_DOMAIN_URL}>/Qiye/CompanyApply/router" target="_blank">申请入驻</a>
+        </nav>
+    </div>
+</div>
+<{/if}>

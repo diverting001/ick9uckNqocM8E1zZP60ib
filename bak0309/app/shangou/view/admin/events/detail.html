@@ -1,0 +1,80 @@
+<div class="tableform">
+<h3>闪购活动基础信息</h3>
+<div class="division">
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+	<th>活动名称：</th>
+	<td width="250"><{$event.evt_name}></td>
+	<th>是否产地直供：</th>
+	<td > <{if $event.leho_type =='false'}>否<{else}>是<{/if}></td>
+	<th >开始时间：</th>
+	<td ><{$event.s_time|cdate:FDATE_FTIME}></td>
+	<{if $event.leho_type =='false'}>
+	<th >结束时间：</th>
+    <td ><{$event.e_time|cdate:FDATE_FTIME}></td>
+    <{/if}>
+</tr>
+<tr>
+    <th >活动类型：</th>
+    <td ><{$act_type_list[$event.act_type]}></td>
+	<th >前端显示：</th>
+	<td ><{$evt_type_list[$event.evt_type]}></td>
+	<th>是否首页推荐：</th>
+	<td ><{$index_show_list[$event.index_show]}></td>
+</tr>
+</table>
+</div>
+
+</div>
+<div class="tableform">
+<div class="division">
+       <div class="clearfix">
+            <div class="span-auto"><{t}>前台访问地址：<{/t}></div>
+            <div class="span-9">
+                <input type='url' value='<{$url}>' onkeydown='return false;' class='f-9 shadow ' style='font-family:Arial;width:98%;' onclick='this.focus();this.select();'/>
+            </div>
+            <div class="span-auto">
+                <span class="finder-action-items flt" style="float:left; margin-left:5px; display:block; padding:0 1px"><a  href="<{$url}>" target="_blank"><span><{t}>访问此链接<{/t}></span></a></span>
+            </div>
+       </div>
+   </div>
+</div>
+<div class="tableform">
+<h3>商品信息</h3>
+<div class="division">
+	<table border="0" cellspacing="0" class="gridlist" cellpadding="0" style="width:100%" >
+			<thead>
+				<tr>
+					<th style="width:30px;">序号</th>
+					<th>商品编码</th>
+					<th>商品名称</th>
+					<th style="width:80px;">品牌</th>
+					<th style="width:80px;">售价</th>
+					<th style="width:50px;">排序</th>
+				</tr>
+			</thead>
+			<tbody >
+			<{foreach from=$goodslist item=v name=foo}>
+				<tr>
+				<td><{ $smarty.foreach.foo.iteration}></td>
+				<td><{$v.bn}></td>
+				<td><{$v.name}></td>
+				<td><{$v.brand_name}></td>
+				<td><{$v.price}></td>
+				<td><{$v.order}></td>
+				</tr>
+			<{/foreach}>
+			</tbody>
+		</table>
+</div>
+
+</div>
+
+<div class="tableform">
+<h3>活动详情</h3>
+<div class="division">
+<{$event.intro}>
+</div>
+
+</div>
+</div>

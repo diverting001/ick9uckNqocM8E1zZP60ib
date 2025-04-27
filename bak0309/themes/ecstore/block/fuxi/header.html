@@ -1,0 +1,210 @@
+<!-- 联通定制 -->
+<{if $special_channel == 'unicomO2O'}>
+<div class="lt-header">
+    <div class="container">
+        <span class="user_name"><a href="<{$custom_third_url.custom_third_callback_url}>" >回到首页</a></span>
+        <a href="<{$custom_third_url.custom_third_index_url}>">课程列表</a>
+        <a href="<{$ECSTORE_DOMAIN}>/member-new_orders-all-1.html" class="order_link">我的订单</a>
+    </div>
+</div>
+<{else}>
+<div class="life-header">
+    <div class="top company_theme_color_rgb_border">
+        <{if $header_user.member_id == 27}>
+            <div class="container">
+                <span style="color: #ffffff"><a style="color: #ffffff" href="/">首页</a></span>
+                <p style="color: #ffffff">你好，<a style="color: #ffffff" href="https://q.juyoufuli.com/passport-logoff.html" target="_blank">请登录</a>&nbsp;&nbsp;<a target="_blank" style="color: #FFFFFF" href="<{link app=b2c ctl=site_passport act=jyfl_register}>">免费注册</a></p>
+            </div>
+        <{else}>
+            <div class="container" style="width: 1100px;">
+                <span class="span"><a href="<{$smarty.const.LIFE_DOMAIN_URL_DYNPTL}>">首页</a></span>
+                <p>
+                    <{if $shopping_cart_pc_hidden == 0}>
+                        <a id="ne-a" href="<{$smarty.const.ECSTORE_DOMAIN_URL_DYNPTL}>/v2/cart.html" target="_blank">购物车(<span id="ne-e" class="new_good_num">0</span>)</a>&nbsp;
+                    <{/if}>
+                    你好，<a href="<{link app=b2c ctl=site_member act=index}>" target="_blank"><{if $header_user.name }><{$header_user.name}><{else}><{$user_name}><{/if}></a>&nbsp;
+                    <{if $member_pc_hidden == 0}>
+                        <a href="<{link app=b2c ctl=site_member act=index}>" target="_blank">个人中心</a> &nbsp;
+                    <{/if}>
+                    <{if $member_order_pc_hidden == 0}>
+                        <a class="before-line" href="<{link app=b2c ctl=site_member act=orders}>" target="_blank">我的订单</a>
+                    <{/if}>
+                    <{if $log_out_pc_hidden == 0}>
+                        <a  href="<{link app=b2c ctl=site_passport act=logout}>">退出</a>
+                    <{/if}>
+                </p>
+            </div>
+        <{/if}>
+    </div>
+</div>
+<input type="hidden" value="<{$smarty.const.MALL_DOMAIN_URL_DYNPTL}>/cart/CartMini/miniView" class="mn_cart">
+<input type="hidden" value="<{$smarty.const.MALL_DOMAIN_URL_DYNPTL}>/cart/CartMini/miniRemoveGoods" class="mn_remove">
+<script type="text/javascript">
+    var STORE_DOMAIN='<{$ECSTORE_DOMAIN}>';
+    // 去掉请求member-getsms.html资源
+    var HIDESMS = true;
+    (function($){
+
+        $('.hot_nav_parent').hover(function(){
+            var _this = $(this);
+            _this.children('a').addClass('active');
+            _this.find('.hot_nav').show();
+        },function(){
+            var _this = $(this);
+            _this.children('a').removeClass('active');
+            _this.find('.hot_nav').hide();
+        })
+        function MiniCarWidgets(){
+            this.register_ids = Array();
+            this.open_by_action = 2;
+            this.add_timer;
+            this.request_mini_cart = function(){
+                var mini_cart = this;
+                //发ajax请求至后端请求mini购物车数据
+                var mn_cart = $('.mn_cart').val();
+
+                var requestURL = mn_cart;
+                var postData = "mini_cart_list:true";
+                $.ajax({
+                    url: requestURL,
+                    type: "GET",
+                    dataType: 'jsonp',
+                    data: "",
+                    crossDomain:true,
+                    xhrFields: {  withCredentials: true  },
+                    success : function (data) {
+                        $('#new_cart_bar').removeClass('loading_cart')
+                        mini_cart.updateCart(data.html);
+                        mini_cart.sync();
+                        mini_cart.attach();
+                        if(data.html.indexOf('cart-null')!=-1){
+                            cart_count_value=0;
+                        }
+                        if(cart_count_value>99){
+                            cart_count_value=99
+                        }
+                        $('#cart_number').removeClass('hide').text(cart_count_value);
+                        $('.new_good_num').text(cart_count_value)
+
+                        $('.cart-area').addClass('cartloadend');
+                    },
+                    error : function() {
+                        return false;
+                        $('.cart-area').removeClass('cartloadend');
+                    }
+                });
+            }
+
+
+
+            this.autoOpenCart = function(){
+                var mini_cart = this;
+                mini_cart.request_mini_cart();
+                mini_cart.openCart();
+                clearInterval(mini_cart.add_timer);
+                mini_cart.add_timer =  setInterval(function(){
+                    mini_cart.open_by_action--;
+                    if(mini_cart.open_by_action==0){
+                        clearInterval(mini_cart.add_timer);
+                        mini_cart.closeCart();
+                    }
+                },1000);
+            }
+
+            this.openCart = function(){
+                var div = $('#new_cart_bar');
+                div.removeClass('dis');
+            }
+
+            this.closeCart = function(){
+                var div = $('#new_cart_bar');
+                div.addClass('dis');
+            }
+            this.updateCart = function(data){
+                $('#new_cart_bar').html(data);
+            }
+
+            this.init = function(){
+                var mini_cart = this;
+                mini_cart.sync();
+            }
+
+            this.register = function($id){
+                this.register_ids.push($id);
+            }
+            var cart_count_value = 0;
+            this.sync = function(){
+                if ( $.cookie('S[CART_COUNT]')!=null &&  $.cookie('S[CART_COUNT]')>=0 )  {
+                    cart_count_value = $.cookie('S[CART_COUNT]')||0;
+                }
+                for(var i=0; i<this.register_ids.length;i++){
+                    $('#'+this.register_ids[i]).text(cart_count_value).show();
+                }
+            }
+
+            this.attach = function(){
+                var mini_cart = this;
+                $(".cart-price .cart-remove").click(function(){
+                    var removeRequest = "";
+                    var dataInfo = $(this).parent().siblings("div.cart-info").children("span");
+                    for(i =0 ; i < dataInfo.length; i++){
+                        removeRequest += $(dataInfo[i]).attr('name') + "=" + $(dataInfo[i]).text() + "&";
+                    }
+                    removeRequest += "response_json=true";
+
+
+                    //发ajax请求至后端请求mini购物车数据
+                    var mn_remove = $('.mn_remove').val();
+                    var requestURL = mn_remove;
+                    var new_postData = {
+                        'platform' : 1,
+                        'productId' : $(this).parent().siblings("div.cart-info").find("span[name='product_id']").text(),
+                    }
+                    var postData = removeRequest;
+                    $.ajax({
+                        url: requestURL,
+                        type: "GET",
+                        dataType: 'jsonp',
+                        data: new_postData,
+                        crossDomain:true,
+                        xhrFields: {  withCredentials: true  },
+                        success : function (data) {
+                            if(!data.errno){
+                                cart_count_value = 0;
+                                mini_cart.request_mini_cart();
+                            }
+                        },
+                        error : function() {
+                            return false;
+
+                        }
+                    });
+
+                });
+            }
+        }
+
+
+        gMiniCart = new MiniCarWidgets;
+        $('.cart-area').on('mouseover',function(event){
+            if($('.cart-area').hasClass('cartloadend')){
+                return;
+            }
+            $('.cart-area').addClass('cartloadend');
+            $('#new_cart_bar').addClass('loading_cart').text('购物车信息更新中...');
+            gMiniCart.request_mini_cart();
+            event.stopPropagation();
+        })
+        window.onload = function(){
+            gMiniCart.init();
+            gMiniCart.register('ne-e');
+            gMiniCart.register('cart_number');
+            gMiniCart.register('cart_item_count');
+            gMiniCart.register('elevator_good_num');
+            gMiniCart.sync();
+            //gMiniCart.request_mini_cart();
+        }
+    })(jQuery);
+</script>
+<script src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/js/getSms.js?v=201911111542" type="text/javascript"></script>
+<{/if}>

@@ -1,0 +1,51 @@
+<div id="for-login-success" class="am-text-success am-margin">
+    <i class="neigou-icon-success-circle neigou-iconfont success-icon company_theme_color_rgb_text"></i>
+            <!-- <i class="suc-img"></i> -->
+            <h3><{$msg}></h3>
+            <{if $error_info}>
+            <ol>
+            <{foreach from=$error_info item=item}>
+            <li>
+            [<{$item[0]}>]<{$item[1]}>
+            <{if $env.const.debug_code}>
+            (<{$item[2]}>:<{$item[3]}>)
+                <{/if}>
+            </li>
+            <{/foreach}>
+            </ol>
+            <{/if}>
+            
+</div>
+<{if $wait>0}>
+<div id="for-login-info" class="am-padding">
+            <p class="am-align-center"><{$wait}>秒后系统会自动跳转</p>
+            <a class="am-btn am-btn-success am-btn-block company_theme_color_rgb_text" onclick="javascript:clearTimeout(SiteSplash);" href="<{if $jumpto=='back'}>javascript:history.back()<{else}><{$jumpto}><{/if}>">
+                点击直接跳转
+            </a>
+            <{/if}>
+</div>
+<script>
+    (function(){
+        window.onload=function(){
+            var footer = document.getElementsByTagName('footer')[0],
+                a_hg = document.getElementById('for-login-success').clientHeight,
+                b_hg = document.getElementById('for-login-info').clientHeight,
+                header_hg = document.getElementsByTagName('header')[0].clientHeight,
+                footer_hg = footer.clientHeight,
+                body_hg = document.body.clientHeight;
+            if(body_hg>a_hg+b_hg+header_hg+footer_hg){
+                footer.className = 'fixed';
+            }
+        }
+        
+    })()
+</script>
+<{if $wait>0}>
+<script>
+    function jumpurl(){
+        <{if $jumpto=='back'}>history.back()<{else}>location='<{$jumpto}>'<{/if}>;
+    }
+    // var SiteSplash = setTimeout('jumpurl()',<{$wait*1000}>);
+</script>
+<{/if}>
+

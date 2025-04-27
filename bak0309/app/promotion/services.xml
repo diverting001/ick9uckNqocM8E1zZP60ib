@@ -1,0 +1,42 @@
+<services>
+    <service id="voucher.service">
+        <class>promotion_voucher_service</class>
+    </service>
+
+    <service id="pam_login_listener">
+        <class>promotion_pam_login</class>
+    </service>
+
+    <service id="openapi.promotion">
+        <class>promotion_openapi_asynccallback</class>
+    </service>
+
+    <service id="b2c_register_after">
+        <class>promotion_invite_register</class>
+        <class>promotion_hongbao_register</class>
+        <class>promotion_passport_register</class>
+    </service>
+
+    <service id="b2c_reverify_after">
+        <class>promotion_invite_register</class>
+    </service>
+
+    <service id = "openapi.invitation">
+        <class>promotion_openapi_invitecallback</class>
+    </service>
+
+    <service id = "openapi.hongbao">
+        <class>promotion_openapi_hongbaocallback</class>
+    </service>
+
+    <service id="order_products.pay_finish" optname="支付完成处理">
+        <class>promotion_voucher_pay</class>
+    </service>
+    <service id="order_products.pay_cancel" optname="订单取消">
+        <class>promotion_voucher_cancel</class>
+    </service>
+
+    <service id = "openapi.promotionregister">
+        <class>promotion_openapi_registercallback</class>
+    </service>
+</services>

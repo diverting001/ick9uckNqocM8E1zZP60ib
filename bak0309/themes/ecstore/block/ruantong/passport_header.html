@@ -1,0 +1,67 @@
+<{if $login_theme}>
+<{if $page_type == 'setting'}>
+<div class="new_header">
+    <div class="container">
+        <a href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>"  class="logo"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/normal/site/images/ddgh_log.png" width="154" height="41" alt="点滴关怀"></a>
+        <nav class="p_l">
+            <a class="home_index first_a"  href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>" >首页<i></i></a>
+            <a class="about_us nav_introduce first_a" href="javascript:;" >福利云</a>
+            <div class="nav_list">
+                <i></i>
+                <a class="nav_li border-top" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/elasticWelfare" >弹性福利</a>
+                <a class="nav_li" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/staffBenefits" >员工补贴</a>
+                <a class="nav_li" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/welfareGift" >福利礼品</a>
+                <a class="nav_li" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/wholeCaseCustomization" >全案定制</a>
+                <a class="nav_li" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/staffLifeService" >员工生活服务</a>
+            </div>
+            <a class="about_us first_a" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/jlClouds" >激励云</a>
+            <a class="about_us first_a" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/industryEmpowerment" >行业赋能</a>
+            <a class="about_us first_a" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/aboutUs" >关于我们</a>
+        </nav>
+        <nav class="p_r">
+            <a class="nav_introduce" href="<{$smarty.const.CAS_DOMAIN_URL}>/#/login" target="_blank">登录账号</a>
+            <a class="nav_introduce_active" href="<{$smarty.const.DIANDI_DOMAIN_URL}>/Qiye/CompanyApply/router" target="_blank">申请入驻</a>
+        </nav>
+    </div>
+</div>
+<{/if}>
+<{else}>
+<div class="new_header">
+    <div class="container">
+        <a href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>"  class="logo"><img src="<{$env.cdn_base_url}>/app/b2c/neigou_statics/normal/site/images/ddgh_log.png" width="154" height="41" alt="点滴关怀"></a>
+        <nav class="p_l">
+            <a class="home_index first_a"  href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>" >首页<i></i></a>
+            <a class="about_us nav_introduce first_a" href="javascript:;" >福利云</a>
+            <div class="nav_list">
+                <i></i>
+                <a class="nav_li border-top" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/elasticWelfare" >弹性福利</a>
+                <a class="nav_li" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/staffBenefits" >员工补贴</a>
+                <a class="nav_li" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/welfareGift" >福利礼品</a>
+                <a class="nav_li" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/wholeCaseCustomization" >全案定制</a>
+                <a class="nav_li" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/staffLifeService" >员工生活服务</a>
+            </div>
+            <a class="about_us first_a" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/jlClouds" >激励云</a>
+            <a class="about_us first_a" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/industryEmpowerment" >行业赋能</a>
+            <a class="about_us first_a" href="<{$smarty.const.DD_YUANGONG_WEB_DOMAIN}>/Show/aboutUs" >关于我们</a>
+        </nav>
+        <nav class="p_r">
+            <a class="nav_introduce" href="<{$smarty.const.CAS_DOMAIN_URL}>/#/login" target="_blank">登录账号</a>
+            <a class="nav_introduce_active" href="<{$smarty.const.DIANDI_DOMAIN_URL}>/Qiye/CompanyApply/router" target="_blank">申请入驻</a>
+        </nav>
+    </div>
+</div>
+<{/if}>
+<script>
+    window.onload = function () {
+        $('.p_l .nav_introduce').hover(function(){
+            $('.nav_list').show();
+        },function(){
+            $('.nav_list').hide();
+        })
+        $('.nav_list').hover(function(){
+            $('.nav_list').show();
+        },function(){
+            $('.nav_list').hide();
+        })
+    }
+</script>

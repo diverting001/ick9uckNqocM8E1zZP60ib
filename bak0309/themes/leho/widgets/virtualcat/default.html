@@ -1,0 +1,26 @@
+<{foreach from=$data item=parent key=parentId name=name}>
+	<li class="<{if $setting.showCatDepth == '1'}><{else}>dropmenu<{/if}>" >
+		<a class="l-mod auto-bind-widget" data-widget-type='DropMenu' <{if $setting.showCatDepth == '1'}><{else}>dropmenu="dropdown-box"<{/if}> href="<{$parent.url}>"><{$parent.label}><i></i></a>
+		<{if $parent.sub}>
+			<div class="dropdown-box">
+            <ul>
+			<{foreach from=$parent.sub item=child key=childId}>
+				<li class="cat-list" style="float: left;">
+					<h3><a href="<{$child.url}>" style="position: relative;display: block;"> <{$child.label}> </a></h3>
+                    <ul>
+                        <{if $setting.showCatDepth == '3'}>
+                        <{foreach from=$child.sub item=gChild}>
+                        <li class="cat">
+                            <a href="<{$gChild.url}>" style="position: relative;display: block;"><{$gChild.label}> </a>
+                        </li>
+                        <{/foreach}>
+                        <{/if}>
+                    </ul>
+                </li>
+			<{/foreach}>
+            </ul>
+			</div>
+		<{/if}>
+	</li>
+<{/foreach}>
+
