@@ -1,9 +1,0 @@
-<site>
-    
-    <module controller='site_timedbuy' >
-        <name>timedbuy</name>
-        <title>限时抢购</title>
-        <disable>false</disable>
-    </module>
-    
-</site> 

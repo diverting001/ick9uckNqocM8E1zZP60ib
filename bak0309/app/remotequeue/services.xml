@@ -1,5 +1,0 @@
-<services>
-    <service id="remotequeue.service">
-        <class>remotequeue_service</class>
-    </service>
-</services>

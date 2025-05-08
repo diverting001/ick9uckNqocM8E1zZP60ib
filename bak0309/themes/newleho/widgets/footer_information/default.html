@@ -1,9 +1,0 @@
-<{if $data.indexs}>
-<li class="artcat">
-    <{foreach from=$data.indexs item=item}>
-	  <div class="artct">
-	   <a href="<{link app=content ctl=site_article act=index arg0=$item.article_id}>" title=<{$item.title}>><{$item.title}></a>
-	   </div>
-	  <{/foreach}>
-</li>
-<{/if}>

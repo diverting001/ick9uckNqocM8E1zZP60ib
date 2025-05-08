@@ -1,9 +1,0 @@
-<site>
-    
-    <module controller='site_wxin' >
-        <name>wxin</name>
-        <title>微信</title>
-        <disable>false</disable>
-    </module>
-    
-</site> 
